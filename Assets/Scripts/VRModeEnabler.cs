@@ -18,7 +18,6 @@ public class VRModeEnabler : MonoBehaviour
 			Debug.LogError("No VR device present while trying to enable VR.", this);
 		}else{
 			UnityEngine.XR.XRSettings.enabled = vrEnabled;
-
 		}
 	}
 
