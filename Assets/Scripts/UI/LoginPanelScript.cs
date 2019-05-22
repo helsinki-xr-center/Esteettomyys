@@ -9,7 +9,7 @@ using UnityEngine.UI;
  * 
  * Handles UI elements in the login panel.
  */
-public class LoginPanelScript : MonoBehaviour
+public class LoginPanelScript : AwaitableUIPanel
 {
 	public TMP_InputField usernameInput;
 	public TMP_InputField passwordInput;
@@ -46,18 +46,27 @@ public class LoginPanelScript : MonoBehaviour
 		{
 			case LoginResult.IncorrectCredentials:
 				new UIInfoMessage("Incorrect login credentials.", UIInfoMessage.MessageType.Error).Deliver();
+				loginButton.interactable = true;
 				break;
 			case LoginResult.Success:
 				new UIInfoMessage("Login success!", UIInfoMessage.MessageType.Success).Deliver();
+
+				GlobalValues.loggedIn = true;
+				GlobalValues.user = username;
+
 				success = true;
 				break;
 			case LoginResult.Error:
 				new UIInfoMessage("An unknown error occurred.", UIInfoMessage.MessageType.Error).Deliver();
+				loginButton.interactable = true;
 				break;
 			default:
 				break;
 		}
+	}
 
-		loginButton.interactable = true;
+	public override IEnumerator WaitForFinish()
+	{
+		yield return new WaitUntil(() => success);
 	}
 }
