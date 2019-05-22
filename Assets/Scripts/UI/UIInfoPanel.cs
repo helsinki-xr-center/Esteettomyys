@@ -32,7 +32,7 @@ public class UIInfoPanel : MonoBehaviour
 
 	/**
 	 * <summary>
-	 * Called by invoking UIInfoMessage.Deliver(). Shows the message on the UI with certain background color;
+	 * Called by invoking UIInfoMessage.Deliver(). Shows the message on the UI with certain background color.
 	 * </summary>
 	 */
 	public void ShowMessage(UIInfoMessage message)

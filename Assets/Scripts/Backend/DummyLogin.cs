@@ -9,7 +9,6 @@ using UnityEngine;
  * Author: Nomi Lakkala
  * 
  * <summary>
- * 
  * Dummy login class that accepts username and password as username and password
  * </summary>
  */

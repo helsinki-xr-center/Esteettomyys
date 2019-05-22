@@ -5,7 +5,9 @@ using UnityEngine;
 /**
  * Author: Nomi Lakkala
  * 
+ * <summary>
  * Enables or disables the VR mode on Start.
+ * </summary>
  */
 public class VRModeEnabler : MonoBehaviour
 {

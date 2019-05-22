@@ -6,7 +6,7 @@ using UnityEngine.SceneManagement;
 /**
  * Author: Nomi Lakkala
  * 
- * Loads a scene additively on Start.
+ * <summary>Loads a scene additively on Start.</summary>
  */
 public class SceneLoaderAdditive : MonoBehaviour
 {

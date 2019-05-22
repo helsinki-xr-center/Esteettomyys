@@ -7,7 +7,9 @@ using UnityEngine.UI;
 /**
  * Author: Nomi Lakkala
  * 
+ * <summary>
  * Handles UI elements in the login panel.
+ * </summary>
  */
 public class LoginPanelScript : AwaitableUIPanel
 {
@@ -25,7 +27,9 @@ public class LoginPanelScript : AwaitableUIPanel
 	}
 
 	/**
+	 * <summary>
 	 * Called from Unity UI Login button. Will start the login process.
+	 * </summary>
 	 */
 	public async void LoginButtonClick()
 	{

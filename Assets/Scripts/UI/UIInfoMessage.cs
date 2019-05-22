@@ -2,7 +2,8 @@
 /**
  * Author: Nomi Lakkala
  * 
- * <summary>UI message handler that handles communication between different message producers and the consumer.
+ * <summary>
+ * UI message handler that handles communication between different message producers and the consumer.
  * For example:
  * <example>
  * <code>
