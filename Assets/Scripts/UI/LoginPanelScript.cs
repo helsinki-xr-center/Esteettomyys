@@ -49,7 +49,7 @@ public class LoginPanelScript : AwaitableUIPanel
 		switch (result)
 		{
 			case LoginResult.IncorrectCredentials:
-				new UIInfoMessage("Incorrect login credentials.", UIInfoMessage.MessageType.Error).Deliver();
+				new UIInfoMessage("Incorrect login credentials. Hint: try using \"password\"", UIInfoMessage.MessageType.Error).Deliver();
 				loginButton.interactable = true;
 				break;
 			case LoginResult.Success:
