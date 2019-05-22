@@ -14,7 +14,8 @@ public class SceneLoaderAdditive : MonoBehaviour
 
 	void Start()
 	{
-		if(!string.IsNullOrEmpty(sceneName)){
+		if (!string.IsNullOrEmpty(sceneName))
+		{
 			SceneManager.LoadScene(sceneName, LoadSceneMode.Additive);
 		}
 	}
