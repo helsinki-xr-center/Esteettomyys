@@ -29,6 +29,7 @@ public class Pointer : MonoBehaviour
 	[SerializeField] Transform rightHand;	
 	[SerializeField] GameObject pointerDot;
 	[SerializeField] GameObject targetObj = null;
+	[SerializeField] GameObject selectedObj = null;
 	LineRenderer pointerLineRenderer;
 	
 	#endregion
@@ -67,69 +68,24 @@ public class Pointer : MonoBehaviour
 	{
 		RayCastFromHand();
 		DropObject();
-		HowerColor();
+		HoverColor();
 	
 	}
 
 	/// <summary>
 	/// Sets Howering Color for object
 	/// </summary>
-	public void HowerColor()
+	public void HoverColor()
 	{
 
 		if (hovering && !hasTarget && targetObj != null)
 		{
-			ExtensionMethods.MaterialColorChange(targetObj, targetObj.GetComponent<InteractableObject>().GetHowerColor());
+			ExtensionMethods.MaterialColorChange(targetObj, targetObj.GetComponent<InteractableObject>().GetHoverColor());
 		}
 		if (!hovering && !hasTarget && targetObj != null)
-		{
+		{			
 			ExtensionMethods.MaterialResetColorChange(targetObj, originalColor);
 		}
-	}
-
-	/// <summary>
-	/// Drops Hit Target After Releasing Trigger UP and Triggers Event with the raycast data
-	/// </summary>
-	public void DropObject()
-	{
-		if (pickUpMovable.GetStateDown(SteamVR_Input_Sources.RightHand) && targetObj != null && hasTarget)
-		{
-			Debug.Log("DESELECTED OBJECT");
-			ExtensionMethods.MaterialResetColorChange(targetObj, originalColor);
-			//SaveExitData(targetObj.transform);
-			hasTarget = false;
-			targetObj = null;
-
-		}	
-	}
-
-	/// <summary>
-	/// Shoots Ray from Right Hand's Controller forward and Checks if hits something
-	/// Enables Pointer LineRenderer + dot and sets the correct positions
-	/// </summary>
-	public void RayCastFromHand()
-	{
-		RaycastHit hit;
-		bool rayHits = Physics.Raycast(rightHand.position, rightHand.forward, out hit, rayCastLength, hitMask);
-		//Debug.DrawRay(rightHand.position, rightHand.forward * rayCastLength, Color.red, 0.1f);
-
-
-		if (rayHits)
-		{
-			hovering = true;
-			targetObj = hit.collider.gameObject;
-			ActivatePointerAndUpdatePosition(hit);
-			//Debug.Log(hit.collider.name);
-			//Debug.DrawRay(rightHand.position, rightHand.forward * rayCastLength, Color.green, 0.1f);
-			PickUpObject(hit);
-			
-		}
-		else
-		{
-			hovering = false;
-			ActivatePointer(false);
-		}
-
 	}
 
 	/// <summary>
@@ -156,24 +112,62 @@ public class Pointer : MonoBehaviour
 	}
 
 	/// <summary>
+	/// Shoots Ray from Right Hand's Controller forward and Checks if hits something
+	/// Enables Pointer LineRenderer + dot and sets the correct positions
+	/// </summary>
+	public void RayCastFromHand()
+	{
+		RaycastHit hit;
+		bool rayHits = Physics.Raycast(rightHand.position, rightHand.forward, out hit, rayCastLength, hitMask);
+		//Debug.DrawRay(rightHand.position, rightHand.forward * rayCastLength, Color.red, 0.1f);
+
+		if (rayHits)
+		{
+			hovering = true;
+			targetObj = hit.collider.gameObject;
+			ActivatePointerAndUpdatePosition(hit);
+			//Debug.Log(hit.collider.name);
+			//Debug.DrawRay(rightHand.position, rightHand.forward * rayCastLength, Color.green, 0.1f);
+			SelectObject(hit);
+		}
+		else
+		{
+			hovering = false;
+			ActivatePointer(false);
+		}
+
+	}
+
+	/// <summary>
 	/// PickUp hit target When Trigger is pressed fully down and Triggers Event with the raycast data
 	/// </summary>
 	/// <param name="hit">hitInfo from raycast</param>
-	public void PickUpObject(RaycastHit hit)
+	public void SelectObject(RaycastHit hit)
 	{
-		
-		if (pickUpMovable.GetStateDown(SteamVR_Input_Sources.RightHand) && !hasTarget && hovering)
+
+		if (pickUpMovable.GetLastStateDown(SteamVR_Input_Sources.RightHand) && !hasTarget)
 		{
-			if(targetObj != null || targetObj != hit.transform.gameObject)
-			{
-				return;
-			}
-			ExtensionMethods.MaterialColorChange(targetObj, targetObj.GetComponent<InteractableObject>().GetSelectedColor());
+			selectedObj = targetObj;
+			ExtensionMethods.MaterialColorChange(selectedObj, selectedObj.GetComponent<InteractableObject>().GetSelectedColor());
 			SaveHitData(hit);			
-			Debug.Log("TARGETED OBJECT");
-				
+			Debug.Log("TARGETED OBJECT");				
 			hasTarget = true;
-		}		
+		}				
+	}
+
+	/// <summary>
+	/// Drops Hit Target After Releasing Trigger UP and Triggers Event with the raycast data
+	/// </summary>
+	public void DropObject()
+	{
+		if (pickUpMovable.GetStateDown(SteamVR_Input_Sources.RightHand) && selectedObj != null && hasTarget)
+		{
+			Debug.Log("DESELECTED OBJECT");		
+			ExtensionMethods.MaterialResetColorChange(selectedObj, originalColor);		
+			//SaveExitData(targetObj.transform);			
+			hasTarget = false;
+			selectedObj = null;
+		}
 	}
 
 	/// <summary>

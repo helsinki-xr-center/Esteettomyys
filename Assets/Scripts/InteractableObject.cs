@@ -8,7 +8,7 @@ public class InteractableObject : MonoBehaviour
 
 	public InteractableObjectType objectType;
 
-	[SerializeField] [Tooltip("Pointer on object color indicator")] Color howeringColor;
+	[SerializeField] [Tooltip("Pointer on object color indicator")] Color hoveringColor;
 	[SerializeField] [Tooltip("Selected object color indicator")] Color selectedColor;
 	[SerializeField] [Tooltip("Critical object color indicator")] Color criticalObjectColor;
 	[SerializeField] [Tooltip("Standard object color indicator")] Color standardObjectColor;
@@ -36,11 +36,11 @@ public class InteractableObject : MonoBehaviour
 			switch (objectType)
 			{
 				case InteractableObjectType.Critical:
-					howeringColor = criticalObjectColor;
+					hoveringColor = criticalObjectColor;
 					selectedColor = criticalObjectColor;
 					break;
 				case InteractableObjectType.Standard:
-					howeringColor = standardObjectColor;
+					hoveringColor = standardObjectColor;
 					selectedColor = standardObjectColor;
 					break;
 				default:
@@ -49,9 +49,9 @@ public class InteractableObject : MonoBehaviour
 		}
 	}
 
-	public Color GetHowerColor()
+	public Color GetHoverColor()
 	{
-		return howeringColor;
+		return hoveringColor;
 	}
 
 	public Color GetSelectedColor()
