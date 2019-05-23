@@ -18,6 +18,14 @@ public class PlayerListEntry : MonoBehaviour
 	private int ownerId;
 	private bool isPlayerReady;
 
+	public bool isLocalPlayer
+	{
+		get
+		{
+			return PhotonNetwork.LocalPlayer.ActorNumber == ownerId;
+		}
+	}
+
 	public void Start()
 	{
 		if (PhotonNetwork.LocalPlayer.ActorNumber != ownerId)
