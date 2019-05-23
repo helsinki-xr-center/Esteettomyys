@@ -20,11 +20,6 @@ public class VRPCSelector : AwaitableUIPanel
 
 	private void Awake(){
 		selected = false;
-
-		if(!XRDevice.isPresent){
-			vrButton.interactable = false;
-			new UIInfoMessage("No VR device found.", UIInfoMessage.MessageType.Info).Deliver();
-		}
 	}
 
 
@@ -34,9 +29,12 @@ public class VRPCSelector : AwaitableUIPanel
 	 * </summary>
 	 */
 	public void VRButtonPressed(){
-		GlobalValues.gameMode = GlobalValues.GameMode.VR;
-		selected = true;
-		
+		if(!UnityEngine.XR.XRDevice.isPresent){
+			new UIInfoMessage("No VR device found! Check that SteamVR is running.", UIInfoMessage.MessageType.Error).Deliver();
+		}else{
+			GlobalValues.gameMode = GlobalValues.GameMode.VR;
+			selected = true;
+		}
 	}
 
 	/**

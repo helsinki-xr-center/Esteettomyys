@@ -27,4 +27,5 @@ public static class ConstStringKeys
 {
 
 	public const string PUN_PLAYER_READY = "playerReady";
+	public const string PUN_MATCH_START = "matchStart";
 }

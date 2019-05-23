@@ -1,6 +1,9 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.XR;
+using Valve.VR;
 
 /**
  * Author: Nomi Lakkala
@@ -14,7 +17,7 @@ public class VRModeEnabler : MonoBehaviour
 
 	public bool vrEnabled = true;
 
-	void Start()
+	void Awake()
 	{
 		if (!UnityEngine.XR.XRDevice.isPresent && vrEnabled)
 		{

@@ -5,6 +5,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using Hashtable = ExitGames.Client.Photon.Hashtable;
 
@@ -88,6 +89,8 @@ public class LobbyMainPanel : MonoBehaviourPunCallbacks
 
 	public override void OnJoinedRoom()
 	{
+		Debug.Log("Joined room!");
+
 		SetActivePanel(roomPanel);
 
 		if (playerListObjects == null)
@@ -99,6 +102,7 @@ public class LobbyMainPanel : MonoBehaviourPunCallbacks
 		{
 			GameObject entry = Instantiate(playerListObjectPrefab);
 			entry.transform.SetParent(roomPanel.transform);
+			entry.transform.localPosition = Vector3.zero;
 			entry.transform.localScale = Vector3.one;
 			entry.GetComponent<PlayerListEntry>().SetValues(p.ActorNumber, p.NickName);
 
@@ -181,6 +185,19 @@ public class LobbyMainPanel : MonoBehaviourPunCallbacks
 		startGameButton.gameObject.SetActive(CheckPlayersReady());
 	}
 
+
+	public override void OnRoomPropertiesUpdate(Hashtable propertiesThatChanged)
+	{
+		if (propertiesThatChanged.TryGetValue(ConstStringKeys.PUN_MATCH_START, out object val))
+		{
+			if ((bool)val && !PhotonNetwork.IsMasterClient)
+			{
+				//PhotonNetwork.IsMessageQueueRunning = false;
+				SceneLoaderAsync.instance.LoadSceneAndUnloadCurrent("Multiplayer");
+			}
+		}
+	}
+
 	#endregion
 
 
@@ -255,14 +272,22 @@ public class LobbyMainPanel : MonoBehaviourPunCallbacks
 		SetActivePanel(roomListPanel);
 	}
 
+
 	public void OnStartGameButtonClicked()
 	{
 		PhotonNetwork.CurrentRoom.IsOpen = false;
 		PhotonNetwork.CurrentRoom.IsVisible = false;
 
-		// PhotonNetwork.LoadLevel("DemoAsteroids-GameScene");
-		// TODO: start game here
-		// Probably load the players into a separate VR-multiplayer scene, after which each one loads the correct room additively
+		Hashtable props = new Hashtable
+			{
+				{ConstStringKeys.PUN_MATCH_START, true}
+			};
+
+		PhotonNetwork.CurrentRoom.SetCustomProperties(props);
+		PhotonNetwork.SendAllOutgoingCommands();
+		//PhotonNetwork.IsMessageQueueRunning = false;
+
+		SceneLoaderAsync.instance.LoadSceneAndUnloadCurrent("Multiplayer");
 	}
 
 
