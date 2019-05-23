@@ -4,6 +4,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
+/**
+ * Author: Nomi Lakkala
+ * 
+ * <summary>
+ * Handles PhotonNetwork interactions in Multiplayer.
+ * </summary>
+ */
 public class MultiplayerNetworkManager : MonoBehaviour
 {
 
@@ -16,7 +24,11 @@ public class MultiplayerNetworkManager : MonoBehaviour
 		PhotonNetwork.Instantiate(avatarPrefabName, Vector3.zero, Quaternion.identity, 0);
 	}
 
-
+	/**
+	 * <summary>
+	 * Chooses a random spawn location from the scene and moves the player to one of them.
+	 * </summary>
+	 */
 	private void MoveLocalPlayerToSpawnLocation(){
 		var locations = FindObjectsOfType<SpawnLocation>();
 		if (locations.Length == 0) return;

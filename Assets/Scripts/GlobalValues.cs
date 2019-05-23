@@ -6,8 +6,9 @@ using UnityEngine;
 
 /**
  * Author: Nomi Lakkala
- * 
+ * <summary>
  * Contains global values for this game session.
+ * </summary>
  */
 public static class GlobalValues
 {

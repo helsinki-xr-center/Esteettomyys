@@ -3,6 +3,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
+/**
+ * Author: Nomi Lakkala
+ * 
+ * <summary>
+ * Handles syncing avatar position with the real player position. Also disables avatar rendering for local avatar.
+ * </summary>
+ */
+ [RequireComponent(typeof(PhotonView))]
 public class AvatarFollowPlayer : MonoBehaviour
 {
 

@@ -4,6 +4,15 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
+
+
+/**
+ * Author: Nomi Lakkala
+ * 
+ * <summary>
+ * Temporary fix for VR, when accessing UI buttons is not possible. Can navigate the lobby scene with keys.
+ * </summary>
+ */
 public class JoinRandomRoomWithKey : MonoBehaviour
 {
 

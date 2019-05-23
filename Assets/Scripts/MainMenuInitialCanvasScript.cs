@@ -7,7 +7,9 @@ using UnityEngine.SceneManagement;
 /**
  * Author: Nomi Lakkala
  * 
- * <summary>UI script for the initial main menu. Handles the flow of UI.</summary>
+ * <summary>
+ * UI script for the initial main menu. Handles the flow of UI.
+ * </summary>
  */
 public class MainMenuInitialCanvasScript : MonoBehaviour
 {

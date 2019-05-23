@@ -3,6 +3,15 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
+
+
+/**
+ * Author: Nomi Lakkala
+ * 
+ * <summary>
+ * Loads scenes asynchronously. If instance is not found, will create a new GameObject with this Script attached.
+ * </summary>
+ */
 public class SceneLoaderAsync : MonoBehaviour
 {
 	private static SceneLoaderAsync p_instance;
@@ -31,6 +40,12 @@ public class SceneLoaderAsync : MonoBehaviour
 		DontDestroyOnLoad(this);
 	}
 
+
+	/**
+	 * <summary>
+	 * Starts a coroutine that will load the desired scene, set it active and unload the old active scene.
+	 * </summary>
+	 */
 	public void LoadSceneAndUnloadCurrent(string scene)
 	{
 		if (SceneManager.GetSceneByName(scene).isLoaded)
@@ -40,6 +55,12 @@ public class SceneLoaderAsync : MonoBehaviour
 		StartCoroutine(LoadSceneUnloadCurrentCorotuine(scene));
 	}
 
+
+	/**
+	 * <summary>
+	 * Coroutine that handles loading and unloading the scene.
+	 * </summary>
+	 */
 	private IEnumerator LoadSceneUnloadCurrentCorotuine(string scene)
 	{
 		Scene lastActive = SceneManager.GetActiveScene();

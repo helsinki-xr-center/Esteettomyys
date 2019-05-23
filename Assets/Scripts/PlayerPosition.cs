@@ -6,12 +6,20 @@ using UnityEngine;
 /**
  * Author: Nomi Lakkala
  * 
- * 
+ * <summary>
+ * Passes vrCamera position and rotation to avatar for network syncing purposes. Should be attached to both VR and PC player roots.
+ * </summary>
  */
 public class PlayerPosition : MonoBehaviour
 {
 	public Transform vrCamera;
 
+
+	/**
+	 * <summary>
+	 * Returns the position of the player. Y component is expected to be on ground level.
+	 * </summary>
+	 */
 	public Vector3 GetPosition()
 	{
 		if (vrCamera == null)
@@ -22,6 +30,11 @@ public class PlayerPosition : MonoBehaviour
 		return new Vector3(vrCamera.position.x, transform.position.y, vrCamera.position.z);
 	}
 
+	/**
+	 * <summary>
+	 * Returns the rotation of the player.
+	 * </summary>
+	 */
 	public Quaternion GetRotation()
 	{
 		if (vrCamera == null)

@@ -8,6 +8,14 @@ using Photon.Pun.UtilityScripts;
 using Photon.Pun;
 using TMPro;
 
+
+/**
+ * Author: Nomi Lakkala
+ * 
+ * <summary>
+ * Attached to the playerListEntry prefabs. Handles pressing the Ready button and setting the right values for UI elements.
+ * </summary>
+ */
 public class PlayerListEntry : MonoBehaviour
 {
 	public TextMeshProUGUI playerNameText;
@@ -18,6 +26,11 @@ public class PlayerListEntry : MonoBehaviour
 	private int ownerId;
 	private bool isPlayerReady;
 
+	/**
+	 * <summary>
+	 * Returns a bool whether this <see cref="PlayerListEntry"/> is the local player or not.
+	 * </summary>
+	 */
 	public bool isLocalPlayer
 	{
 		get
@@ -38,6 +51,12 @@ public class PlayerListEntry : MonoBehaviour
 		}
 	}
 
+
+	/**
+	 * <summary>
+	 * Gets called from Unity UI Button. Sets the player state as ready.
+	 * </summary>
+	 */
 	public void OnPlayerReadyButtonClick()
 	{
 		isPlayerReady = !isPlayerReady;
@@ -51,18 +70,35 @@ public class PlayerListEntry : MonoBehaviour
 		}
 	}
 
+
+	/**
+	 * <summary>
+	 * Sets <see cref="Player"/> properties to indicate whether this player is ready.
+	 * </summary>
+	 */
 	private void SetReadyProp()
 	{
 		Hashtable props = new Hashtable() { { ConstStringKeys.PUN_PLAYER_READY, isPlayerReady } };
 		PhotonNetwork.LocalPlayer.SetCustomProperties(props);
 	}
 
+
+	/**
+	 * <summary>
+	 * Sets UI values.
+	 * </summary>
+	 */
 	public void SetValues(int playerId, string playerName)
 	{
 		ownerId = playerId;
 		playerNameText.text = playerName;
 	}
 
+	/**
+	 * <summary>
+	 * Sets state in the UI to indicate whether this player is ready or not.
+	 * </summary>
+	 */
 	public void SetPlayerReady(bool playerReady)
 	{
 		playerReadyButtonText.SetText(playerReady ? "Ready!" : "Ready?");

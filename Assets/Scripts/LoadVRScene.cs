@@ -3,6 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
+
+/**
+ * Author: Nomi Lakkala
+ * 
+ * <summary>
+ * If the VR scene is not already loaded, loads the scene on top of current scenes.
+ * </summary>
+ */
 public class LoadVRScene : MonoBehaviour
 {
 	public string vrSceneName = "VRPlayer";

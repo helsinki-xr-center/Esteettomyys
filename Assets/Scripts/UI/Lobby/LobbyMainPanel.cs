@@ -10,6 +10,14 @@ using UnityEngine.UI;
 using Hashtable = ExitGames.Client.Photon.Hashtable;
 
 
+
+/**
+ * Author: Nomi Lakkala
+ * 
+ * <summary>
+ * A monolith class that handles all the UI and PUN callbacks necessary for a working lobby screen.
+ * </summary>
+ */
 public class LobbyMainPanel : MonoBehaviourPunCallbacks
 {
 	public const int maxRoomPlayers = 16;
@@ -48,11 +56,21 @@ public class LobbyMainPanel : MonoBehaviourPunCallbacks
 
 	#region PUN
 
+	/**
+	 * <summary>
+	 * PUN callback override.
+	 * </summary>
+	 */
 	public override void OnConnectedToMaster()
 	{
 		SetActivePanel(trainingSelectionPanel);
 	}
 
+	/**
+	 * <summary>
+	 * PUN callback override.
+	 * </summary>
+	 */
 	public override void OnRoomListUpdate(List<RoomInfo> roomList)
 	{
 		ClearRoomListView();
@@ -61,6 +79,11 @@ public class LobbyMainPanel : MonoBehaviourPunCallbacks
 		UpdateRoomListView();
 	}
 
+	/**
+	 * <summary>
+	 * PUN callback override.
+	 * </summary>
+	 */
 	public override void OnLeftLobby()
 	{
 		cachedRoomList.Clear();
@@ -68,16 +91,31 @@ public class LobbyMainPanel : MonoBehaviourPunCallbacks
 		ClearRoomListView();
 	}
 
+	/**
+	 * <summary>
+	 * PUN callback override. 
+	 * </summary>
+	 */
 	public override void OnCreateRoomFailed(short returnCode, string message)
 	{
 		SetActivePanel(trainingSelectionPanel);
 	}
 
+	/**
+	 * <summary>
+	 * PUN callback override.
+	 * </summary>
+	 */
 	public override void OnJoinRoomFailed(short returnCode, string message)
 	{
 		SetActivePanel(trainingSelectionPanel);
 	}
 
+	/**
+	 * <summary>
+	 * PUN callback override. Will create a random room.
+	 * </summary>
+	 */
 	public override void OnJoinRandomFailed(short returnCode, string message)
 	{
 		string roomName = "Room " + Random.Range(1000, 10000);
@@ -87,6 +125,11 @@ public class LobbyMainPanel : MonoBehaviourPunCallbacks
 		PhotonNetwork.CreateRoom(roomName, options, null);
 	}
 
+	/**
+	 * <summary>
+	 * PUN callback override. Creates playerlist entries for every player in the room.
+	 * </summary>
+	 */
 	public override void OnJoinedRoom()
 	{
 		Debug.Log("Joined room!");
@@ -124,6 +167,11 @@ public class LobbyMainPanel : MonoBehaviourPunCallbacks
 		PhotonNetwork.LocalPlayer.SetCustomProperties(props);
 	}
 
+	/**
+	 * <summary>
+	 * PUN callback override.
+	 * </summary>
+	 */
 	public override void OnLeftRoom()
 	{
 		SetActivePanel(trainingSelectionPanel);
@@ -137,6 +185,11 @@ public class LobbyMainPanel : MonoBehaviourPunCallbacks
 		playerListObjects = null;
 	}
 
+	/**
+	 * <summary>
+	 * PUN callback override. Creates a new playerListEntry for the new player.
+	 * </summary>
+	 */
 	public override void OnPlayerEnteredRoom(Player newPlayer)
 	{
 		GameObject entry = Instantiate(playerListObjectPrefab);
@@ -149,6 +202,11 @@ public class LobbyMainPanel : MonoBehaviourPunCallbacks
 		startGameButton.gameObject.SetActive(CheckPlayersReady());
 	}
 
+	/**
+	 * <summary>
+	 * PUN callback override. Destroys the playerListEntry associated with the player who left.
+	 * </summary>
+	 */
 	public override void OnPlayerLeftRoom(Player otherPlayer)
 	{
 		Destroy(playerListObjects[otherPlayer.ActorNumber].gameObject);
@@ -157,6 +215,11 @@ public class LobbyMainPanel : MonoBehaviourPunCallbacks
 		startGameButton.gameObject.SetActive(CheckPlayersReady());
 	}
 
+	/**
+	 * <summary>
+	 * PUN callback override. 
+	 * </summary>
+	 */
 	public override void OnMasterClientSwitched(Player newMasterClient)
 	{
 		if (PhotonNetwork.LocalPlayer.ActorNumber == newMasterClient.ActorNumber)
@@ -165,6 +228,11 @@ public class LobbyMainPanel : MonoBehaviourPunCallbacks
 		}
 	}
 
+	/**
+	 * <summary>
+	 * PUN callback override. Updates ready state for the player whose properties were changed.
+	 * </summary>
+	 */
 	public override void OnPlayerPropertiesUpdate(Player targetPlayer, Hashtable changedProps)
 	{
 		if (playerListObjects == null)
@@ -185,7 +253,11 @@ public class LobbyMainPanel : MonoBehaviourPunCallbacks
 		startGameButton.gameObject.SetActive(CheckPlayersReady());
 	}
 
-
+	/**
+	 * <summary>
+	 * PUN callback override. Handles loading the game scene for clients when <see cref="ConstStringKeys.PUN_MATCH_START"/> is set to true.
+	 * </summary>
+	 */
 	public override void OnRoomPropertiesUpdate(Hashtable propertiesThatChanged)
 	{
 		if (propertiesThatChanged.TryGetValue(ConstStringKeys.PUN_MATCH_START, out object val))
@@ -202,6 +274,11 @@ public class LobbyMainPanel : MonoBehaviourPunCallbacks
 
 
 	#region UI
+	/**
+	 * <summary>
+	 * Gets called from Unity UI Button. Leaves current lobby and goes back to mode selection panel.
+	 * </summary>
+	 */
 	public void OnBackButtonClicked()
 	{
 		if (PhotonNetwork.InLobby)
@@ -212,11 +289,21 @@ public class LobbyMainPanel : MonoBehaviourPunCallbacks
 		SetActivePanel(modeSelectionPanel);
 	}
 
+	/**
+	 * <summary>
+	 * Gets called from Unity UI Button. Sets createRoomPanel as the active panel.
+	 * </summary>
+	 */
 	public void OnCreateRoomPanelButtonClicked()
 	{
 		SetActivePanel(createRoomPanel);
 	}
 
+	/**
+	* <summary>
+	* Gets called from Unity UI Button. Creates a new room with name from the roomNameInputField, or chooses a random name.
+	* </summary>
+	*/
 	public void OnCreateRoomButtonClicked()
 	{
 		string roomName = roomNameInputField.text;
@@ -227,16 +314,33 @@ public class LobbyMainPanel : MonoBehaviourPunCallbacks
 		PhotonNetwork.CreateRoom(roomName, options, null);
 	}
 
+	/**
+	 * <summary>
+	 * Gets called from Unity UI Button. Leaves the current room.
+	 * </summary>
+	 */
 	public void OnLeaveGameButtonClicked()
 	{
 		PhotonNetwork.LeaveRoom();
 	}
 
+
+	/**
+	 * <summary>
+	 * Gets called from Unity UI Button. Should change to the tutorial scene. (Not implemented yet)
+	 * </summary>
+	 */
 	public void OnTutorialButtonClicked()
 	{
 		new UIInfoMessage("Not implemented yet.", UIInfoMessage.MessageType.Error).Deliver();
 	}
 
+
+	/**
+	 * <summary>
+	 * Gets called from Unity UI Button. Connects to the Photon network with the current player name from <see cref="GlobalValues"/> and sets trainingSelectionPanel as active.
+	 * </summary>
+	 */
 	public void OnTrainingButtonClicked()
 	{
 		if (PhotonNetwork.NetworkingClient.LoadBalancingPeer.PeerState != PeerStateValue.Disconnected)
@@ -257,11 +361,22 @@ public class LobbyMainPanel : MonoBehaviourPunCallbacks
 		}
 	}
 
+
+	/**
+	 * <summary>
+	 * Gets called from Unity UI Button. Should start the exam. (Not implemented yet)
+	 * </summary>
+	 */
 	public void OnExamButtonClicked()
 	{
 		new UIInfoMessage("Not implemented yet.", UIInfoMessage.MessageType.Error).Deliver();
 	}
 
+	/**
+	 * <summary>
+	 * Gets called from Unity UI Button. Join Photon lobby and sets roomListPanel as active.
+	 * </summary>
+	 */
 	public void OnRoomListButtonClicked()
 	{
 		if (!PhotonNetwork.InLobby)
@@ -272,7 +387,11 @@ public class LobbyMainPanel : MonoBehaviourPunCallbacks
 		SetActivePanel(roomListPanel);
 	}
 
-
+	/**
+	 * <summary>
+	 * Gets called from Unity UI Button. Starts the game and changes the scene.
+	 * </summary>
+	 */
 	public void OnStartGameButtonClicked()
 	{
 		PhotonNetwork.CurrentRoom.IsOpen = false;
@@ -294,6 +413,11 @@ public class LobbyMainPanel : MonoBehaviourPunCallbacks
 	#endregion
 
 
+	/**
+	 * <summary>
+	 * Checks whether all players in the current room are ready. Returns true if everyone is ready.
+	 * </summary>
+	 */
 	private bool CheckPlayersReady()
 	{
 		if (!PhotonNetwork.IsMasterClient)
@@ -319,18 +443,33 @@ public class LobbyMainPanel : MonoBehaviourPunCallbacks
 		return true;
 	}
 
+
+	/**
+	 * <summary>
+	 * Destroys all roomListEntries in the roomList.
+	 * </summary>
+	 */
 	private void ClearRoomListView()
 	{
 		roomListObjects.ForEach(x => Destroy(x.gameObject));
 		roomListObjects.Clear();
 	}
 
+	/**
+	 * <summary>
+	 * Gets called when the properties of the local player are changed.
+	 * </summary>
+	 */
 	public void LocalPlayerPropertiesUpdated()
 	{
 		startGameButton.gameObject.SetActive(CheckPlayersReady());
 	}
 
-
+	/**
+	 * <summary>
+	 * Disables all panels and enables the desired one.
+	 * </summary>
+	 */
 	private void SetActivePanel(GameObject panel)
 	{
 		modeSelectionPanel.SetActive(false);
@@ -342,6 +481,11 @@ public class LobbyMainPanel : MonoBehaviourPunCallbacks
 		panel.SetActive(true);
 	}
 
+	/**
+	 * <summary>
+	 * Updates the state of the cached roomlist.
+	 * </summary>
+	 */
 	private void UpdateCachedRoomList(List<RoomInfo> roomList)
 	{
 		foreach (RoomInfo info in roomList)
@@ -370,6 +514,11 @@ public class LobbyMainPanel : MonoBehaviourPunCallbacks
 		}
 	}
 
+	/**
+	 * <summary>
+	 * Instantiates roomlist entries to the roomList and sets their values.
+	 * </summary>
+	 */
 	private void UpdateRoomListView()
 	{
 		foreach (RoomInfo info in cachedRoomList.Values)
