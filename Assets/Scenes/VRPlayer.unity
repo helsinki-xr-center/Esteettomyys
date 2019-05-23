@@ -311,36 +311,5 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 1778556319594638325, guid: 234d649ce8dfd554d97fe0b7af723199,
-        type: 3}
-      propertyPath: m_Enabled
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1778556319594637143, guid: 234d649ce8dfd554d97fe0b7af723199,
-        type: 3}
-      propertyPath: m_Enabled
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1818242470245494581, guid: 234d649ce8dfd554d97fe0b7af723199,
-        type: 3}
-      propertyPath: onTransformUpdated.m_PersistentCalls.m_Calls.Array.size
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1818242470245494581, guid: 234d649ce8dfd554d97fe0b7af723199,
-        type: 3}
-      propertyPath: onTransformUpdated.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1818242470245494581, guid: 234d649ce8dfd554d97fe0b7af723199,
-        type: 3}
-      propertyPath: onTransformUpdated.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 4780992224685751139, guid: 234d649ce8dfd554d97fe0b7af723199,
-        type: 3}
-      propertyPath: m_Enabled
-      value: 0
-      objectReference: {fileID: 0}
-    m_RemovedComponents:
-    - {fileID: 4780992224685751139, guid: 234d649ce8dfd554d97fe0b7af723199, type: 3}
+    m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 234d649ce8dfd554d97fe0b7af723199, type: 3}
