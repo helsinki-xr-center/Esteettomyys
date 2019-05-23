@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Valve.VR.InteractionSystem;
 using Valve.VR;
+using UnityEngine.UI;
 
 /// <summary>
 /// Struct for storing raycasthit data
@@ -13,8 +14,6 @@ public struct NewRayCastData
 	public Transform target;
 	public Vector3 hitPoint;
 }
-
-public delegate void PointerHitInfoDelegate(object sender, NewRayCastData hitData);
 
 /// <summary>
 /// @Author = Veli-Matti Vuoti
@@ -42,6 +41,7 @@ public class Pointer : MonoBehaviour
 
 	#region Input variables
 	public SteamVR_Action_Boolean pickUpMovable;
+	public SteamVR_Action_Boolean clickUIButton;
 	#endregion
 
 	#region booleans
@@ -51,8 +51,10 @@ public class Pointer : MonoBehaviour
 	#endregion
 
 	#region events
+	public delegate void PointerHitInfoDelegate(object sender, NewRayCastData hitData);
 	public static event PointerHitInfoDelegate PointerHit;
 	public static event PointerHitInfoDelegate PointerLeft;
+	public static event PointerHitInfoDelegate PointerClick;
 	#endregion
 
 	private void Awake()
@@ -78,14 +80,16 @@ public class Pointer : MonoBehaviour
 	public void HoverColor()
 	{
 
-		if (hovering && !hasTarget && targetObj != null)
+		if (hovering && !hasTarget && targetObj != null && targetObj.GetComponent<InteractableObject>())
 		{
+			
 			ExtensionMethods.MaterialColorChange(targetObj, targetObj.GetComponent<InteractableObject>().GetHoverColor());
 		}
-		if (!hovering && !hasTarget && targetObj != null)
+		else if (!hovering && !hasTarget && targetObj != null && targetObj.GetComponent<InteractableObject>())
 		{			
 			ExtensionMethods.MaterialResetColorChange(targetObj, originalColor);
-		}
+			
+		}		
 	}
 
 	/// <summary>
@@ -121,19 +125,56 @@ public class Pointer : MonoBehaviour
 		bool rayHits = Physics.Raycast(rightHand.position, rightHand.forward, out hit, rayCastLength, hitMask);
 		//Debug.DrawRay(rightHand.position, rightHand.forward * rayCastLength, Color.red, 0.1f);
 
+		
 		if (rayHits)
-		{
-			hovering = true;
-			targetObj = hit.collider.gameObject;
+		{					
+			isSenderActive = true;
 			ActivatePointerAndUpdatePosition(hit);
-			//Debug.Log(hit.collider.name);
-			//Debug.DrawRay(rightHand.position, rightHand.forward * rayCastLength, Color.green, 0.1f);
-			SelectObject(hit);
+
+			if (targetObj && targetObj != hit.transform.gameObject)
+			{
+				SaveHitData(hit);
+			}
+			else if (targetObj && targetObj == hit.transform.gameObject && !hovering)
+			{
+				SaveHitData(hit);
+			}
+
+			if (hit.transform.gameObject.GetComponent<InteractableObject>())
+			{
+				hovering = true;
+				targetObj = hit.collider.gameObject;			
+				//Debug.Log(hit.collider.name);
+				//Debug.DrawRay(rightHand.position, rightHand.forward * rayCastLength, Color.green, 0.1f);
+				SelectObject(hit);
+			}		
+			else
+			{
+				//Debug.Log("HITS UI ELEMENT");
+				targetObj = hit.transform.gameObject;
+				hovering = true;
+				if(clickUIButton.GetStateDown(SteamVR_Input_Sources.RightHand))
+				{
+					if(PointerClick != null && isSenderActive)
+					{
+						NewRayCastData hitData = new NewRayCastData();
+						hitData.distance = hit.distance;
+						hitData.hitPoint = hit.point;
+						hitData.target = hit.transform;
+						PointerClick(this, hitData);
+					}
+				}
+			}
 		}
 		else
 		{
 			hovering = false;
 			ActivatePointer(false);
+			if (targetObj)
+			{
+				SaveExitData(targetObj.transform);
+			}
+			isSenderActive = false;
 		}
 
 	}
@@ -149,8 +190,8 @@ public class Pointer : MonoBehaviour
 		{
 			selectedObj = targetObj;
 			ExtensionMethods.MaterialColorChange(selectedObj, selectedObj.GetComponent<InteractableObject>().GetSelectedColor());
-			SaveHitData(hit);			
-			Debug.Log("TARGETED OBJECT");				
+				
+			Debug.Log("SELECTED OBJECT");				
 			hasTarget = true;
 		}				
 	}

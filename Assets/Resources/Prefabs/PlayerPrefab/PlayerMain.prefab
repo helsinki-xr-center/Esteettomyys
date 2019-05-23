@@ -453,7 +453,7 @@ GameObject:
   - component: {fileID: 1778556319594642557}
   m_Layer: 0
   m_Name: PlayerMain
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 3936346786652291628, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -855,6 +855,7 @@ GameObject:
   - component: {fileID: 1778556319594638325}
   - component: {fileID: 1778556319594637143}
   - component: {fileID: 1818242468407776691}
+  - component: {fileID: 4780992224685751139}
   m_Layer: 0
   m_Name: InputModule
   m_TagString: Untagged
@@ -922,6 +923,23 @@ MonoBehaviour:
   m_InputActionsPerSecond: 10
   m_RepeatDelay: 0.5
   m_ForceModuleActive: 0
+--- !u!114 &4780992224685751139
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1778556319601131979}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c403062faa21b1147b7e6bb1792e2a63, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_camera: {fileID: 0}
+  m_targetSource: 2
+  m_clickAction:
+    actionPath: /actions/default/in/InteractUI
+    needsReinit: 0
 --- !u!1 &1778556319601138117
 GameObject:
   m_ObjectHideFlags: 0

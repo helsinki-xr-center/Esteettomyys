@@ -101,6 +101,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2428233721344433909}
   - component: {fileID: 2481316926103880645}
+  - component: {fileID: 9088321026625949377}
   - component: {fileID: 1331772206317870410}
   m_Layer: 0
   m_Name: Pointer
@@ -117,7 +118,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1706774930665871158}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -9.0932255, y: -5.8273745, z: 13.646437}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4245682185729652569}
@@ -139,17 +140,34 @@ MonoBehaviour:
   leftHand: {fileID: 0}
   rightHand: {fileID: 0}
   pointerDot: {fileID: 0}
-  ableToPickUpColor: {r: 0.13664317, g: 1, b: 0, a: 0}
+  targetObj: {fileID: 0}
+  selectedObj: {fileID: 0}
   rayCastLength: 9.93
   hitMask:
     serializedVersion: 2
-    m_Bits: 512
-  targetObj: {fileID: 0}
+    m_Bits: 544
+  selectedColor: {r: 0, g: 0, b: 0, a: 0}
   pickUpMovable:
     actionPath: /actions/default/in/GrabPinch
     needsReinit: 0
-  pickedUp: 0
+  clickUIButton:
+    actionPath: 
+    needsReinit: 0
+  hasTarget: 0
   isSenderActive: 0
+  hovering: 0
+--- !u!114 &9088321026625949377
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1706774930665871158}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c403062faa21b1147b7e6bb1792e2a63, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!120 &1331772206317870410
 LineRenderer:
   m_ObjectHideFlags: 0

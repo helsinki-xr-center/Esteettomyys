@@ -42,7 +42,7 @@ public class InteractableObject : MonoBehaviour
 				case InteractableObjectType.Standard:
 					hoveringColor = standardObjectColor;
 					selectedColor = standardObjectColor;
-					break;
+					break;		
 				default:
 					break;
 			}

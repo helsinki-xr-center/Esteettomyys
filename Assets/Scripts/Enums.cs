@@ -4,6 +4,6 @@ public enum InteractableObjectType
 {
 	Critical,
 	Standard,
-
+	Button,
 }
 
