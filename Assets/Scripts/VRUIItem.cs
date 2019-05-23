@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
 
 [RequireComponent(typeof(RectTransform))]
 public class VRUIItem : MonoBehaviour
@@ -16,6 +17,12 @@ public class VRUIItem : MonoBehaviour
 		ValidateCollider();
 	}
 
+	private IEnumerator Start()
+	{
+		yield return new WaitForSeconds(1f);
+		ValidateCollider();
+	}
+
 	private void ValidateCollider()
 	{
 		rectTransform = GetComponent<RectTransform>();
@@ -28,5 +35,6 @@ public class VRUIItem : MonoBehaviour
 		}
 
 		boxCollider.size = rectTransform.sizeDelta;
+		boxCollider.center = -rectTransform.pivot * rectTransform.sizeDelta + rectTransform.sizeDelta / 2;
 	}
 }

@@ -16,6 +16,8 @@ public class MultiplayerNetworkManager : MonoBehaviour
 {
 
 	public string avatarPrefabName;
+	public string vrLobby;
+	public string pcLobby;
 
     IEnumerator Start()
     {
@@ -35,5 +37,14 @@ public class MultiplayerNetworkManager : MonoBehaviour
 		SpawnLocation location = locations[PhotonNetwork.LocalPlayer.GetPlayerNumber() % locations.Length];
 
 		FindObjectOfType<PlayerPosition>().transform.position = location.transform.position;
+	}
+
+	private void Update()
+	{
+		if(Input.GetKeyDown(KeyCode.Escape)){
+			PhotonNetwork.LeaveRoom();
+			string lobbyName = GlobalValues.gameMode == GlobalValues.GameMode.PC ? pcLobby : vrLobby;
+			SceneLoaderAsync.instance.LoadSceneAndUnloadCurrent(lobbyName);
+		}
 	}
 }

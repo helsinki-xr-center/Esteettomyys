@@ -288,6 +288,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   avatarPrefabName: Prefabs/Avatars/Avatar_female_1
+  vrLobby: Lobby_VR
+  pcLobby: Lobby_PC
 --- !u!1 &654388901
 GameObject:
   m_ObjectHideFlags: 0

@@ -176,13 +176,16 @@ public class LobbyMainPanel : MonoBehaviourPunCallbacks
 	{
 		SetActivePanel(trainingSelectionPanel);
 
-		foreach (GameObject entry in playerListObjects.Values)
+		if (playerListObjects != null)
 		{
-			Destroy(entry.gameObject);
-		}
+			foreach (GameObject entry in playerListObjects.Values)
+			{
+				Destroy(entry.gameObject);
+			}
 
-		playerListObjects.Clear();
-		playerListObjects = null;
+			playerListObjects.Clear();
+			playerListObjects = null;
+		}
 	}
 
 	/**

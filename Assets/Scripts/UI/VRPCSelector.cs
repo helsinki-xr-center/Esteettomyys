@@ -29,12 +29,21 @@ public class VRPCSelector : AwaitableUIPanel
 	 * </summary>
 	 */
 	public void VRButtonPressed(){
-		if(!UnityEngine.XR.XRDevice.isPresent){
-			new UIInfoMessage("No VR device found! Check that SteamVR is running.", UIInfoMessage.MessageType.Error).Deliver();
-		}else{
-			GlobalValues.gameMode = GlobalValues.GameMode.VR;
-			selected = true;
-		}
+		// TODO: disable this if VR device is not present.
+		// Causes things to break if the VR is not working.
+		XRSettings.enabled = true;
+		XRSettings.LoadDeviceByName("OpenVR");
+
+		vrButton.interactable = false;
+		pcButton.interactable = false;
+
+
+		Invoke("VrButtonImpl", 1);
+	}
+
+	private void VrButtonImpl(){
+		GlobalValues.gameMode = GlobalValues.GameMode.VR;
+		selected = true;
 	}
 
 	/**
