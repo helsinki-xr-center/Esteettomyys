@@ -5,7 +5,9 @@ using UnityEngine;
 /**
  * Author: Nomi Lakkala
  * 
+ * <summary>
  * Enables or disables the VR mode on Start.
+ * </summary>
  */
 public class VRModeEnabler : MonoBehaviour
 {
@@ -14,9 +16,12 @@ public class VRModeEnabler : MonoBehaviour
 
 	void Start()
 	{
-		if(!UnityEngine.XR.XRDevice.isPresent && vrEnabled){
+		if (!UnityEngine.XR.XRDevice.isPresent && vrEnabled)
+		{
 			Debug.LogError("No VR device present while trying to enable VR.", this);
-		}else{
+		}
+		else
+		{
 			UnityEngine.XR.XRSettings.enabled = vrEnabled;
 		}
 	}
