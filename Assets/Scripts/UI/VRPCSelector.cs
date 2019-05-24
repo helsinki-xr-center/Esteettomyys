@@ -64,6 +64,7 @@ public class VRPCSelector : AwaitableUIPanel
 	 */
 	public void OnLogoutButtonPressed(){
 		GlobalValues.loggedIn = false;
+		GlobalValues.offlineMode = false;
 		selected = true;
 	}
 

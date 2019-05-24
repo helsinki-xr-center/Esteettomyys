@@ -21,6 +21,7 @@ public static class GlobalValues
 	public static GameMode gameMode = GameMode.PC;
 	public static string user = "TestUser";
 	public static bool loggedIn;
+	public static bool offlineMode;
 }
 
 

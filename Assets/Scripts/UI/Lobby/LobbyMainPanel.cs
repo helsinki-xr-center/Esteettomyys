@@ -306,6 +306,7 @@ public class LobbyMainPanel : MonoBehaviourPunCallbacks
 		}
 
 		GlobalValues.loggedIn = false;
+		GlobalValues.offlineMode = false;
 		XRSettings.enabled = false;
 		SceneManager.LoadScene("MainMenu");
 	}

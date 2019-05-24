@@ -39,7 +39,7 @@ public class MainMenuInitialCanvasScript : MonoBehaviour
 
 			vrPcSelector.gameObject.SetActive(false);
 
-			if(!GlobalValues.loggedIn){
+			if(!GlobalValues.loggedIn && !GlobalValues.offlineMode){
 				StartCoroutine(LoginAndSelectMode());
 				Debug.Log("Selection aborted. Back to login.");
 				yield break;

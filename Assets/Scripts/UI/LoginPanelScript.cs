@@ -31,7 +31,7 @@ public class LoginPanelScript : AwaitableUIPanel
 	 * Called from Unity UI Login button. Will start the login process.
 	 * </summary>
 	 */
-	public async void LoginButtonClick()
+	public async void OnLoginButtonClick()
 	{
 		string username = usernameInput.text;
 		string password = passwordInput.text;
@@ -67,6 +67,13 @@ public class LoginPanelScript : AwaitableUIPanel
 			default:
 				break;
 		}
+	}
+
+	public void OnOfflineButtonClick(){
+		GlobalValues.loggedIn = false;
+		GlobalValues.user = "offline user";
+		GlobalValues.offlineMode = true;
+		success = true;
 	}
 
 	public override IEnumerator WaitForFinish()
