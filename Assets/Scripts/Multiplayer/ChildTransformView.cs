@@ -60,8 +60,10 @@ public class ChildTransformView : MonoBehaviour, IPunObservable
 		{
 			for (int i = 0; i < childTransforms.Length; i++)
 			{
-				childTransforms[i].localPosition = Vector3.MoveTowards(transform.localPosition, networkPositions[i], distances[i] * (1.0f / PhotonNetwork.SerializationRate));
-				childTransforms[i].localRotation = Quaternion.RotateTowards(childTransforms[i].localRotation, networkRotations[i], angles[i] * (1.0f / PhotonNetwork.SerializationRate));
+				float maxDeltaDist = distances[i] * (1.0f / PhotonNetwork.SerializationRate);
+				float maxDeltaAngle = angles[i] * (1.0f / PhotonNetwork.SerializationRate);
+				childTransforms[i].localPosition = Vector3.MoveTowards(childTransforms[i].localPosition, networkPositions[i], maxDeltaDist);
+				childTransforms[i].localRotation = Quaternion.RotateTowards(childTransforms[i].localRotation, networkRotations[i], maxDeltaAngle);
 			}
 		}
 	}
