@@ -48,7 +48,7 @@ public class Pointer : MonoBehaviour
 	[Tooltip("The current selected object with the pickUpMovable input click")]public bool hasTarget;
 	[Tooltip("Enables Pointer hit events")]public bool isSenderActive;
 	[Tooltip("Enabled when pointer is pointing on target")]public bool hovering;
-	public bool lockLaserOn = false;
+	public bool lockLaserOn;
 	#endregion
 
 	/// <summary>
@@ -74,6 +74,15 @@ public class Pointer : MonoBehaviour
 		pointerDot = gameObject.transform.GetChild(0).transform.gameObject;
 		originalColor = Color.white;
 		instance = this;
+	}
+
+	private void Start()
+	{
+		if (lockLaserOn)
+		{
+			pointerLineRenderer.enabled = true;
+			pointerDot.SetActive(true);
+		}
 	}
 
 	private void Update()
@@ -132,14 +141,21 @@ public class Pointer : MonoBehaviour
 	public void RayCastFromHand()
 	{
 		RaycastHit hit;
-		bool rayHits = Physics.Raycast(rightHand.position, rightHand.forward, out hit, rayCastLength, hitMask);
-		//Debug.DrawRay(rightHand.position, rightHand.forward * rayCastLength, Color.red, 0.1f);
-
 		
+		bool rayHits = Physics.Raycast(rightHand.position, rightHand.forward, out hit, rayCastLength, hitMask);
+
+
+		//Debug.DrawRay(rightHand.position, rightHand.forward * rayCastLength, Color.red, 0.1f);
+		
+
 		if (rayHits)
 		{					
 			isSenderActive = true;
-			ActivatePointerAndUpdatePosition(hit);
+
+			if (!lockLaserOn)
+			{
+				ActivatePointerAndUpdatePosition(hit);
+			}
 
 			if (targetObj && targetObj != hit.transform.gameObject)
 			{
@@ -163,7 +179,10 @@ public class Pointer : MonoBehaviour
 				//Debug.Log("HITS UI ELEMENT");
 				targetObj = hit.transform.gameObject;
 				hovering = true;
-				if(clickUIButton.GetStateDown(SteamVR_Input_Sources.RightHand))
+
+				
+
+				if (clickUIButton.GetStateDown(SteamVR_Input_Sources.RightHand))
 				{
 					if(PointerClick != null && isSenderActive)
 					{
@@ -179,8 +198,17 @@ public class Pointer : MonoBehaviour
 		else
 		{
 			hovering = false;
-			if (lockLaserOn)
+
+			if (lockLaserOn && !rayHits)
 			{
+				pointerLineRenderer.SetPosition(0, rightHand.position);
+				pointerLineRenderer.SetPosition(1, rightHand.position + rightHand.forward * rayCastLength);
+				pointerDot.transform.position = rightHand.position + rightHand.forward * rayCastLength;
+			}
+
+			if (!lockLaserOn)
+			{
+
 				ActivatePointer(false);
 			}
 			if (targetObj)
