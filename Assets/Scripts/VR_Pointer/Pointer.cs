@@ -116,13 +116,19 @@ public class Pointer : MonoBehaviour
 	/// Activates pointer graphics and sets it to correct position
 	/// </summary>
 	/// <param name="hit"></param>
-	public void ActivatePointerAndUpdatePosition(RaycastHit hit)
+	public void UpdatePointerPositionByHitPoint(RaycastHit hit)
 	{
-		pointerLineRenderer.enabled = true;
-		pointerDot.SetActive(true);
+		
 		pointerLineRenderer.SetPosition(0, rightHand.position);
 		pointerLineRenderer.SetPosition(1, hit.point);
 		pointerDot.transform.position = hit.point;
+	}
+
+	public void UpdatePointerPositionCalculated()
+	{
+		pointerLineRenderer.SetPosition(0, rightHand.position);
+		pointerLineRenderer.SetPosition(1, rightHand.position + rightHand.forward * rayCastLength);
+		pointerDot.transform.position = rightHand.position + rightHand.forward * rayCastLength;
 	}
 
 	/// <summary>
@@ -138,7 +144,7 @@ public class Pointer : MonoBehaviour
 		//Debug.DrawRay(rightHand.position, rightHand.forward * rayCastLength, Color.red, 0.1f);
 		if (lockLaserOn)
 		{
-			ActivatePointer();
+			ActivatePointer(true);
 			UpdatePointerPositionCalculated();
 		}
 
@@ -146,7 +152,7 @@ public class Pointer : MonoBehaviour
 		{
 			isSenderActive = true;
 
-			ActivatePointer();
+			ActivatePointer(true);
 			UpdatePointerPositionByHitPoint(hit);
 
 			if (targetObj && targetObj != hit.transform.gameObject)
