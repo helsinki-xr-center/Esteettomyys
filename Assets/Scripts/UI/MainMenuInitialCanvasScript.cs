@@ -19,7 +19,6 @@ public class MainMenuInitialCanvasScript : MonoBehaviour
 	public string pcLobbyScene;
 	public string vrLobbyScene;
 
-    // Start is called before the first frame update
     void Start()
     {
 		StartCoroutine(LoginAndSelectMode());
@@ -39,6 +38,12 @@ public class MainMenuInitialCanvasScript : MonoBehaviour
 			yield return vrPcSelector.WaitForFinish();
 
 			vrPcSelector.gameObject.SetActive(false);
+
+			if(!GlobalValues.loggedIn){
+				StartCoroutine(LoginAndSelectMode());
+				Debug.Log("Selection aborted. Back to login.");
+				yield break;
+			}
 		}
 
 

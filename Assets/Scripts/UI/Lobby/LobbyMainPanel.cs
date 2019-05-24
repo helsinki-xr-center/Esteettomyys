@@ -305,6 +305,7 @@ public class LobbyMainPanel : MonoBehaviourPunCallbacks
 			PhotonNetwork.LeaveLobby();
 		}
 
+		GlobalValues.loggedIn = false;
 		XRSettings.enabled = false;
 		SceneManager.LoadScene("MainMenu");
 	}

@@ -28,7 +28,7 @@ public class VRPCSelector : AwaitableUIPanel
 	 * Called from Unity UI button.
 	 * </summary>
 	 */
-	public void VRButtonPressed(){
+	public void OnVRButtonPressed(){
 		// TODO: disable this if VR device is not present.
 		// Causes things to break if the VR is not working.
 		XRSettings.enabled = true;
@@ -51,9 +51,19 @@ public class VRPCSelector : AwaitableUIPanel
 	 * Called from Unity UI button.
 	 * </summary>
 	 */
-	public void PCButtonPressed()
+	public void OnPCButtonPressed()
 	{
 		GlobalValues.gameMode = GlobalValues.GameMode.PC;
+		selected = true;
+	}
+
+	/**
+	 * <summary>
+	 * Called from Unity UI button. Aborts selection and logs out.
+	 * </summary>
+	 */
+	public void OnLogoutButtonPressed(){
+		GlobalValues.loggedIn = false;
 		selected = true;
 	}
 
