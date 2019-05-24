@@ -21,6 +21,7 @@ public class MultiplayerNetworkManager : MonoBehaviour
 
     IEnumerator Start()
     {
+		yield return new WaitForSeconds(0.1f);
 		MoveLocalPlayerToSpawnLocation();
 		yield return new WaitForSeconds(1);
 		PhotonNetwork.Instantiate(avatarPrefabName, Vector3.zero, Quaternion.identity, 0);

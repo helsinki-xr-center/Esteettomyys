@@ -21,6 +21,9 @@ EditorBuildSettings:
     path: Assets/Scenes/VRPlayer.unity
     guid: cc3d79514a7ea0745b216891f77ff499
   - enabled: 1
+    path: Assets/Scenes/PCPlayer.unity
+    guid: 81622478d02250041a82e1e4b2a85969
+  - enabled: 1
     path: Assets/Scenes/Multiplayer.unity
     guid: ac7d9bbc88ba6aa4c950cee3550ffa51
   m_configObjects: {}
