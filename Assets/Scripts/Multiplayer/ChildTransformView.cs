@@ -44,7 +44,7 @@ public class ChildTransformView : MonoBehaviour, IPunObservable
 
 		for (int i = 0; i < childTransforms.Length; i++)
 		{
-			storedPositions[i] = childTransforms[i].localPosition;
+			storedPositions[i] = childTransforms[i].position;
 		}
 	}
 
@@ -60,8 +60,8 @@ public class ChildTransformView : MonoBehaviour, IPunObservable
 		{
 			for (int i = 0; i < childTransforms.Length; i++)
 			{
-				childTransforms[i].localPosition = Vector3.MoveTowards(transform.localPosition, networkPositions[i], distances[i] * (1.0f / PhotonNetwork.SerializationRate));
-				childTransforms[i].localRotation = Quaternion.RotateTowards(childTransforms[i].localRotation, networkRotations[i], angles[i] * (1.0f / PhotonNetwork.SerializationRate));
+				childTransforms[i].position = Vector3.MoveTowards(transform.position, networkPositions[i], distances[i] * (1.0f / PhotonNetwork.SerializationRate));
+				childTransforms[i].rotation = Quaternion.RotateTowards(childTransforms[i].rotation, networkRotations[i], angles[i] * (1.0f / PhotonNetwork.SerializationRate));
 			}
 		}
 	}
@@ -74,16 +74,16 @@ public class ChildTransformView : MonoBehaviour, IPunObservable
 			{
 				if (this.synchronizePosition)
 				{
-					directions[i] = childTransforms[i].localPosition - storedPositions[i];
-					storedPositions[i] = childTransforms[i].localPosition;
+					directions[i] = childTransforms[i].position - storedPositions[i];
+					storedPositions[i] = childTransforms[i].position;
 
-					stream.SendNext(childTransforms[i].localPosition);
+					stream.SendNext(childTransforms[i].position);
 					stream.SendNext(directions[i]);
 				}
 
 				if (this.synchronizeRotation)
 				{
-					stream.SendNext(childTransforms[i].localRotation);
+					stream.SendNext(childTransforms[i].rotation);
 				}
 
 				if (this.synchronizeScale)
@@ -104,14 +104,14 @@ public class ChildTransformView : MonoBehaviour, IPunObservable
 
 					if (firstReceive)
 					{
-						childTransforms[i].localPosition = networkPositions[i];
+						childTransforms[i].position = networkPositions[i];
 						distances[i] = 0f;
 					}
 					else
 					{
 						float lag = Mathf.Abs((float)(PhotonNetwork.Time - info.SentServerTime));
 						networkPositions[i] += directions[i] * lag;
-						distances[i] = Vector3.Distance(childTransforms[i].localPosition, networkPositions[i]);
+						distances[i] = Vector3.Distance(childTransforms[i].position, networkPositions[i]);
 					}
 
 
@@ -124,11 +124,11 @@ public class ChildTransformView : MonoBehaviour, IPunObservable
 					if (firstReceive)
 					{
 						angles[i] = 0f;
-						childTransforms[i].localRotation = networkRotations[i];
+						childTransforms[i].rotation = networkRotations[i];
 					}
 					else
 					{
-						angles[i] = Quaternion.Angle(childTransforms[i].localRotation, networkRotations[i]);
+						angles[i] = Quaternion.Angle(childTransforms[i].rotation, networkRotations[i]);
 					}
 				}
 
