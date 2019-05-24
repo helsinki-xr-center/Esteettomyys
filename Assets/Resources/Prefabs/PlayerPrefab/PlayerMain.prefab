@@ -452,7 +452,6 @@ GameObject:
   - component: {fileID: 1778556319601450353}
   - component: {fileID: 1778556319594642557}
   - component: {fileID: 4372901002744862363}
-  - component: {fileID: 4921918360374425107}
   m_Layer: 0
   m_Name: PlayerMain
   m_TagString: Player
@@ -521,18 +520,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   vrCamera: {fileID: 1778556319601427809}
---- !u!114 &4921918360374425107
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1778556319601110281}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8b67cab37229ba54db860ca2aa046d33, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1778556319601112751
 GameObject:
   m_ObjectHideFlags: 0
