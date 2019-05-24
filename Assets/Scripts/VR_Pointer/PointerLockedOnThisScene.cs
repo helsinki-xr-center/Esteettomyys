@@ -4,8 +4,9 @@ using UnityEngine;
 
 public class PointerLockedOnThisScene : MonoBehaviour
 {
-	private void Start()
+	private IEnumerator Start()
 	{
+		yield return new WaitForSeconds(0.1f);
 		if (Pointer.instance != null)
 		{
 			Pointer.instance.lockLaserOn = true;
