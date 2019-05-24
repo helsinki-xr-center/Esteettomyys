@@ -520,6 +520,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   vrCamera: {fileID: 1778556319601427809}
+  rightHand: {fileID: 1778556319601483817}
+  leftHand: {fileID: 1778556319601479135}
 --- !u!1 &1778556319601112751
 GameObject:
   m_ObjectHideFlags: 0

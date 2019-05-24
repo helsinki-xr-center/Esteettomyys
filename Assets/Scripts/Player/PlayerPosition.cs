@@ -13,6 +13,8 @@ using UnityEngine;
 public class PlayerPosition : MonoBehaviour
 {
 	public Transform vrCamera;
+	public Transform rightHand;
+	public Transform leftHand;
 
 
 	/**
@@ -43,5 +45,39 @@ public class PlayerPosition : MonoBehaviour
 		}
 		Vector3 vrRot = vrCamera.eulerAngles;
 		return Quaternion.Euler(new Vector3(0, vrRot.y, 0));
+	}
+
+	public bool IsTrackingHands()
+	{
+		return rightHand != null && leftHand != null;
+	}
+
+	public Vector3 GetRightHandPosition()
+	{
+		if (rightHand == null) return transform.position;
+
+		return rightHand.position;
+	}
+
+	public Vector3 GetLeftHandPosition()
+	{
+		if (leftHand == null) return transform.position;
+
+		return leftHand.position;
+	}
+
+
+	public Quaternion GetRightHandRotation()
+	{
+		if (rightHand == null) return Quaternion.identity;
+
+		return rightHand.rotation;
+	}
+
+	public Quaternion GetLeftHandRotation()
+	{
+		if (leftHand == null) return Quaternion.identity;
+
+		return leftHand.rotation;
 	}
 }

@@ -24,7 +24,7 @@ public class SceneLoaderAsync : MonoBehaviour
 			{
 				GameObject go = new GameObject("SceneLoaderAsync");
 				go.AddComponent<SceneLoaderAsync>();
-				//go.hideFlags = HideFlags.DontSave;
+				go.hideFlags = HideFlags.DontSave;
 			}
 
 			return p_instance;
