@@ -25,7 +25,7 @@ public class Pointer : MonoBehaviour
 
 	#region Necessary Components
 	[SerializeField] Transform leftHand;
-	[SerializeField] Transform rightHand;	
+	[SerializeField] Transform rightHand;
 	[SerializeField] GameObject pointerDot;
 	[SerializeField] GameObject targetObj = null;
 	[SerializeField] GameObject selectedObj = null;
@@ -45,9 +45,9 @@ public class Pointer : MonoBehaviour
 	#endregion
 
 	#region booleans
-	[Tooltip("The current selected object with the pickUpMovable input click")]public bool hasTarget;
-	[Tooltip("Enables Pointer hit events")]public bool isSenderActive;
-	[Tooltip("Enabled when pointer is pointing on target")]public bool hovering;
+	[Tooltip("The current selected object with the pickUpMovable input click")] public bool hasTarget;
+	[Tooltip("Enables Pointer hit events")] public bool isSenderActive;
+	[Tooltip("Enabled when pointer is pointing on target")] public bool hovering;
 	public bool lockLaserOn;
 	#endregion
 
@@ -76,21 +76,12 @@ public class Pointer : MonoBehaviour
 		instance = this;
 	}
 
-	private void Start()
-	{
-		if (lockLaserOn)
-		{
-			pointerLineRenderer.enabled = true;
-			pointerDot.SetActive(true);
-		}
-	}
-
 	private void Update()
 	{
 		RayCastFromHand();
 		DropObject();
 		HoverColor();
-	
+
 	}
 
 	/// <summary>
@@ -101,14 +92,14 @@ public class Pointer : MonoBehaviour
 
 		if (hovering && !hasTarget && targetObj != null && targetObj.GetComponent<InteractableObject>())
 		{
-			
+
 			ExtensionMethods.MaterialColorChange(targetObj, targetObj.GetComponent<InteractableObject>().GetHoverColor());
 		}
 		else if (!hovering && !hasTarget && targetObj != null && targetObj.GetComponent<InteractableObject>())
-		{			
+		{
 			ExtensionMethods.MaterialResetColorChange(targetObj, originalColor);
-			
-		}		
+
+		}
 	}
 
 	/// <summary>
@@ -141,21 +132,26 @@ public class Pointer : MonoBehaviour
 	public void RayCastFromHand()
 	{
 		RaycastHit hit;
-		
+
 		bool rayHits = Physics.Raycast(rightHand.position, rightHand.forward, out hit, rayCastLength, hitMask);
 
-
 		//Debug.DrawRay(rightHand.position, rightHand.forward * rayCastLength, Color.red, 0.1f);
-		
+		if (lockLaserOn)
+		{
+
+			pointerLineRenderer.enabled = true;
+			pointerDot.SetActive(true);
+			pointerLineRenderer.SetPosition(0, rightHand.position);
+			pointerLineRenderer.SetPosition(1, rightHand.position + rightHand.forward * rayCastLength);
+			pointerDot.transform.position = rightHand.position + rightHand.forward * rayCastLength;
+
+		}
 
 		if (rayHits)
-		{					
+		{
 			isSenderActive = true;
 
-			if (!lockLaserOn)
-			{
-				ActivatePointerAndUpdatePosition(hit);
-			}
+			ActivatePointerAndUpdatePosition(hit);
 
 			if (targetObj && targetObj != hit.transform.gameObject)
 			{
@@ -169,22 +165,22 @@ public class Pointer : MonoBehaviour
 			if (hit.transform.gameObject.GetComponent<InteractableObject>())
 			{
 				hovering = true;
-				targetObj = hit.collider.gameObject;			
+				targetObj = hit.collider.gameObject;
 				//Debug.Log(hit.collider.name);
 				//Debug.DrawRay(rightHand.position, rightHand.forward * rayCastLength, Color.green, 0.1f);
 				SelectObject(hit);
-			}		
+			}
 			else
 			{
 				//Debug.Log("HITS UI ELEMENT");
 				targetObj = hit.transform.gameObject;
 				hovering = true;
 
-				
+
 
 				if (clickUIButton.GetStateDown(SteamVR_Input_Sources.RightHand))
 				{
-					if(PointerClick != null && isSenderActive)
+					if (PointerClick != null && isSenderActive)
 					{
 						NewRayCastData hitData = new NewRayCastData();
 						hitData.distance = hit.distance;
@@ -199,18 +195,11 @@ public class Pointer : MonoBehaviour
 		{
 			hovering = false;
 
-			if (lockLaserOn && !rayHits)
-			{
-				pointerLineRenderer.SetPosition(0, rightHand.position);
-				pointerLineRenderer.SetPosition(1, rightHand.position + rightHand.forward * rayCastLength);
-				pointerDot.transform.position = rightHand.position + rightHand.forward * rayCastLength;
-			}
-
 			if (!lockLaserOn)
 			{
-
 				ActivatePointer(false);
 			}
+
 			if (targetObj)
 			{
 				SaveExitData(targetObj.transform);
@@ -231,10 +220,10 @@ public class Pointer : MonoBehaviour
 		{
 			selectedObj = targetObj;
 			ExtensionMethods.MaterialColorChange(selectedObj, selectedObj.GetComponent<InteractableObject>().GetSelectedColor());
-				
-			Debug.Log("SELECTED OBJECT");				
+
+			Debug.Log("SELECTED OBJECT");
 			hasTarget = true;
-		}				
+		}
 	}
 
 	/// <summary>
@@ -244,8 +233,8 @@ public class Pointer : MonoBehaviour
 	{
 		if (pickUpMovable.GetStateDown(SteamVR_Input_Sources.RightHand) && selectedObj != null && hasTarget)
 		{
-			Debug.Log("DESELECTED OBJECT");		
-			ExtensionMethods.MaterialResetColorChange(selectedObj, originalColor);		
+			Debug.Log("DESELECTED OBJECT");
+			ExtensionMethods.MaterialResetColorChange(selectedObj, originalColor);
 			//SaveExitData(targetObj.transform);			
 			hasTarget = false;
 			selectedObj = null;
@@ -292,7 +281,7 @@ public class Pointer : MonoBehaviour
 	/// <param name="hitData">Data From Raycast hit</param>
 	public void OnPointerHit(NewRayCastData hitData)
 	{
-		if(PointerHit != null && isSenderActive)
+		if (PointerHit != null && isSenderActive)
 		{
 			PointerHit(this, hitData);
 		}
@@ -310,6 +299,6 @@ public class Pointer : MonoBehaviour
 		}
 	}
 
-	
-	
+
+
 }
