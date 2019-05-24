@@ -198,6 +198,7 @@ public class LobbyMainPanel : MonoBehaviourPunCallbacks
 	{
 		GameObject entry = Instantiate(playerListObjectPrefab);
 		entry.transform.SetParent(roomPanel.transform);
+		entry.transform.localPosition = Vector3.zero;
 		entry.transform.localScale = Vector3.one;
 		entry.GetComponent<PlayerListEntry>().SetValues(newPlayer.ActorNumber, newPlayer.NickName);
 
@@ -547,6 +548,7 @@ public class LobbyMainPanel : MonoBehaviourPunCallbacks
 		{
 			GameObject entry = Instantiate(roomListObjectPrefab, roomListPanelContentParent);
 			entry.transform.localScale = Vector3.one;
+			entry.transform.localPosition = Vector3.zero;
 			entry.GetComponent<RoomListEntry>().SetValues(info.Name, info.PlayerCount, info.MaxPlayers);
 
 			roomListObjects.Add(entry);
