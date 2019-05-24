@@ -4,6 +4,11 @@ using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using Valve.VR.InteractionSystem;
 
+/// <summary>
+/// @Author = Veli-Matti Vuoti
+/// 
+/// Handles Button Clicks for Pointer
+/// </summary>
 public class VRUIInput : MonoBehaviour
 {
 
@@ -17,6 +22,11 @@ public class VRUIInput : MonoBehaviour
 		Pointer.PointerClick += HandlePointerClick;
 	}
 
+	/// <summary>
+	/// Handles Pointer Hit Event On UI Button
+	/// </summary>
+	/// <param name="sender">Class that sends the data </param>
+	/// <param name="hitInfo">Information of the Raycast hit </param>
 	public void HandlePointerHit(object sender, NewRayCastData hitInfo)
 	{
 		Button button = hitInfo.target.GetComponent<Button>();
@@ -27,6 +37,11 @@ public class VRUIInput : MonoBehaviour
 		Debug.Log("POINTER HITS");
 	}
 
+	/// <summary>
+	/// Handles Pointer Left Event On UI Button
+	/// </summary>
+	/// <param name="sender"> Class that sends the data </param>
+	/// <param name="hitInfo"> Information of the Raycast hit </param>
 	public void HandlePointerLeft(object sender, NewRayCastData hitInfo)
 	{
 		Button button = hitInfo.target.GetComponent<Button>();
@@ -37,6 +52,11 @@ public class VRUIInput : MonoBehaviour
 		Debug.Log("POINTER LEFT");
 	}
 
+	/// <summary>
+	/// Handles Pointer Click Event on UI Button
+	/// </summary>
+	/// <param name="sender"> Class that sends the data </param>
+	/// <param name="hitInfo"> Information of the Raycast hit </param>
 	public void HandlePointerClick(object sender, NewRayCastData hitInfo)
 	{
 		Debug.Log("CLICKED");

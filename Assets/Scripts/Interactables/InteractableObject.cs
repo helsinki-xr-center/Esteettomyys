@@ -2,6 +2,8 @@
 
 /// <summary>
 /// @Author: Veli-Matti Vuoti
+/// 
+/// Interactable Object class
 /// </summary>
 public class InteractableObject : MonoBehaviour
 {
@@ -15,6 +17,9 @@ public class InteractableObject : MonoBehaviour
 
 	public bool hardMode;
 
+	/// <summary>
+	/// Chooses the object colors for interacting
+	/// </summary>
 	private void Start()
 	{
 		if (hardMode)
@@ -49,11 +54,19 @@ public class InteractableObject : MonoBehaviour
 		}
 	}
 
+	/// <summary>
+	/// Get hover color, indicates if the object is being hovered over by pointer
+	/// </summary>
+	/// <returns>Hovering color</returns>
 	public Color GetHoverColor()
 	{
 		return hoveringColor;
 	}
 
+	/// <summary>
+	/// Get selected color, indicates if the object is selected
+	/// </summary>
+	/// <returns>Selecting color</returns>
 	public Color GetSelectedColor()
 	{
 		return selectedColor;
