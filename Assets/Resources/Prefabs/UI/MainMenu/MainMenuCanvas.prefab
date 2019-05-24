@@ -235,6 +235,16 @@ PrefabInstance:
       propertyPath: m_Pivot.y
       value: 0.5
       objectReference: {fileID: 0}
+    - target: {fileID: 8573265262988892139, guid: 1a6abafcf9a99934daca7841e0831123,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: OnPCButtonPressed
+      objectReference: {fileID: 0}
+    - target: {fileID: 8827839421612349624, guid: 1a6abafcf9a99934daca7841e0831123,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: OnVRButtonPressed
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1a6abafcf9a99934daca7841e0831123, type: 3}
 --- !u!224 &7514919330241535117 stripped

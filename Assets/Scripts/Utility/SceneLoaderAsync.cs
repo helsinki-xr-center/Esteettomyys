@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -29,6 +30,7 @@ public class SceneLoaderAsync : MonoBehaviour
 			return p_instance;
 		}
 	}
+
 	void Awake()
 	{
 		if (p_instance != null)
@@ -55,6 +57,34 @@ public class SceneLoaderAsync : MonoBehaviour
 		StartCoroutine(LoadSceneUnloadCurrentCorotuine(scene));
 	}
 
+	/**
+	 * <summary>
+	 * Starts a coroutine that will load the desired scene
+	 * </summary>
+	 */
+	public void LoadSceneAsync(string scene)
+	{
+		if (SceneManager.GetSceneByName(scene).isLoaded)
+		{
+			Debug.Log($"Scene {scene} is already loaded", this);
+		}
+		StartCoroutine(LoadSceneAdditiveAsyncCoroutine(scene));
+	}
+
+	/**
+	 * <summary>
+	 * Starts a coroutine that will unload the desired scene.
+	 * </summary>
+	 */
+	public void UnloadSceneAsync(string scene)
+	{
+		if (!SceneManager.GetSceneByName(scene).isLoaded)
+		{
+			Debug.Log($"Scene {scene} is not loaded", this);
+		}
+		StartCoroutine(UnloadSceneAsyncCoroutine(scene));
+	}
+
 
 	/**
 	 * <summary>
@@ -67,7 +97,6 @@ public class SceneLoaderAsync : MonoBehaviour
 		var loadOperation = SceneManager.LoadSceneAsync(scene, LoadSceneMode.Additive);
 		while (!loadOperation.isDone)
 		{
-			Debug.Log(loadOperation.progress);
 			yield return null;
 		}
 
@@ -80,5 +109,30 @@ public class SceneLoaderAsync : MonoBehaviour
 		}
 
 		Debug.Log("Scene loading done!");
+	}
+
+
+	private IEnumerator LoadSceneAdditiveAsyncCoroutine(string scene)
+	{
+		var loadOperation = SceneManager.LoadSceneAsync(scene, LoadSceneMode.Additive);
+		while (!loadOperation.isDone)
+		{
+			
+			yield return null;
+		}
+
+		Debug.Log("Scene loading done!");
+	}
+
+	private IEnumerator UnloadSceneAsyncCoroutine(string scene)
+	{
+		var unloadOperation = SceneManager.UnloadSceneAsync(scene);
+
+		while (!unloadOperation.isDone)
+		{
+			yield return null;
+		}
+
+		Debug.Log("Scene unloading done!");
 	}
 }

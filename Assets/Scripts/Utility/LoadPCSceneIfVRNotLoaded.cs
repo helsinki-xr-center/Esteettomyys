@@ -8,7 +8,7 @@ using UnityEngine.SceneManagement;
  * Author: Nomi Lakkala
  * 
  * <summary>
- * Checks if the VR player scene is loaded and if not, loads the PC player scene.
+ * Checks if the VR player scene is loaded and if not, loads the PC player scene. Also unloads the PC player when exiting scene
  * </summary>
  */
 public class LoadPCSceneIfVRNotLoaded : MonoBehaviour
@@ -22,6 +22,14 @@ public class LoadPCSceneIfVRNotLoaded : MonoBehaviour
 		{
 			Debug.Log("VRscene is not loaded. Loading PC scene", this);
 			SceneManager.LoadScene(pcScene, LoadSceneMode.Additive);
+		}
+	}
+
+	private void OnDestroy()
+	{
+		if (SceneManager.GetSceneByName(pcScene).isLoaded)
+		{
+			SceneManager.UnloadSceneAsync(pcScene);
 		}
 	}
 }
