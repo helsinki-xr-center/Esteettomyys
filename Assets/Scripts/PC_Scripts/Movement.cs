@@ -66,7 +66,7 @@ public class Movement : MonoBehaviour
 	
 		rotationX += mouseY * verticalHeadMoveSpeed * Time.deltaTime;
 		rotationX = Mathf.Clamp(rotationX, -verticalHeadAngleLimit, verticalHeadAngleLimit);
-		pcCamera.transform.rotation = Quaternion.Euler(rotationX * IsInversed(), pcCamera.transform.rotation.y, pcCamera.transform.rotation.z);
+		pcCamera.transform.rotation = Quaternion.Euler(rotationX * IsInversed(), transform.rotation.y, transform.rotation.z);
 		
 		
 	}
