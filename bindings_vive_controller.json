@@ -208,6 +208,15 @@
                },
                "mode" : "trigger",
                "path" : "/user/hand/right/input/trigger"
+            },
+            {
+               "inputs" : {
+                  "click" : {
+                     "output" : "/actions/default/in/teleportlefthand"
+                  }
+               },
+               "mode" : "button",
+               "path" : "/user/hand/left/input/trackpad"
             }
          ]
       },
@@ -255,7 +264,7 @@
    "category" : "steamvr_input",
    "controller_type" : "vive_controller",
    "description" : "",
-   "name" : "vive_controller",
+   "name" : "vive_controller_Edited",
    "options" : {},
    "simulated_actions" : []
 }
