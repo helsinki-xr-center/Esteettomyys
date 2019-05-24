@@ -3,6 +3,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
+/**
+ * Author: Nomi Lakkala
+ * 
+ * <summary>
+ * Custom Photon transform view component modified for tracking multiple child objects. Suitable for things like VR hands or weapons.
+ * </summary>
+ */
 [RequireComponent(typeof(PhotonView))]
 public class ChildTransformView : MonoBehaviour, IPunObservable
 {
@@ -33,6 +41,13 @@ public class ChildTransformView : MonoBehaviour, IPunObservable
 		InitializeArrays();
 	}
 
+	/**
+	 * Author: Nomi Lakkala
+	 * 
+	 * <summary>
+	 * Initializes private arrays. Not much else.
+	 * </summary>
+	 */
 	private void InitializeArrays()
 	{
 		distances = new float[childTransforms.Length];
@@ -68,6 +83,14 @@ public class ChildTransformView : MonoBehaviour, IPunObservable
 		}
 	}
 
+
+	/**
+	 * Author: Nomi Lakkala
+	 * 
+	 * <summary>
+	 * Handles reading and writing the child objects' data to the provided PhotonStream.
+	 * </summary>
+	 */
 	public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
 	{
 		if (stream.IsWriting)
