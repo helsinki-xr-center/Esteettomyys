@@ -16,6 +16,11 @@ public class PcPlayer : MonoBehaviour
 	public LayerMask hitMask;
 	Camera eyeSight;
 
+	public GameObject selectedObject;
+	public GameObject hoveredGameObject;
+	public bool hovering;
+	public bool hasObjSelected;
+
 	private void Awake()
 	{
 		movement = gameObject.GetComponent<Movement>();
@@ -25,6 +30,14 @@ public class PcPlayer : MonoBehaviour
 
 	private void Update()
 	{
+		if(selectedObject != null)
+		{
+			hasObjSelected = true;
+		}
+		else
+		{
+			hasObjSelected = false;
+		}
 
 		RayCastToPointer();
 
@@ -40,7 +53,41 @@ public class PcPlayer : MonoBehaviour
 
 		if (rayHit)
 		{
-			
+			if (hit.collider.transform.gameObject.GetComponent<InteractableObject>())
+			{
+				hovering = true;
+				hoveredGameObject = hit.transform.gameObject;
+				//Debug.Log("HOVERING ON OBJECT ELEMENT");
+
+				if(Input.GetMouseButtonDown(0) && hoveredGameObject == hit.transform.gameObject && !hasObjSelected)
+				{
+					Debug.Log("SELECTED OBJECT");
+					selectedObject = hit.transform.gameObject;
+				}
+				else if (Input.GetMouseButtonDown(0) && selectedObject == hoveredGameObject && selectedObject != null && hasObjSelected)
+				{
+					Debug.Log("DESELECTED OBJECT");
+					selectedObject = null;
+				}
+				
+			}
+			else
+			{
+
+				
+				//Debug.Log("HOVERING ON UI ELEMENT");
+			}
+		}
+		else
+		{
+
+			if (Input.GetMouseButtonDown(0) && selectedObject != null)
+			{
+				Debug.Log("DESELECTED OBJECT");
+				selectedObject = null;
+			}
+
+			hovering = false;
 		}
 
 	}
