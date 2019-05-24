@@ -18,10 +18,14 @@ public class PlayerInput : MonoBehaviour
 
 	void Update()
 	{
-		if (Input.GetAxis("Horizontal") != 0) { float horizontalMove = Input.GetAxis("Horizontal"); player.movement.MoveHorizontal(horizontalMove); }
-		if (Input.GetAxis("Vertical") != 0) { float verticalMove = Input.GetAxis("Vertical"); player.movement.MoveVertical(verticalMove); }
-		if (Input.GetAxis("Mouse X") != 0 && Input.GetAxis("Fire2") != 0) { float mouseX = Input.GetAxis("Mouse X"); player.movement.TurnHorizontal(mouseX); }		
-		if (Input.GetAxis("Mouse Y") != 0) { float mouseInputY = Input.GetAxis("Mouse Y");  player.movement.MoveHeadVertical(mouseInputY); }
+		float horizontalMove = Input.GetAxis("Horizontal");
+		float verticalMove = Input.GetAxis("Vertical");
+		float mouseX = Input.GetAxis("Mouse X");
+		float mouseY = Input.GetAxis("Mouse Y");
+
+		player.movement.DirectionalMove(horizontalMove, verticalMove); 
+		player.movement.RotationalMove(mouseX, mouseY); 
+
 	}
 
 }

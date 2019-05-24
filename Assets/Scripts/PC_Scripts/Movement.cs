@@ -10,15 +10,17 @@ public class Movement : MonoBehaviour
 	PcCamera pcCamera;
 
 	#region Movement Variables
-	[Range(0, 100)] public float moveSpeed;
-	[Range(0,100)]public float rotationSpeed;
+	[Range(0, 200)] public float moveSpeed;
+	[Range(0, 200)] public float strafeSpeed;
+	[Range(0,200)]public float rotationSpeed;
 	[Range(0,3)] public float playerHeight;
-	[Range(0, 100)] public float verticalHeadMoveSpeed;
+	[Range(0, 200)] public float verticalHeadMoveSpeed;
 	[Range(0, 90)] public float verticalHeadAngleLimit;
 	public bool inversedVertical;
 	#endregion
 
 	float rotationX;
+	float rotationY;
 	Rigidbody rb;
 
 	private void Awake()
@@ -40,35 +42,25 @@ public class Movement : MonoBehaviour
 		}	
 	}
 
-	public void MoveVertical(float moveY)
+	public void DirectionalMove(float moveX , float moveY)
 	{
 		//Debug.Log(moveY);
 		float moveVertical = moveY * moveSpeed * Time.deltaTime;
-		rb.velocity = transform.forward * moveVertical;
-	}
-	public void MoveHorizontal(float moveX)
-	{
-		//Debug.Log(moveX);
-		float rotationY = moveX * rotationSpeed * Time.deltaTime;
-		transform.Rotate(Vector3.up, rotationY);
+		float moveHorizontal = moveX * strafeSpeed * Time.deltaTime;
+		Vector3 moveDirection = new Vector3( moveHorizontal, transform.position.y , moveVertical);
+		moveDirection = transform.TransformDirection(moveDirection);
+		rb.velocity = moveDirection;
 	}
 
-	public void TurnHorizontal(float mouseX)
+	public void RotationalMove(float mouseX, float mouseY)
 	{
 
-		
-		//Debug.Log(mouseX);
-	}
-
-	public void MoveHeadVertical(float mouseY)
-	{
-		//Debug.Log(mouseY);
-	
+		rotationY = mouseX * rotationSpeed * Time.deltaTime;
 		rotationX += mouseY * verticalHeadMoveSpeed * Time.deltaTime;
 		rotationX = Mathf.Clamp(rotationX, -verticalHeadAngleLimit, verticalHeadAngleLimit);
-		pcCamera.transform.rotation = Quaternion.Euler(rotationX * IsInversed(), transform.rotation.y, transform.rotation.z);
-		
-		
+		pcCamera.transform.rotation = Quaternion.Euler(rotationX * IsInversed(), transform.rotation.eulerAngles.y, transform.rotation.eulerAngles.z);
+		transform.Rotate(Vector3.up, rotationY);
+		//Debug.Log(mouseX);
 	}
 
 }

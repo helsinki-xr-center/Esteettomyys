@@ -349,6 +349,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   vrCamera: {fileID: 0}
+  rightHand: {fileID: 0}
+  leftHand: {fileID: 0}
 --- !u!114 &962858640
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -361,7 +363,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 614beb8679411594a8bc0347a55ac325, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 0
+  moveSpeed: 112
+  strafeSpeed: 80.1
   rotationSpeed: 50.1
   playerHeight: 1.799
   verticalHeadMoveSpeed: 80.1

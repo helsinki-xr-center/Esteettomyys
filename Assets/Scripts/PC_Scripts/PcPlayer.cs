@@ -9,8 +9,8 @@ using UnityEngine;
 public class PcPlayer : MonoBehaviour
 {
 
-	public Movement movement;
-	public PcCamera playerEyes;
+	[HideInInspector] public Movement movement;
+	[HideInInspector] public PcCamera playerEyes;
 
 	private void Awake()
 	{
