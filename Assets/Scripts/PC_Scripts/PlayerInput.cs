@@ -26,6 +26,8 @@ public class PlayerInput : MonoBehaviour
 		player.movement.DirectionalMove(horizontalMove, verticalMove); 
 		player.movement.RotationalMove(mouseX, mouseY); 
 
+
+
 	}
 
 }
