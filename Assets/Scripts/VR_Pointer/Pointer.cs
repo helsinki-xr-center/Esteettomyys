@@ -18,7 +18,7 @@ public struct NewRayCastData
 /// <summary>
 /// @Author = Veli-Matti Vuoti
 /// 
-/// Class To Handle Pointer hit data
+/// the Pointer class, tracks the pointer hit data and events
 /// </summary>
 public class Pointer : MonoBehaviour
 {
@@ -30,7 +30,6 @@ public class Pointer : MonoBehaviour
 	[SerializeField] GameObject targetObj = null;
 	[SerializeField] GameObject selectedObj = null;
 	LineRenderer pointerLineRenderer;
-	
 	#endregion
 
 	[Header("Variables for Raycasting")]
@@ -38,6 +37,7 @@ public class Pointer : MonoBehaviour
 	[Tooltip("Object's that raycast will hit")] public LayerMask hitMask;
 	[SerializeField] [Tooltip("Selected object color indicator")] Color selectedColor;
 	Color originalColor;
+	public static Pointer instance = null;
 
 	#region Input variables
 	public SteamVR_Action_Boolean pickUpMovable;
@@ -45,11 +45,17 @@ public class Pointer : MonoBehaviour
 	#endregion
 
 	#region booleans
-	public bool hasTarget;
-	public bool isSenderActive;
-	public bool hovering;
+	[Tooltip("The current selected object with the pickUpMovable input click")]public bool hasTarget;
+	[Tooltip("Enables Pointer hit events")]public bool isSenderActive;
+	[Tooltip("Enabled when pointer is pointing on target")]public bool hovering;
+	public bool lockLaserOn = false;
 	#endregion
 
+	/// <summary>
+	/// Delegate Event for sending raycast data
+	/// </summary>
+	/// <param name="sender"> this class </param>
+	/// <param name="hitData"> Raycast hit data </param>
 	#region events
 	public delegate void PointerHitInfoDelegate(object sender, NewRayCastData hitData);
 	public static event PointerHitInfoDelegate PointerHit;
@@ -57,6 +63,9 @@ public class Pointer : MonoBehaviour
 	public static event PointerHitInfoDelegate PointerClick;
 	#endregion
 
+	/// <summary>
+	/// Finds the needed components for pointer to work and sets original color to white
+	/// </summary>
 	private void Awake()
 	{
 		leftHand = FindObjectOfType<Player>().gameObject.transform.GetChild(0).transform.GetChild(1).transform;
@@ -64,6 +73,7 @@ public class Pointer : MonoBehaviour
 		pointerLineRenderer = gameObject.GetComponent<LineRenderer>();
 		pointerDot = gameObject.transform.GetChild(0).transform.gameObject;
 		originalColor = Color.white;
+		instance = this;
 	}
 
 	private void Update()
@@ -75,7 +85,7 @@ public class Pointer : MonoBehaviour
 	}
 
 	/// <summary>
-	/// Sets Howering Color for object
+	/// Sets the Hovering Color for object
 	/// </summary>
 	public void HoverColor()
 	{
@@ -93,7 +103,7 @@ public class Pointer : MonoBehaviour
 	}
 
 	/// <summary>
-	/// Activates pointer
+	/// Activates the pointer graphics
 	/// </summary>
 	/// <param name="status">True/False</param>
 	public void ActivatePointer(bool status)
@@ -169,7 +179,10 @@ public class Pointer : MonoBehaviour
 		else
 		{
 			hovering = false;
-			ActivatePointer(false);
+			if (lockLaserOn)
+			{
+				ActivatePointer(false);
+			}
 			if (targetObj)
 			{
 				SaveExitData(targetObj.transform);
