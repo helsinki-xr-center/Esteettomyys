@@ -336,6 +336,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   movement: {fileID: 0}
   playerEyes: {fileID: 0}
+  rayCastDistance: 10.38
+  hitMask:
+    serializedVersion: 2
+    m_Bits: 544
+  selectedObject: {fileID: 0}
+  hoveredGameObject: {fileID: 0}
+  hovering: 0
+  hasObjSelected: 0
 --- !u!114 &962858639
 MonoBehaviour:
   m_ObjectHideFlags: 0
