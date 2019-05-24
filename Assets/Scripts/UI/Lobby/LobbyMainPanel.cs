@@ -7,6 +7,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using UnityEngine.XR;
 using Hashtable = ExitGames.Client.Photon.Hashtable;
 
 
@@ -290,6 +291,22 @@ public class LobbyMainPanel : MonoBehaviourPunCallbacks
 		}
 
 		SetActivePanel(modeSelectionPanel);
+	}
+
+	/**
+	 * <summary>
+	 * Gets called from Unity UI Button. Goes back to the MainMenu and shuts down VR.
+	 * </summary>
+	 */
+	public void OnLogOutButtonClicked()
+	{
+		if (PhotonNetwork.InLobby)
+		{
+			PhotonNetwork.LeaveLobby();
+		}
+
+		XRSettings.enabled = false;
+		SceneManager.LoadScene("MainMenu");
 	}
 
 	/**
