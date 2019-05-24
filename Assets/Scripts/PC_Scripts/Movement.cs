@@ -9,7 +9,7 @@ public class Movement : MonoBehaviour
 
 	[Range(0,100)]public float rotationSpeed;
 	[Range(0,3)] public float playerHeight;
-	[Range(0, 90)] public float clampHeadAngle;
+	
 
 	private void Awake()
 	{
@@ -36,8 +36,8 @@ public class Movement : MonoBehaviour
 	public void MoveHeadVertical(float mouseY)
 	{
 		//Debug.Log(mouseY);
-		pcCamera.transform.Rotate(Vector3.left * mouseY * rotationSpeed * Time.deltaTime);
-		Mathf.Clamp(mouseY * rotationSpeed * Time.deltaTime, 0, clampHeadAngle);
+		pcCamera.transform.Rotate(Vector3.left * mouseY);
+		
 	}
 
 }

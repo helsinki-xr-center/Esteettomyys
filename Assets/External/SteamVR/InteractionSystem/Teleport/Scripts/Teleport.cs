@@ -234,6 +234,7 @@ namespace Valve.VR.InteractionSystem
 		//-------------------------------------------------
 		void Update()
 		{
+			
 			Hand oldPointerHand = pointerHand;
 			Hand newPointerHand = null;
 
