@@ -18,6 +18,9 @@ public class AvatarFollowPlayer : MonoBehaviour
 	public PlayerPosition player;
 	public PhotonView photonView;
 
+	public Transform rightHand;
+	public Transform leftHand;
+
 	void Start()
 	{
 		photonView = GetComponent<PhotonView>();
@@ -41,5 +44,13 @@ public class AvatarFollowPlayer : MonoBehaviour
 		}
 		transform.position = player.GetPosition();
 		transform.rotation = player.GetRotation();
+
+		if(player.IsTrackingHands()){
+			rightHand.position = player.GetRightHandPosition();
+			rightHand.rotation = player.GetRightHandRotation();
+
+			leftHand.position = player.GetLeftHandPosition();
+			leftHand.rotation = player.GetLeftHandRotation();
+		}
 	}
 }
