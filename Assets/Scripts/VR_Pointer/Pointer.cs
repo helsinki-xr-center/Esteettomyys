@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Valve.VR.InteractionSystem;
@@ -138,20 +138,16 @@ public class Pointer : MonoBehaviour
 		//Debug.DrawRay(rightHand.position, rightHand.forward * rayCastLength, Color.red, 0.1f);
 		if (lockLaserOn)
 		{
-
-			pointerLineRenderer.enabled = true;
-			pointerDot.SetActive(true);
-			pointerLineRenderer.SetPosition(0, rightHand.position);
-			pointerLineRenderer.SetPosition(1, rightHand.position + rightHand.forward * rayCastLength);
-			pointerDot.transform.position = rightHand.position + rightHand.forward * rayCastLength;
-
+			ActivatePointer();
+			UpdatePointerPositionCalculated();
 		}
 
 		if (rayHits)
 		{
 			isSenderActive = true;
 
-			ActivatePointerAndUpdatePosition(hit);
+			ActivatePointer();
+			UpdatePointerPositionByHitPoint(hit);
 
 			if (targetObj && targetObj != hit.transform.gameObject)
 			{
@@ -175,8 +171,6 @@ public class Pointer : MonoBehaviour
 				//Debug.Log("HITS UI ELEMENT");
 				targetObj = hit.transform.gameObject;
 				hovering = true;
-
-
 
 				if (clickUIButton.GetStateDown(SteamVR_Input_Sources.RightHand))
 				{
@@ -298,7 +292,5 @@ public class Pointer : MonoBehaviour
 			PointerLeft(this, hitData);
 		}
 	}
-
-
 
 }
