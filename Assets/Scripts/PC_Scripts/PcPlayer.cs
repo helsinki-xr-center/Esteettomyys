@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// @Author = Veli-Matti Vuoti
+/// </summary>
 [RequireComponent(typeof(Movement),typeof(PlayerInput))]
 public class PcPlayer : MonoBehaviour
 {

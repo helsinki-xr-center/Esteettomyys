@@ -1713,6 +1713,10 @@ PrefabInstance:
       propertyPath: floorFixupTraceLayerMask.m_Bits
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 11445746, guid: 7a135b1a2cb9c8f488d4dd00c55ab283, type: 3}
+      propertyPath: teleportAction.actionPath
+      value: /actions/default/in/TeleportLeftHand
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7a135b1a2cb9c8f488d4dd00c55ab283, type: 3}
 --- !u!1001 &1776351156
@@ -1970,6 +1974,11 @@ PrefabInstance:
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: bd94b4bd0e85a944c9c16236dc2cca83, type: 2}
+    - target: {fileID: 162515026129392885, guid: 23b3e508c161bac4383c8f8a939db698,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.02
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 23b3e508c161bac4383c8f8a939db698, type: 3}
 --- !u!4 &1724971533201391962 stripped
