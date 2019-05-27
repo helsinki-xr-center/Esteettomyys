@@ -144,19 +144,13 @@ public class LobbyMainPanel : MonoBehaviourPunCallbacks
 
 		foreach (Player p in PhotonNetwork.PlayerList)
 		{
-			GameObject entry = Instantiate(playerListObjectPrefab);
-			entry.transform.SetParent(roomPanel.transform);
-			entry.transform.localPosition = Vector3.zero;
-			entry.transform.localScale = Vector3.one;
-			entry.GetComponent<PlayerListEntry>().SetValues(p.ActorNumber, p.NickName);
+			GameObject entry = CreatePlayerEntry(p);
 
-			object isPlayerReady;
-			if (p.CustomProperties.TryGetValue(ConstStringKeys.PUN_PLAYER_READY, out isPlayerReady))
+			if (p.CustomProperties.TryGetValue(ConstStringKeys.PUN_PLAYER_READY, out object isPlayerReady))
 			{
 				entry.GetComponent<PlayerListEntry>().SetPlayerReady((bool)isPlayerReady);
 			}
 
-			playerListObjects.Add(p.ActorNumber, entry);
 		}
 
 		startGameButton.gameObject.SetActive(CheckPlayersReady());
@@ -196,13 +190,7 @@ public class LobbyMainPanel : MonoBehaviourPunCallbacks
 	 */
 	public override void OnPlayerEnteredRoom(Player newPlayer)
 	{
-		GameObject entry = Instantiate(playerListObjectPrefab);
-		entry.transform.SetParent(roomPanel.transform);
-		entry.transform.localPosition = Vector3.zero;
-		entry.transform.localScale = Vector3.one;
-		entry.GetComponent<PlayerListEntry>().SetValues(newPlayer.ActorNumber, newPlayer.NickName);
-
-		playerListObjects.Add(newPlayer.ActorNumber, entry);
+		GameObject entry = CreatePlayerEntry(newPlayer);
 
 		startGameButton.gameObject.SetActive(CheckPlayersReady());
 	}
@@ -553,5 +541,22 @@ public class LobbyMainPanel : MonoBehaviourPunCallbacks
 
 			roomListObjects.Add(entry);
 		}
+	}
+
+	/**
+	 * <summary>
+	 * Creates a PlayerListEntry and adds it to the playerListObjects list.
+	 * </summary>
+	 */
+	private GameObject CreatePlayerEntry(Player p)
+	{
+		GameObject entry = Instantiate(playerListObjectPrefab);
+		entry.transform.SetParent(roomPanel.transform);
+		entry.transform.localPosition = Vector3.zero;
+		entry.transform.localScale = Vector3.one;
+		entry.GetComponent<PlayerListEntry>().SetValues(p.ActorNumber, p.NickName);
+
+		playerListObjects.Add(p.ActorNumber, entry);
+		return entry;
 	}
 }
