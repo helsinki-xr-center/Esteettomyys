@@ -4,18 +4,28 @@ using UnityEngine;
 
 
 
-
+/**
+ * Author: Nomi Lakkala
+ * 
+ * <summary>
+ * UI script for a temporary colorblind mode selector panel.
+ * </summary>
+ */
 public class ColorblindSelectorPanel : MonoBehaviour
 {
 
 	ColorblindModeSimulator simulator;
 
-	// Start is called before the first frame update
 	void Start()
 	{
 		simulator = FindObjectOfType<ColorblindModeSimulator>();
 	}
 
+	/**
+	 * <summary>
+	 * Unity UI callback for normal mode button.
+	 * </summary>
+	 */
 	public void OnNormalButtonClick()
 	{
 		if (simulator == null)
@@ -25,6 +35,11 @@ public class ColorblindSelectorPanel : MonoBehaviour
 		simulator.SetColorblindMode(ColorblindMode.Normal);
 	}
 
+	/**
+	 * <summary>
+	 * Unity UI callback for deuteranopia mode button.
+	 * </summary>
+	 */
 	public void OnDeuteranopiaButtonClick()
 	{
 		if (simulator == null)
@@ -34,6 +49,11 @@ public class ColorblindSelectorPanel : MonoBehaviour
 		simulator.SetColorblindMode(ColorblindMode.Deuteranopa);
 	}
 
+	/**
+	 * <summary>
+	 * Unity UI callback for tritanopia mode button.
+	 * </summary>
+	 */
 	public void OnTritanopiaButtonClick()
 	{
 		if (simulator == null)
@@ -43,6 +63,11 @@ public class ColorblindSelectorPanel : MonoBehaviour
 		simulator.SetColorblindMode(ColorblindMode.Tritanopia);
 	}
 
+	/**
+	 * <summary>
+	 * Unity UI callback for monochromacy mode button.
+	 * </summary>
+	 */
 	public void OnMonochromacyButtonClick()
 	{
 		if (simulator == null)
