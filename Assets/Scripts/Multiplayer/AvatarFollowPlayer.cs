@@ -20,6 +20,7 @@ public class AvatarFollowPlayer : MonoBehaviour
 
 	public Transform rightHand;
 	public Transform leftHand;
+	public Transform head;
 
 	void Start()
 	{
@@ -51,6 +52,10 @@ public class AvatarFollowPlayer : MonoBehaviour
 
 			leftHand.position = player.GetLeftHandPosition();
 			leftHand.rotation = player.GetLeftHandRotation();
+		}
+
+		if(player.IsTrackingHead()){
+			head.transform.position = transform.position + (Vector3.up * player.GetHeadHeightFromBase());
 		}
 	}
 }
