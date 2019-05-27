@@ -10,8 +10,9 @@ public class PlayerInput : MonoBehaviour
 {
 
 	PcPlayer player;
+	public bool lockRotation;
 
-	private void Awake()
+	private void Start()
 	{
 		player = gameObject.GetComponent<PcPlayer>();
 	}
@@ -24,9 +25,26 @@ public class PlayerInput : MonoBehaviour
 		float mouseY = Input.GetAxis("Mouse Y");
 
 		player.movement.DirectionalMove(horizontalMove, verticalMove); 
-		player.movement.RotationalMove(mouseX, mouseY); 
+		
+		if (!lockRotation)
+		{
+			player.movement.RotationalMove(mouseX, mouseY);
+		}
 
 
+		if (Input.GetButton("Fire3"))
+		{
+			lockRotation = true;
+		}
+		if (Input.GetButtonUp("Fire3"))
+		{
+			lockRotation = false;
+		}
+
+		if (Input.GetMouseButtonDown(1))
+		{
+			player.PCTeleport();
+		}
 
 	}
 

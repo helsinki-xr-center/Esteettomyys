@@ -6,16 +6,6 @@ using Valve.VR;
 using UnityEngine.UI;
 
 /// <summary>
-/// Struct for storing raycasthit data
-/// </summary>
-public struct NewRayCastData
-{
-	public float distance;
-	public Transform target;
-	public Vector3 hitPoint;
-}
-
-/// <summary>
 /// @Author = Veli-Matti Vuoti
 /// 
 /// the Pointer class, tracks the pointer hit data and events
@@ -27,8 +17,8 @@ public class Pointer : MonoBehaviour
 	[SerializeField] Transform leftHand;
 	[SerializeField] Transform rightHand;
 	[SerializeField] GameObject pointerDot;
-	[SerializeField] GameObject targetObj = null;
-	[SerializeField] GameObject selectedObj = null;
+	public GameObject targetObj = null;
+	public GameObject selectedObj = null;
 	LineRenderer pointerLineRenderer;
 	#endregion
 
@@ -40,7 +30,7 @@ public class Pointer : MonoBehaviour
 	public static Pointer instance = null;
 
 	#region Input variables
-	public SteamVR_Action_Boolean pickUpMovable;
+	public SteamVR_Action_Boolean selectObj;
 	public SteamVR_Action_Boolean clickUIButton;
 	#endregion
 
@@ -57,7 +47,7 @@ public class Pointer : MonoBehaviour
 	/// <param name="sender"> this class </param>
 	/// <param name="hitData"> Raycast hit data </param>
 	#region events
-	public delegate void PointerHitInfoDelegate(object sender, NewRayCastData hitData);
+	public delegate void PointerHitInfoDelegate(object sender, RayCastData hitData);
 	public static event PointerHitInfoDelegate PointerHit;
 	public static event PointerHitInfoDelegate PointerLeft;
 	public static event PointerHitInfoDelegate PointerClick;
@@ -66,7 +56,7 @@ public class Pointer : MonoBehaviour
 	/// <summary>
 	/// Finds the needed components for pointer to work and sets original color to white
 	/// </summary>
-	private void Awake()
+	private void Start()
 	{
 		leftHand = FindObjectOfType<Player>().gameObject.transform.GetChild(0).transform.GetChild(1).transform;
 		rightHand = FindObjectOfType<Player>().gameObject.transform.GetChild(0).transform.GetChild(2).transform;
@@ -78,27 +68,19 @@ public class Pointer : MonoBehaviour
 
 	private void Update()
 	{
+		HasObjectSelected();
 		RayCastFromHand();
-		DropObject();
-		HoverColor();
-
 	}
 
-	/// <summary>
-	/// Sets the Hovering Color for object
-	/// </summary>
-	public void HoverColor()
+	private void HasObjectSelected()
 	{
-
-		if (hovering && !hasTarget && targetObj != null && targetObj.GetComponent<InteractableObject>())
+		if (selectedObj != null)
 		{
-
-			ExtensionMethods.MaterialColorChange(targetObj, targetObj.GetComponent<InteractableObject>().GetHoverColor());
+			hasTarget = true;
 		}
-		else if (!hovering && !hasTarget && targetObj != null && targetObj.GetComponent<InteractableObject>())
+		else
 		{
-			ExtensionMethods.MaterialResetColorChange(targetObj, originalColor);
-
+			hasTarget = false;
 		}
 	}
 
@@ -118,7 +100,7 @@ public class Pointer : MonoBehaviour
 	/// <param name="hit"></param>
 	public void UpdatePointerPositionByHitPoint(RaycastHit hit)
 	{
-		
+
 		pointerLineRenderer.SetPosition(0, rightHand.position);
 		pointerLineRenderer.SetPosition(1, hit.point);
 		pointerDot.transform.position = hit.point;
@@ -150,79 +132,83 @@ public class Pointer : MonoBehaviour
 
 		if (rayHits)
 		{
-			isSenderActive = true;
-
-			ActivatePointer(true);
-			UpdatePointerPositionByHitPoint(hit);
-
-			if (targetObj && targetObj != hit.transform.gameObject)
+			if (!lockLaserOn)
 			{
-				SaveHitData(hit);
-			}
-			else if (targetObj && targetObj == hit.transform.gameObject && !hovering)
-			{
-				SaveHitData(hit);
+				ActivatePointer(true);
+				UpdatePointerPositionByHitPoint(hit);
 			}
 
-			if (hit.transform.gameObject.GetComponent<InteractableObject>())
+			if (hit.collider.transform.gameObject.GetComponent<InteractableObject>())
 			{
+				isSenderActive = true;
 				hovering = true;
-				targetObj = hit.collider.gameObject;
-				//Debug.Log(hit.collider.name);
-				//Debug.DrawRay(rightHand.position, rightHand.forward * rayCastLength, Color.green, 0.1f);
-				SelectObject(hit);
+
+				if (targetObj != hit.transform.gameObject && targetObj != null)
+				{
+					if (PointerLeft != null && isSenderActive)
+					{
+						RayCastData newHitData = new RayCastData();
+						newHitData.distance = hit.distance;
+						newHitData.hitPoint = hit.point;
+						newHitData.target = targetObj.transform;
+						PointerLeft(this, newHitData);
+					}
+				}
+				targetObj = hit.transform.gameObject;
+				OnPointerHover(hit);
+
+				//Debug.Log("HOVERING ON OBJECT");
+
+				if (selectObj.GetStateDown(SteamVR_Input_Sources.RightHand) && targetObj == hit.transform.gameObject && !hasTarget)
+				{
+					Debug.Log("SELECTED OBJECT");
+					OnPointerClick(hit);
+					selectedObj = hit.transform.gameObject;
+
+				}
+				else if (selectObj.GetStateDown(SteamVR_Input_Sources.RightHand) && selectedObj == targetObj && selectedObj != null && hasTarget)
+				{
+					Debug.Log("DESELECTED OBJECT");
+					selectedObj = null;
+
+					DropObject();
+				}
 			}
 			else
 			{
-				//Debug.Log("HITS UI ELEMENT");
-				targetObj = hit.transform.gameObject;
-				hovering = true;
 
-				if (clickUIButton.GetStateDown(SteamVR_Input_Sources.RightHand))
+				//Debug.Log("HOVERING ON UI ELEMENT");
+				isSenderActive = true;
+				hovering = true;
+				targetObj = hit.transform.gameObject;
+				OnPointerHover(hit);
+
+				if (clickUIButton.GetStateDown(SteamVR_Input_Sources.RightHand) && isSenderActive)
 				{
-					if (PointerClick != null && isSenderActive)
-					{
-						NewRayCastData hitData = new NewRayCastData();
-						hitData.distance = hit.distance;
-						hitData.hitPoint = hit.point;
-						hitData.target = hit.transform;
-						PointerClick(this, hitData);
-					}
+					OnPointerClick(hit);
 				}
 			}
 		}
 		else
 		{
-			hovering = false;
+			OnPointerLeft(hit);
 
+			if (selectObj.GetStateDown(SteamVR_Input_Sources.RightHand) && selectedObj != null)
+			{
+				Debug.Log("DESELECTED OBJECT");
+				selectedObj.GetComponent<InteractableObject>().selected = false;
+				ExtensionMethods.MaterialColorChange(selectedObj, Color.white);
+				selectedObj = null;
+
+				DropObject();
+			}
 			if (!lockLaserOn)
 			{
 				ActivatePointer(false);
 			}
 
-			if (targetObj)
-			{
-				SaveExitData(targetObj.transform);
-			}
 			isSenderActive = false;
-		}
-
-	}
-
-	/// <summary>
-	/// PickUp hit target When Trigger is pressed fully down and Triggers Event with the raycast data
-	/// </summary>
-	/// <param name="hit">hitInfo from raycast</param>
-	public void SelectObject(RaycastHit hit)
-	{
-
-		if (pickUpMovable.GetLastStateDown(SteamVR_Input_Sources.RightHand) && !hasTarget)
-		{
-			selectedObj = targetObj;
-			ExtensionMethods.MaterialColorChange(selectedObj, selectedObj.GetComponent<InteractableObject>().GetSelectedColor());
-
-			Debug.Log("SELECTED OBJECT");
-			hasTarget = true;
+			hovering = false;
 		}
 	}
 
@@ -231,71 +217,48 @@ public class Pointer : MonoBehaviour
 	/// </summary>
 	public void DropObject()
 	{
-		if (pickUpMovable.GetStateDown(SteamVR_Input_Sources.RightHand) && selectedObj != null && hasTarget)
-		{
-			Debug.Log("DESELECTED OBJECT");
-			ExtensionMethods.MaterialResetColorChange(selectedObj, originalColor);
-			//SaveExitData(targetObj.transform);			
-			hasTarget = false;
-			selectedObj = null;
-		}
+
+		Debug.Log("DESELECTED OBJECT");
+
+		//SaveExitData(targetObj.transform);			
+		hasTarget = false;
+		selectedObj = null;
+
 	}
 
-	/// <summary>
-	/// When Holding object and dropping it saves the endlocation
-	/// </summary>
-	/// <param name="obj">Hit Info from raycast</param>
-	public void SaveExitData(Transform obj)
-	{
-		//Debug.Log("I SHOULDN'T HAPPEN OFTEN");
-		NewRayCastData hitData = new NewRayCastData();
-		hitData.distance = (transform.position - targetObj.transform.position).magnitude;
-		hitData.hitPoint = targetObj.transform.position - transform.position;
-		hitData.target = targetObj.transform;
-		//Debug.Log(hitData.distance);
-		//Debug.Log(hitData.hitPoint);
-		//Debug.Log(hitData.target);
-		OnPointerLeft(hitData);
-	}
-
-	/// <summary>
-	/// Saves the start location of raycast hit
-	/// </summary>
-	/// <param name="hit">Hit Info from raycast</param>
-	public void SaveHitData(RaycastHit hit)
-	{
-		//Debug.Log("I SHOULDN'T HAPPEN OFTEN");
-		NewRayCastData hitData = new NewRayCastData();
-		hitData.distance = hit.distance;
-		hitData.hitPoint = hit.point;
-		hitData.target = hit.collider.transform;
-		//Debug.Log(hitData.distance);
-		//Debug.Log(hitData.hitPoint);
-		//Debug.Log(hitData.target);
-		OnPointerHit(hitData);
-	}
-
-	/// <summary>
-	/// Pointer Hit Event
-	/// </summary>
-	/// <param name="hitData">Data From Raycast hit</param>
-	public void OnPointerHit(NewRayCastData hitData)
+	public void OnPointerHover(RaycastHit hit)
 	{
 		if (PointerHit != null && isSenderActive)
 		{
-			PointerHit(this, hitData);
+			RayCastData newHitData = new RayCastData();
+			newHitData.distance = hit.distance;
+			newHitData.hitPoint = hit.point;
+			newHitData.target = targetObj.transform;
+			PointerHit(this, newHitData);
 		}
 	}
 
-	/// <summary>
-	/// Pointer Left Event
-	/// </summary>
-	/// <param name="hitData">Data From Raycast hit</param>
-	public void OnPointerLeft(NewRayCastData hitData)
+	public void OnPointerClick(RaycastHit hit)
 	{
-		if (PointerHit != null && isSenderActive)
+		if (PointerClick != null && isSenderActive)
 		{
-			PointerLeft(this, hitData);
+			RayCastData newHitData = new RayCastData();
+			newHitData.distance = hit.distance;
+			newHitData.hitPoint = hit.point;
+			newHitData.target = targetObj.transform;
+			PointerClick(this, newHitData);
+		}
+	}
+
+	public void OnPointerLeft(RaycastHit hit)
+	{
+		if (PointerLeft != null && isSenderActive)
+		{
+			RayCastData newHitData = new RayCastData();
+			newHitData.distance = hit.distance;
+			newHitData.hitPoint = hit.point;
+			newHitData.target = targetObj.transform;
+			PointerLeft(this, newHitData);
 		}
 	}
 

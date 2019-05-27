@@ -33,7 +33,7 @@ public static class ExtensionMethods
 	/// <param name="newColor">Color to change to</param>
 	public static void MaterialColorChange(GameObject obj, Color newColor)
 	{
-
+		
 		MeshRenderer[] meshRenderers = obj.GetComponents<MeshRenderer>();
 
 		foreach (MeshRenderer mr in meshRenderers)

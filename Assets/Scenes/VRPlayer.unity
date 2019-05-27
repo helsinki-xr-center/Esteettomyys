@@ -242,6 +242,11 @@ PrefabInstance:
       propertyPath: clickUIButton.actionPath
       value: /actions/default/in/GrabPinch
       objectReference: {fileID: 0}
+    - target: {fileID: 2481316926103880645, guid: 5bee62c19b1245244a96f2321541dcd3,
+        type: 3}
+      propertyPath: selectObj.actionPath
+      value: /actions/default/in/Teleport
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5bee62c19b1245244a96f2321541dcd3, type: 3}
 --- !u!1001 &1778556320096315261

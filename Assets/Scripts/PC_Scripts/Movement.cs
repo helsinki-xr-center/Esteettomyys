@@ -10,24 +10,36 @@ public class Movement : MonoBehaviour
 	PcCamera pcCamera;
 
 	#region Movement Variables
-	[Range(0, 200)] public float moveSpeed;
-	[Range(0, 200)] public float strafeSpeed;
-	[Range(0,200)]public float rotationSpeed;
-	[Range(0,3)] public float playerHeight;
-	[Range(0, 200)] public float verticalHeadMoveSpeed;
-	[Range(0, 90)] public float verticalHeadAngleLimit;
-	public bool inversedVertical;
+	[SerializeField] [Range(0, 300)] float moveSpeed = 200f;
+	[SerializeField] [Range(0, 300)] float strafeSpeed = 155f;
+	[SerializeField] [Range(0, 300)] float rotationSpeed = 130f;
+	[SerializeField] [Range(0, 300)] float verticalHeadMoveSpeed = 100f;
+	[SerializeField] [Range(0, 90)] float verticalHeadAngleLimit = 90f;
+	#endregion
+
+	#region Player Setup
+	[SerializeField] [Range(0, 3)] float playerHeight = 1.8f;
+	[SerializeField] [Range(0, 3)] float playerWidth = 0.5f;
+	[SerializeField] bool inversedVertical;
 	#endregion
 
 	float rotationX;
 	float rotationY;
 	Rigidbody rb;
+	BoxCollider col;
 
-	private void Awake()
+	private void Start()
 	{
 		pcCamera = gameObject.GetComponentInChildren<PcCamera>();
 		pcCamera.transform.position = new Vector3 (transform.position.x,transform.position.y + playerHeight,transform.position.z);
 		rb = gameObject.GetComponent<Rigidbody>();
+		col = gameObject.GetComponent<BoxCollider>();
+		col.size = new Vector3(playerWidth, playerHeight, playerWidth);
+	}
+
+	public void SetInversed(bool status)
+	{
+		inversedVertical = status;
 	}
 
 	public int IsInversed()
