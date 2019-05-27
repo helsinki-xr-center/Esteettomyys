@@ -10,11 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8e6292b2c06870d4495f009f912b9600, type: 3}
-  m_Name: Deuteranopia
+  m_Name: Monochromacy
   m_EditorClassIdentifier: 
   settings:
-  - {fileID: 6926844322654829061}
---- !u!114 &6926844322654829061
+  - {fileID: 5980226336758993947}
+--- !u!114 &5980226336758993947
 MonoBehaviour:
   m_ObjectHideFlags: 3
   m_CorrespondingSourceObject: {fileID: 0}
@@ -79,7 +79,7 @@ MonoBehaviour:
     value: 0
   saturation:
     overrideState: 1
-    value: 0
+    value: -100
   brightness:
     overrideState: 1
     value: 0
@@ -91,22 +91,22 @@ MonoBehaviour:
     value: 0
   mixerRedOutRedIn:
     overrideState: 1
-    value: 45
+    value: 100
   mixerRedOutGreenIn:
     overrideState: 1
-    value: 92
+    value: 0
   mixerRedOutBlueIn:
     overrideState: 1
-    value: -5
+    value: 0
   mixerGreenOutRedIn:
     overrideState: 1
-    value: 23
+    value: 0
   mixerGreenOutGreenIn:
     overrideState: 1
-    value: 48
+    value: 100
   mixerGreenOutBlueIn:
     overrideState: 1
-    value: 14
+    value: 0
   mixerBlueOutRedIn:
     overrideState: 1
     value: 0
@@ -115,7 +115,7 @@ MonoBehaviour:
     value: 0
   mixerBlueOutBlueIn:
     overrideState: 1
-    value: 43
+    value: 100
   lift:
     overrideState: 1
     value: {x: 1, y: 1, z: 1, w: 0}

@@ -10,11 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8e6292b2c06870d4495f009f912b9600, type: 3}
-  m_Name: GrayScale
+  m_Name: Protanomaly
   m_EditorClassIdentifier: 
   settings:
-  - {fileID: 5980226336758993947}
---- !u!114 &5980226336758993947
+  - {fileID: 6926844322654829061}
+--- !u!114 &6926844322654829061
 MonoBehaviour:
   m_ObjectHideFlags: 3
   m_CorrespondingSourceObject: {fileID: 0}
@@ -79,7 +79,7 @@ MonoBehaviour:
     value: 0
   saturation:
     overrideState: 1
-    value: -100
+    value: 0
   brightness:
     overrideState: 1
     value: 0
@@ -91,22 +91,22 @@ MonoBehaviour:
     value: 0
   mixerRedOutRedIn:
     overrideState: 1
-    value: 100
+    value: 64
   mixerRedOutGreenIn:
     overrideState: 1
-    value: 0
+    value: 25
   mixerRedOutBlueIn:
     overrideState: 1
     value: 0
   mixerGreenOutRedIn:
     overrideState: 1
-    value: 0
+    value: 11
   mixerGreenOutGreenIn:
     overrideState: 1
-    value: 100
+    value: 71
   mixerGreenOutBlueIn:
     overrideState: 1
-    value: 0
+    value: 2
   mixerBlueOutRedIn:
     overrideState: 1
     value: 0

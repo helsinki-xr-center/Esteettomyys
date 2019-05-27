@@ -19,8 +19,12 @@ public class ColorblindModeSimulator : MonoBehaviour
 
 	[Header("Different profiles")]
 	public PostProcessProfile normal;
-	public PostProcessProfile deuteranopa;
+	public PostProcessProfile deuteranomaly;
+	public PostProcessProfile protanomaly;
+	public PostProcessProfile protanopia;
+	public PostProcessProfile deuteranopia;
 	public PostProcessProfile tritanopia;
+	public PostProcessProfile tritanomaly;
 	public PostProcessProfile monochromacy;
 
 	public ColorblindMode currentMode;
@@ -45,11 +49,23 @@ public class ColorblindModeSimulator : MonoBehaviour
 			case ColorblindMode.Normal:
 				volume.profile = normal;
 				break;
-			case ColorblindMode.Deuteranopa:
-				volume.profile = deuteranopa;
+			case ColorblindMode.Deuteranomaly:
+				volume.profile = deuteranomaly;
+				break;
+			case ColorblindMode.Protanomaly:
+				volume.profile = protanomaly;
+				break;
+			case ColorblindMode.Protanopia:
+				volume.profile = protanopia;
+				break;
+			case ColorblindMode.Deuteranopia:
+				volume.profile = deuteranopia;
 				break;
 			case ColorblindMode.Tritanopia:
 				volume.profile = tritanopia;
+				break;
+			case ColorblindMode.Tritanomaly:
+				volume.profile = tritanomaly;
 				break;
 			case ColorblindMode.Monochromacy:
 				volume.profile = monochromacy;

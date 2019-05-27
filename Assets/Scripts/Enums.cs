@@ -27,7 +27,11 @@ public enum GameMode
 public enum ColorblindMode
 {
 	Normal,
-	Deuteranopa,
+	Deuteranomaly,
+	Protanomaly,
+	Protanopia,
+	Deuteranopia,
 	Tritanopia,
+	Tritanomaly,
 	Monochromacy
 }

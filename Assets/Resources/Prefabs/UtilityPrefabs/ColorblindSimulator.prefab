@@ -46,8 +46,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   volume: {fileID: 7409482822922048988}
   normal: {fileID: 11400000, guid: e31e6e6403f0bfa46b8d9853fc2483de, type: 2}
-  deuteranopa: {fileID: 11400000, guid: 4d733aa5cd54b5241896f3f0186b8595, type: 2}
+  deuteranomaly: {fileID: 11400000, guid: e1d2bf18f5c9bf34eba4900b7061ba50, type: 2}
+  protanomaly: {fileID: 11400000, guid: 4673ff9bf1c9cca4894c4a0e2417b08c, type: 2}
+  protanopia: {fileID: 11400000, guid: b007a00e590955c43bc7d9067adeacca, type: 2}
+  deuteranopia: {fileID: 11400000, guid: 4d733aa5cd54b5241896f3f0186b8595, type: 2}
   tritanopia: {fileID: 11400000, guid: 63369ec6b3f1d1f4785ba51aee071b5b, type: 2}
+  tritanomaly: {fileID: 11400000, guid: a5c664dddb1cb7d45a21cb3c8470460e, type: 2}
   monochromacy: {fileID: 11400000, guid: 6f04cb28c97b03848bf0e1567e535a26, type: 2}
   currentMode: 0
 --- !u!114 &7409482822922048988

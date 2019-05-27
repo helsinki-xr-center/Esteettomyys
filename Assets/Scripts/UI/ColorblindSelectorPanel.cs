@@ -37,6 +37,48 @@ public class ColorblindSelectorPanel : MonoBehaviour
 
 	/**
 	 * <summary>
+	 * Unity UI callback for deuteranomaly mode button.
+	 * </summary>
+	 */
+	public void OnDeuteranomalyButtonClick()
+	{
+		if (simulator == null)
+		{
+			simulator = FindObjectOfType<ColorblindModeSimulator>();
+		}
+		simulator.SetColorblindMode(ColorblindMode.Deuteranomaly);
+	}
+
+	/**
+	 * <summary>
+	 * Unity UI callback for protanomaly mode button.
+	 * </summary>
+	 */
+	public void OnProtanomalyButtonClick()
+	{
+		if (simulator == null)
+		{
+			simulator = FindObjectOfType<ColorblindModeSimulator>();
+		}
+		simulator.SetColorblindMode(ColorblindMode.Protanomaly);
+	}
+
+	/**
+	 * <summary>
+	 * Unity UI callback for protanopia mode button.
+	 * </summary>
+	 */
+	public void OnProtanopiaButtonClick()
+	{
+		if (simulator == null)
+		{
+			simulator = FindObjectOfType<ColorblindModeSimulator>();
+		}
+		simulator.SetColorblindMode(ColorblindMode.Protanopia);
+	}
+
+	/**
+	 * <summary>
 	 * Unity UI callback for deuteranopia mode button.
 	 * </summary>
 	 */
@@ -46,7 +88,7 @@ public class ColorblindSelectorPanel : MonoBehaviour
 		{
 			simulator = FindObjectOfType<ColorblindModeSimulator>();
 		}
-		simulator.SetColorblindMode(ColorblindMode.Deuteranopa);
+		simulator.SetColorblindMode(ColorblindMode.Deuteranopia);
 	}
 
 	/**
@@ -61,6 +103,20 @@ public class ColorblindSelectorPanel : MonoBehaviour
 			simulator = FindObjectOfType<ColorblindModeSimulator>();
 		}
 		simulator.SetColorblindMode(ColorblindMode.Tritanopia);
+	}
+
+	/**
+	 * <summary>
+	 * Unity UI callback for tritanomaly mode button.
+	 * </summary>
+	 */
+	public void OnTritanomalyButtonClick()
+	{
+		if (simulator == null)
+		{
+			simulator = FindObjectOfType<ColorblindModeSimulator>();
+		}
+		simulator.SetColorblindMode(ColorblindMode.Tritanomaly);
 	}
 
 	/**
