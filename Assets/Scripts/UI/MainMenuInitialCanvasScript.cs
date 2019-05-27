@@ -47,12 +47,12 @@ public class MainMenuInitialCanvasScript : MonoBehaviour
 		}
 
 
-		if(GlobalValues.gameMode == GlobalValues.GameMode.PC){
+		if(GlobalValues.controllerMode == ControllerMode.PC){
 			SceneManager.LoadScene(pcLobbyScene);
-		}else if(GlobalValues.gameMode == GlobalValues.GameMode.VR){
+		}else if(GlobalValues.controllerMode == ControllerMode.VR){
 			SceneManager.LoadScene(vrLobbyScene);
 		}else{
-			Debug.LogError("GlobalValues.GameMode is undefined: " + GlobalValues.gameMode, this);
+			Debug.LogError("GlobalValues.GameMode is undefined: " + GlobalValues.controllerMode, this);
 		}
 	}
 

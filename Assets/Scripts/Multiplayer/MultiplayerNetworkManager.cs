@@ -44,7 +44,7 @@ public class MultiplayerNetworkManager : MonoBehaviour
 	{
 		if(Input.GetKeyDown(KeyCode.Escape)){
 			PhotonNetwork.LeaveRoom();
-			string lobbyName = GlobalValues.gameMode == GlobalValues.GameMode.PC ? pcLobby : vrLobby;
+			string lobbyName = GlobalValues.controllerMode == ControllerMode.PC ? pcLobby : vrLobby;
 			SceneLoaderAsync.instance.LoadSceneAndUnloadCurrent(lobbyName);
 		}
 	}

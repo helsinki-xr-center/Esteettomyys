@@ -12,13 +12,9 @@ using UnityEngine;
  */
 public static class GlobalValues
 {
-	public enum GameMode
-	{
-		VR,
-		PC
-	}
 
-	public static GameMode gameMode = GameMode.PC;
+	public static GameMode gameMode = GameMode.Tutorial;
+	public static ControllerMode controllerMode = ControllerMode.PC;
 	public static string user = "TestUser";
 	public static bool loggedIn;
 	public static bool offlineMode;

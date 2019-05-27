@@ -27,7 +27,7 @@ public class VRUIInput : MonoBehaviour
 	/// </summary>
 	/// <param name="sender">Class that sends the data </param>
 	/// <param name="hitInfo">Information of the Raycast hit </param>
-	public void HandlePointerHit(object sender, NewRayCastData hitInfo)
+	public void HandlePointerHit(object sender, RayCastData hitInfo)
 	{
 		Button button = hitInfo.target.GetComponent<Button>();
 		if(button != null)
@@ -42,7 +42,7 @@ public class VRUIInput : MonoBehaviour
 	/// </summary>
 	/// <param name="sender"> Class that sends the data </param>
 	/// <param name="hitInfo"> Information of the Raycast hit </param>
-	public void HandlePointerLeft(object sender, NewRayCastData hitInfo)
+	public void HandlePointerLeft(object sender, RayCastData hitInfo)
 	{
 		Button button = hitInfo.target.GetComponent<Button>();
 		if (button != null)
@@ -57,7 +57,7 @@ public class VRUIInput : MonoBehaviour
 	/// </summary>
 	/// <param name="sender"> Class that sends the data </param>
 	/// <param name="hitInfo"> Information of the Raycast hit </param>
-	public void HandlePointerClick(object sender, NewRayCastData hitInfo)
+	public void HandlePointerClick(object sender, RayCastData hitInfo)
 	{
 		Debug.Log("CLICKED");
 		if(EventSystem.current.currentSelectedGameObject != null)

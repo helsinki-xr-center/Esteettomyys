@@ -42,7 +42,7 @@ public class VRPCSelector : AwaitableUIPanel
 	}
 
 	private void VrButtonImpl(){
-		GlobalValues.gameMode = GlobalValues.GameMode.VR;
+		GlobalValues.controllerMode = ControllerMode.VR;
 		selected = true;
 	}
 
@@ -53,7 +53,7 @@ public class VRPCSelector : AwaitableUIPanel
 	 */
 	public void OnPCButtonPressed()
 	{
-		GlobalValues.gameMode = GlobalValues.GameMode.PC;
+		GlobalValues.controllerMode = ControllerMode.PC;
 		selected = true;
 	}
 
