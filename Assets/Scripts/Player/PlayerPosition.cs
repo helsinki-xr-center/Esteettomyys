@@ -48,6 +48,15 @@ public class PlayerPosition : MonoBehaviour
 		return Quaternion.Euler(new Vector3(0, vrRot.y, 0));
 	}
 
+	public Vector3 GetForward()
+	{
+		if (vrCamera == null)
+		{
+			return transform.forward;
+		}
+		return transform.forward;
+	}
+
 	/**
 	 * <summary>
 	 * Returns whether this script is tracking the player hands or not
