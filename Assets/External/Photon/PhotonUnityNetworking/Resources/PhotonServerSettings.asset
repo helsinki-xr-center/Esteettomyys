@@ -15,7 +15,7 @@ MonoBehaviour:
   AppSettings:
     AppIdRealtime: 4f10155b-482a-4456-b1ea-865358cbc7a6
     AppIdChat: 
-    AppIdVoice: 
+    AppIdVoice: d14f2551-128c-4a22-b5ef-52d2b1b2fa82
     AppVersion: 
     UseNameServer: 1
     FixedRegion: 
@@ -30,4 +30,4 @@ MonoBehaviour:
   RunInBackground: 1
   RpcList: []
   DisableAutoOpenWizard: 1
-  ShowSettings: 0
+  ShowSettings: 1

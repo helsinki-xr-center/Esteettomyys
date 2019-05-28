@@ -8,9 +8,8 @@ https://doc.photonengine.com
 http://forum.photonengine.com
 
 
-*** Version 4.1.2.14 (6. May 2019 - rev5088)
+*** Version 4.1.2.14 (6. May 2019 - rev5087)
     Changed: EventData now has Sender or CustomData properties as well as SenderKey and CustomDataKey. The keys can be defines according to API. The default are the Realtime API values. Sender and CustomData access is cached. If an EventData instance is reused (PhotonPeer.ReuseEventInstance), the values will reset.
-	
 *** Version 4.1.2.13 (3. May 2019 - rev5086)
     Changed: EventData to not contain the Sender or CustomData properties anymore. They have been specific for the Realtime API and confusing for APIs like Chat. 
     Added: PhotonPeer.ReuseEventInstance as option to use a single EventData instance for all incoming events. This reduces memory garbage. The drawback is: An event provided via OnEvent(EventData photonEvent) is invalidated right after the callback finished. That event's content will get modified. Typically this is not a problem as events are rarely cached.
