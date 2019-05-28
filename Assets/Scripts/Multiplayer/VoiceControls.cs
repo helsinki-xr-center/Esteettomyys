@@ -71,7 +71,8 @@ public class VoiceControls : MonoBehaviour
 	 * Event callback for <see cref="Settings.OnSettingsChanged"/>
 	 * </summary>
 	 */
-	private void SetSettings(Settings settings){
+	private void SetSettings(Settings settings)
+	{
 		if (settings.voiceChatEnabled)
 		{
 			recorder.TransmitEnabled = true;
