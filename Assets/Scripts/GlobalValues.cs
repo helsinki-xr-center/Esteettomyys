@@ -18,6 +18,9 @@ public static class GlobalValues
 	public static string user = "TestUser";
 	public static bool loggedIn;
 	public static bool offlineMode;
+	public static Settings settings {
+		get => Settings.Get();
+	}
 }
 
 
