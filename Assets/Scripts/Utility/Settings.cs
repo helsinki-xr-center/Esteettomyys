@@ -66,6 +66,7 @@ public class Settings
 		}
 		catch (System.Exception ex)
 		{
+			Debug.LogWarning("Failed loading settings: \n" + ex);
 			currentSettings = new Settings();
 		}
 		loaded = true;
