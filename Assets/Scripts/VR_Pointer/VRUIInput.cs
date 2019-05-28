@@ -34,7 +34,7 @@ public class VRUIInput : MonoBehaviour
 		{
 			button.Select();
 		}
-		Debug.Log("POINTER HITS");
+		//Debug.Log("POINTER HITS");
 	}
 
 	/// <summary>
@@ -49,7 +49,7 @@ public class VRUIInput : MonoBehaviour
 		{
 			EventSystem.current.SetSelectedGameObject(null);
 		}
-		Debug.Log("POINTER LEFT");
+		//Debug.Log("POINTER LEFT");
 	}
 
 	/// <summary>
@@ -59,8 +59,8 @@ public class VRUIInput : MonoBehaviour
 	/// <param name="hitInfo"> Information of the Raycast hit </param>
 	public void HandlePointerClick(object sender, RayCastData hitInfo)
 	{
-		Debug.Log("CLICKED");
-		if(EventSystem.current.currentSelectedGameObject != null)
+		//Debug.Log("CLICKED");
+		if (EventSystem.current.currentSelectedGameObject != null)
 		{
 			ExecuteEvents.Execute(EventSystem.current.currentSelectedGameObject, new PointerEventData(EventSystem.current), ExecuteEvents.submitHandler);
 		}

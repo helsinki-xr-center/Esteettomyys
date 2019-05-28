@@ -94,7 +94,7 @@ public class InteractableObject : MonoBehaviour
 	{
 		if (hitData.target == transform)
 		{
-			Debug.Log("IM HOVERED OVER" + gameObject.name);
+			//Debug.Log("IM HOVERED OVER" + gameObject.name);
 			ExtensionMethods.MaterialColorChange(gameObject, hoveringColor);
 		}
 	}
@@ -104,7 +104,7 @@ public class InteractableObject : MonoBehaviour
 		if (hitData.target == transform)
 		{
 
-			Debug.Log("IM HOVERED EXIT" + gameObject.name);
+			//Debug.Log("IM HOVERED EXIT" + gameObject.name);
 			if (sender.GetType() == typeof(PcPlayer))
 			{
 				PcPlayer pl = (PcPlayer)sender;
@@ -132,7 +132,7 @@ public class InteractableObject : MonoBehaviour
 	{
 		if (hitData.target == transform)
 		{
-			Debug.Log("IM CLICKED" + gameObject.name);
+			//Debug.Log("IM CLICKED" + gameObject.name);
 			if (sender.GetType() == typeof(PcPlayer))
 			{
 				PcPlayer pl = (PcPlayer)sender;
