@@ -17,8 +17,11 @@ public class VoiceControls : MonoBehaviour
 	void Start()
 	{
 		recorder = GetComponent<Recorder>();
-		recorder.TransmitEnabled = true;
-		recorder.VoiceDetection = true;
+
+		if(GlobalValues.settings.voiceChatEnabled){
+			recorder.TransmitEnabled = true;
+			recorder.VoiceDetection = true;
+		}
 	}
 
 	// Update is called once per frame
