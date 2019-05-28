@@ -25,10 +25,7 @@ public class VoiceControls : MonoBehaviour
 	{
 		recorder = GetComponent<Recorder>();
 
-		if(GlobalValues.settings.voiceChatEnabled){
-			recorder.TransmitEnabled = true;
-			recorder.VoiceDetection = true;
-		}
+		SetSettings(GlobalValues.settings);
 	}
 
 	void Update()
@@ -57,5 +54,29 @@ public class VoiceControls : MonoBehaviour
 			GUI.DrawTexture(new Rect(50, 50, 50, 50), voiceDisabled);
 		}
 
+	}
+
+	private void OnEnable()
+	{
+		Settings.OnSettingsChanged += SetSettings;
+	}
+
+	private void OnDisable()
+	{
+		Settings.OnSettingsChanged -= SetSettings;
+	}
+
+	/**
+	 * <summary>
+	 * Event callback for <see cref="Settings.OnSettingsChanged"/>
+	 * </summary>
+	 */
+	private void SetSettings(Settings settings)
+	{
+		if (settings.voiceChatEnabled)
+		{
+			recorder.TransmitEnabled = true;
+			recorder.VoiceDetection = true;
+		}
 	}
 }

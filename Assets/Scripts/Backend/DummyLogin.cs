@@ -16,6 +16,7 @@ public class DummyLogin : ILoginProvider
 {
 	public async Task<LoginResult> Login(string username, string password)
 	{
+		await Task.CompletedTask;
 		if (password == "password")
 		{
 			return LoginResult.Success;

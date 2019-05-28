@@ -11,7 +11,7 @@ using UnityEngine;
  * Handles syncing avatar position with the real player position. Also disables avatar rendering for local avatar.
  * </summary>
  */
- [RequireComponent(typeof(PhotonView))]
+[RequireComponent(typeof(PhotonView))]
 public class AvatarFollowPlayer : MonoBehaviour
 {
 
@@ -30,7 +30,8 @@ public class AvatarFollowPlayer : MonoBehaviour
 			player = FindObjectOfType<PlayerPosition>();
 
 			// Disable renderers for local player. Should maybe move to different layer (and player camera wouldn't render that) in the future.
-			foreach(var rend in GetComponentsInChildren<Renderer>()){
+			foreach (var rend in GetComponentsInChildren<Renderer>())
+			{
 				rend.enabled = false;
 			}
 		}
@@ -46,7 +47,8 @@ public class AvatarFollowPlayer : MonoBehaviour
 		transform.position = player.GetPosition();
 		transform.rotation = player.GetRotation();
 
-		if(player.IsTrackingHands()){
+		if (player.IsTrackingHands())
+		{
 			rightHand.position = player.GetRightHandPosition();
 			rightHand.rotation = player.GetRightHandRotation();
 
@@ -54,7 +56,8 @@ public class AvatarFollowPlayer : MonoBehaviour
 			leftHand.rotation = player.GetLeftHandRotation();
 		}
 
-		if(player.IsTrackingHead()){
+		if (player.IsTrackingHead())
+		{
 			head.transform.position = transform.position + (Vector3.up * player.GetHeadHeightFromBase());
 		}
 	}

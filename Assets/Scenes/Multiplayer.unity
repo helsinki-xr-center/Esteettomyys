@@ -346,7 +346,7 @@ MonoBehaviour:
   frameDuration: 20000
   bitrate: 30000
   sourceType: 0
-  microphoneType: 0
+  microphoneType: 1
   typeConvert: 0
   audioClip: {fileID: 0}
   loopAudioClip: 1
@@ -417,7 +417,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   voiceEnabled: {fileID: 2800000, guid: 96756fd342e07a64cbe6f2f614cb3e5d, type: 3}
   voiceDisabled: {fileID: 2800000, guid: 27f3faef5a63db84c9cbac06e94ab7b3, type: 3}
-  showDebugGui: 1
+  showDebugGUI: 1
 --- !u!1 &463754522
 GameObject:
   m_ObjectHideFlags: 0
