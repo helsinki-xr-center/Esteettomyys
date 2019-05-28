@@ -26,4 +26,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Multiplayer.unity
     guid: ac7d9bbc88ba6aa4c950cee3550ffa51
+  - enabled: 1
+    path: Assets/Scenes/Postprocess.unity
+    guid: 36b3360460efd0f4691ba6edd9a5fd62
   m_configObjects: {}

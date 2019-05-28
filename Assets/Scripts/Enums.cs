@@ -22,3 +22,16 @@ public enum GameMode
 	Training,
 	Exam,
 }
+
+
+public enum ColorblindMode
+{
+	Normal,
+	Deuteranomaly,
+	Protanomaly,
+	Protanopia,
+	Deuteranopia,
+	Tritanopia,
+	Tritanomaly,
+	Monochromacy
+}

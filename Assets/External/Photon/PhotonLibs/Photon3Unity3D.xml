@@ -606,7 +606,7 @@
             Count of all commands currently queued as outgoing, including all channels and reliable, unreliable.
             </summary>
         </member>
-        <!-- Badly formed XML comment ignored for member "M:ExitGames.Client.Photon.PhotonPeer.MessageBufferPoolTrim(System.Int32)" -->
+        <!-- Ungültiger XML-Kommentar wurde für den Member "M:ExitGames.Client.Photon.PhotonPeer.MessageBufferPoolTrim(System.Int32)" ignoriert -->
         <member name="F:ExitGames.Client.Photon.PhotonPeer.ChannelCount">
             <summary>
             Gets / sets the number of channels available in UDP connections with Photon.
@@ -1464,8 +1464,8 @@
         <member name="P:ExitGames.Client.Photon.NCommand.SizeOfPayload">
             <summary>Size of the Payload, which may be null.</summary>
         </member>
-        <!-- Badly formed XML comment ignored for member "P:ExitGames.Client.Photon.NCommand.IsFlaggedUnsequenced" -->
-        <!-- Badly formed XML comment ignored for member "P:ExitGames.Client.Photon.NCommand.IsFlaggedReliable" -->
+        <!-- Ungültiger XML-Kommentar wurde für den Member "P:ExitGames.Client.Photon.NCommand.IsFlaggedUnsequenced" ignoriert -->
+        <!-- Ungültiger XML-Kommentar wurde für den Member "P:ExitGames.Client.Photon.NCommand.IsFlaggedReliable" ignoriert -->
         <member name="M:ExitGames.Client.Photon.NCommand.#ctor(ExitGames.Client.Photon.EnetPeer,System.Byte,ExitGames.Client.Photon.StreamBuffer,System.Byte)">
             <summary>this variant does only create outgoing commands and increments . incoming ones are created from a DataInputStream</summary>
         </member>

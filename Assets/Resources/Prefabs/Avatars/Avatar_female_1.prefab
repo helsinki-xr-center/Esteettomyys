@@ -447,41 +447,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Avatar_female_1
       objectReference: {fileID: 0}
-    - target: {fileID: 5692020630486124804, guid: a2604a0bb3c4cb045a65de304cc129ae,
-        type: 3}
-      propertyPath: rightHand
-      value: 
-      objectReference: {fileID: 7178496335776747860}
-    - target: {fileID: 5692020630486124804, guid: a2604a0bb3c4cb045a65de304cc129ae,
-        type: 3}
-      propertyPath: leftHand
-      value: 
-      objectReference: {fileID: 839505260090661482}
-    - target: {fileID: 5692020630486124804, guid: a2604a0bb3c4cb045a65de304cc129ae,
-        type: 3}
-      propertyPath: head
-      value: 
-      objectReference: {fileID: 460626288270220807}
-    - target: {fileID: 4985310656033097486, guid: a2604a0bb3c4cb045a65de304cc129ae,
-        type: 3}
-      propertyPath: childTransforms.Array.size
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 4985310656033097486, guid: a2604a0bb3c4cb045a65de304cc129ae,
-        type: 3}
-      propertyPath: childTransforms.Array.data[0]
-      value: 
-      objectReference: {fileID: 7178496335776747860}
-    - target: {fileID: 4985310656033097486, guid: a2604a0bb3c4cb045a65de304cc129ae,
-        type: 3}
-      propertyPath: childTransforms.Array.data[1]
-      value: 
-      objectReference: {fileID: 839505260090661482}
-    - target: {fileID: 4985310656033097486, guid: a2604a0bb3c4cb045a65de304cc129ae,
-        type: 3}
-      propertyPath: childTransforms.Array.data[2]
-      value: 
-      objectReference: {fileID: 460626288270220807}
     - target: {fileID: 3766484120045288528, guid: a2604a0bb3c4cb045a65de304cc129ae,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -537,6 +502,41 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5692020630486124804, guid: a2604a0bb3c4cb045a65de304cc129ae,
+        type: 3}
+      propertyPath: rightHand
+      value: 
+      objectReference: {fileID: 7178496335776747860}
+    - target: {fileID: 5692020630486124804, guid: a2604a0bb3c4cb045a65de304cc129ae,
+        type: 3}
+      propertyPath: leftHand
+      value: 
+      objectReference: {fileID: 839505260090661482}
+    - target: {fileID: 5692020630486124804, guid: a2604a0bb3c4cb045a65de304cc129ae,
+        type: 3}
+      propertyPath: head
+      value: 
+      objectReference: {fileID: 460626288270220807}
+    - target: {fileID: 4985310656033097486, guid: a2604a0bb3c4cb045a65de304cc129ae,
+        type: 3}
+      propertyPath: childTransforms.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 4985310656033097486, guid: a2604a0bb3c4cb045a65de304cc129ae,
+        type: 3}
+      propertyPath: childTransforms.Array.data[0]
+      value: 
+      objectReference: {fileID: 7178496335776747860}
+    - target: {fileID: 4985310656033097486, guid: a2604a0bb3c4cb045a65de304cc129ae,
+        type: 3}
+      propertyPath: childTransforms.Array.data[1]
+      value: 
+      objectReference: {fileID: 839505260090661482}
+    - target: {fileID: 4985310656033097486, guid: a2604a0bb3c4cb045a65de304cc129ae,
+        type: 3}
+      propertyPath: childTransforms.Array.data[2]
+      value: 
+      objectReference: {fileID: 460626288270220807}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a2604a0bb3c4cb045a65de304cc129ae, type: 3}
 --- !u!4 &6912245785606401882 stripped
