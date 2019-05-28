@@ -18,6 +18,7 @@ public class VoiceControls : MonoBehaviour
 	{
 		recorder = GetComponent<Recorder>();
 		recorder.TransmitEnabled = true;
+		recorder.VoiceDetection = true;
 	}
 
 	// Update is called once per frame
@@ -38,10 +39,12 @@ public class VoiceControls : MonoBehaviour
 		}
 		if (recorder.IsRecording)
 		{
+			GUI.Label(new Rect(10, 10, 200, 30), "Press M to Mute");
 			GUI.DrawTexture(new Rect(50, 50, 50, 50), voiceEnabled);
 		}
 		else
 		{
+			GUI.Label(new Rect(10, 10, 200, 30), "Press M to Unmute");
 			GUI.DrawTexture(new Rect(50, 50, 50, 50), voiceDisabled);
 		}
 
