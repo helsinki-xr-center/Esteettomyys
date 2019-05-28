@@ -3,6 +3,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
+
+/**
+ * Author: Nomi Lakkala
+ * 
+ * <summary>
+ * Controls voice chat with keyboard input. Attached to the same GameObject as Recorder.
+ * </summary>
+ */
 [RequireComponent(typeof(Recorder))]
 public class VoiceControls : MonoBehaviour
 {
@@ -12,8 +21,6 @@ public class VoiceControls : MonoBehaviour
 
 	Recorder recorder;
 
-
-	// Start is called before the first frame update
 	void Start()
 	{
 		recorder = GetComponent<Recorder>();
@@ -24,7 +31,6 @@ public class VoiceControls : MonoBehaviour
 		}
 	}
 
-	// Update is called once per frame
 	void Update()
 	{
 		if (Input.GetKeyDown(KeyCode.M))

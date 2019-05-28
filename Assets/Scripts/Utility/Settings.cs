@@ -2,6 +2,15 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+
+
+/**
+ * Author: Nomi Lakkala
+ * 
+ * <summary>
+ * Holds current settings. Also handles loading and saving settings to computer.
+ * </summary>
+ */
 [System.Serializable]
 public class Settings
 {
@@ -9,7 +18,7 @@ public class Settings
 	private static bool loaded = false;
 	private static Settings currentSettings;
 
-	//Settings start from here
+	//Settings here
 	public bool voiceChatEnabled = true;
 
 
@@ -18,7 +27,11 @@ public class Settings
 
 
 
-
+	/**
+	 * <summary>
+	 * Returns the current settings. If not loaded, calls <see cref="Load"/> first.
+	 * </summary>
+	 */
 	public static Settings Get()
 	{
 		if (!loaded)
@@ -28,6 +41,11 @@ public class Settings
 		return currentSettings;
 	}
 
+	/**
+	 * <summary>
+	 * Loads settings from playerprefs.
+	 * </summary>
+	 */
 	public static void Load()
 	{
 		try
@@ -51,6 +69,11 @@ public class Settings
 		loaded = true;
 	}
 
+	/**
+	 * <summary>
+	 * Saves current settings to playerprefs.
+	 * </summary>
+	 */
 	public static void Save()
 	{
 		if (currentSettings == null)
@@ -62,6 +85,11 @@ public class Settings
 		PlayerPrefs.Save();
 	}
 
+	/**
+	 * <summary>
+	 * Resets settings to default.
+	 * </summary>
+	 */
 	public static void Reset()
 	{
 		currentSettings = new Settings();
