@@ -14,6 +14,8 @@ using UnityEngine;
 [System.Serializable]
 public class Settings
 {
+	public delegate void OnSettingsChangedDelegate(Settings newSettings);
+	public static event OnSettingsChangedDelegate OnSettingsChanged;
 	private const string settings_key = "user_settings";
 	private static bool loaded = false;
 	private static Settings currentSettings;
@@ -43,7 +45,7 @@ public class Settings
 
 	/**
 	 * <summary>
-	 * Loads settings from playerprefs.
+	 * Loads settings from playerprefs. Also fires <see cref="OnSettingsChanged"/> event.
 	 * </summary>
 	 */
 	public static void Load()
@@ -67,11 +69,13 @@ public class Settings
 			currentSettings = new Settings();
 		}
 		loaded = true;
+
+		OnSettingsChanged?.Invoke(currentSettings);
 	}
 
 	/**
 	 * <summary>
-	 * Saves current settings to playerprefs.
+	 * Saves current settings to playerprefs. Also fires <see cref="OnSettingsChanged"/> event.
 	 * </summary>
 	 */
 	public static void Save()
@@ -83,6 +87,8 @@ public class Settings
 		var json = JsonUtility.ToJson(currentSettings);
 		PlayerPrefs.SetString(settings_key, json);
 		PlayerPrefs.Save();
+
+		OnSettingsChanged?.Invoke(currentSettings);
 	}
 
 	/**
