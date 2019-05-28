@@ -46,21 +46,48 @@ public class HoverTabletControl : MonoBehaviour
 			transform.position = Vector3.Lerp(transform.position, GetFrontPosition(), Time.deltaTime * speed);
 		}
 
+		float height;
 
-		transform.LookAt(new Vector3(playerPosition.transform.position.x, playerPosition.transform.position.y + playerPosition.GetHeadHeightFromBase(), playerPosition.transform.position.z));
+		if (GlobalValues.controllerMode == ControllerMode.VR)
+		{
+			height = playerPosition.GetHeadHeightFromBase();
+		}
+		else
+		{
+			height = 1.8f;
+		}
+
+		transform.LookAt(new Vector3(playerPosition.transform.position.x, playerPosition.transform.position.y + height, playerPosition.transform.position.z));
 	}
 
 	private void BringTabletToFront()
 	{
-		if (tabletToFront.GetLastStateDown(SteamVR_Input_Sources.Any))
+		if (GlobalValues.controllerMode == ControllerMode.VR)
 		{
-			if (following)
+			if (tabletToFront.GetLastStateDown(SteamVR_Input_Sources.Any))
 			{
-				following = false;
+				if (following)
+				{
+					following = false;
+				}
+				else
+				{
+					following = true;
+				}
 			}
-			else
+		}
+		else
+		{
+			if (Input.GetButtonDown("Jump"))
 			{
-				following = true;
+				if (following)
+				{
+					following = false;
+				}
+				else
+				{
+					following = true;
+				}
 			}
 		}
 	}
@@ -79,7 +106,16 @@ public class HoverTabletControl : MonoBehaviour
 	public Vector3 GetBackPosition()
 	{
 		Vector3 direction = playerPosition.GetRotation() * -Vector3.forward;
-		float headHeight = playerPosition.GetHeadHeightFromBase();
+		float headHeight;
+		if (GlobalValues.controllerMode == ControllerMode.VR)
+		{
+			headHeight = playerPosition.GetHeadHeightFromBase();
+		}
+		else
+		{
+			headHeight = 1.8f;
+		}
+		
 		backPosition = playerPosition.GetPosition() + new Vector3(direction.x * followDistance, headHeight / 2, direction.z * followDistance);
 		return backPosition;
 	}
@@ -87,7 +123,15 @@ public class HoverTabletControl : MonoBehaviour
 	public Vector3 GetFrontPosition()
 	{
 		Vector3 direction = playerPosition.GetRotation() * Vector3.forward;
-		float headHeight = playerPosition.GetHeadHeightFromBase();
+		float headHeight;
+		if (GlobalValues.controllerMode == ControllerMode.VR)
+		{
+			headHeight = playerPosition.GetHeadHeightFromBase();
+		}
+		else
+		{
+			headHeight = 1.8f;
+		}
 		frontPosition = playerPosition.GetPosition() + new Vector3(direction.x * frontDistance, headHeight / 2, direction.z * frontDistance);
 		return frontPosition;
 	}
