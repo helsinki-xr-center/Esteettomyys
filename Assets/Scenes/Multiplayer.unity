@@ -311,6 +311,7 @@ GameObject:
   - component: {fileID: 437433162}
   - component: {fileID: 437433161}
   - component: {fileID: 437433160}
+  - component: {fileID: 437433163}
   m_Layer: 0
   m_Name: Voice
   m_TagString: Untagged
@@ -334,7 +335,7 @@ MonoBehaviour:
   voiceDetection: 0
   voiceDetectionThreshold: 0.01
   voiceDetectionDelayMs: 500
-  unityMicrophoneDevice: Microphone (USB Audio Device)
+  unityMicrophoneDevice: Microphone (2- USB Audio Device)
   photonMicrophoneDeviceId: 0
   interestGroup: 0
   debugEchoMode: 0
@@ -402,6 +403,21 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &437433163
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 437433159}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3b203aeb9a3ccdf47b49e3f6340b3dac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  voiceEnabled: {fileID: 2800000, guid: 96756fd342e07a64cbe6f2f614cb3e5d, type: 3}
+  voiceDisabled: {fileID: 2800000, guid: 27f3faef5a63db84c9cbac06e94ab7b3, type: 3}
+  showDebugGui: 1
 --- !u!1 &463754522
 GameObject:
   m_ObjectHideFlags: 0
