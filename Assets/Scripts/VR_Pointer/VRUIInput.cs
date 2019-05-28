@@ -29,10 +29,21 @@ public class VRUIInput : MonoBehaviour
 	/// <param name="hitInfo">Information of the Raycast hit </param>
 	public void HandlePointerHit(object sender, RayCastData hitInfo)
 	{
-		Button button = hitInfo.target.GetComponent<Button>();
-		if(button != null)
+		if (hitInfo.target.GetComponent<Button>() != null)
 		{
-			button.Select();
+			Button button = hitInfo.target.GetComponent<Button>();
+			if (button != null)
+			{
+				button.Select();
+			}
+		}
+		if (hitInfo.target.GetComponent<Slider>() != null)
+		{
+			Slider slider = hitInfo.target.GetComponent<Slider>();
+			if (slider != null)
+			{
+				slider.Select();
+			}
 		}
 		//Debug.Log("POINTER HITS");
 	}
@@ -44,10 +55,21 @@ public class VRUIInput : MonoBehaviour
 	/// <param name="hitInfo"> Information of the Raycast hit </param>
 	public void HandlePointerLeft(object sender, RayCastData hitInfo)
 	{
-		Button button = hitInfo.target.GetComponent<Button>();
-		if (button != null)
+		if (hitInfo.target.GetComponent<Button>() != null)
 		{
-			EventSystem.current.SetSelectedGameObject(null);
+			Button button = hitInfo.target.GetComponent<Button>();
+			if (button != null)
+			{
+				EventSystem.current.SetSelectedGameObject(null);
+			}
+		}
+		if (hitInfo.target.GetComponent<Slider>() != null)
+		{
+			Slider slider = hitInfo.target.GetComponent<Slider>();
+			if (slider != null)
+			{
+				EventSystem.current.SetSelectedGameObject(null);
+			}
 		}
 		//Debug.Log("POINTER LEFT");
 	}
@@ -60,9 +82,19 @@ public class VRUIInput : MonoBehaviour
 	public void HandlePointerClick(object sender, RayCastData hitInfo)
 	{
 		//Debug.Log("CLICKED");
-		if (EventSystem.current.currentSelectedGameObject != null)
+		if (hitInfo.target.GetComponent<Button>() != null)
 		{
-			ExecuteEvents.Execute(EventSystem.current.currentSelectedGameObject, new PointerEventData(EventSystem.current), ExecuteEvents.submitHandler);
+			if (EventSystem.current.currentSelectedGameObject != null)
+			{
+				ExecuteEvents.Execute(EventSystem.current.currentSelectedGameObject, new PointerEventData(EventSystem.current), ExecuteEvents.submitHandler);
+			}
+		}
+		if (hitInfo.target.GetComponent<Slider>() != null)
+		{
+			if(EventSystem.current.currentSelectedGameObject != null)
+			{
+				ExecuteEvents.Execute(EventSystem.current.currentSelectedGameObject, new PointerEventData(EventSystem.current), ExecuteEvents.submitHandler);
+			}
 		}
 	}
 }
