@@ -4,7 +4,14 @@ using UnityEngine;
 using UnityEngine.Rendering.PostProcessing;
 using System.Linq;
 
-
+/**
+ * Author: Nomi Lakkala
+ * 
+ * <summary>
+ * A script for setting different sight impairments. 
+ * Also handles focal point for nearsighted view to focus on the closest object.
+ * </summary>
+ */
 [RequireComponent(typeof(PostProcessVolume))]
 public class NearSightedAdjuster : MonoBehaviour
 {
@@ -29,7 +36,7 @@ public class NearSightedAdjuster : MonoBehaviour
 	void Start()
 	{
 		volume = GetComponent<PostProcessVolume>();
-		raycastAngles = GetXYRotations(20, 10).ToArray();
+		raycastAngles = GetRandomXYRotationValuesInRange(20, 10).ToArray();
 	}
 
 	// Update is called once per frame
@@ -74,7 +81,11 @@ public class NearSightedAdjuster : MonoBehaviour
 		}
 	}
 
-
+	/**
+	 * <summary>
+	 * Sets the current eyesight mode to be the desired mode. Turns on <see cref="dofAdjustOn"/> for near sightedness.
+	 * </summary>
+	 */
 	public void SetSightMode(EyesightMode mode)
 	{
 		dofAdjustOn = false;
@@ -138,7 +149,7 @@ public class NearSightedAdjuster : MonoBehaviour
 		}
 	}
 
-	private IEnumerable<Quaternion> GetXYRotations(float r, int num)
+	private IEnumerable<Quaternion> GetRandomXYRotationValuesInRange(float r, int num)
 	{
 		for (int i = 0; i < num; i++)
 		{
