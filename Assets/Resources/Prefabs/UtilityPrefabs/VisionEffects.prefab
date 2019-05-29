@@ -10,9 +10,10 @@ GameObject:
   m_Component:
   - component: {fileID: 7409482822922048989}
   - component: {fileID: 7409482822922048986}
+  - component: {fileID: 1718191965}
   - component: {fileID: 7409482822922048988}
   m_Layer: 8
-  m_Name: ColorblindSimulator
+  m_Name: VisionEffects
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -54,6 +55,25 @@ MonoBehaviour:
   tritanomaly: {fileID: 11400000, guid: a5c664dddb1cb7d45a21cb3c8470460e, type: 2}
   monochromacy: {fileID: 11400000, guid: 6f04cb28c97b03848bf0e1567e535a26, type: 2}
   currentMode: 0
+--- !u!114 &1718191965
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7409482822922048991}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 14c0af177156c6944b186b3369c568a3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxFocalPoint: 2
+  dofAdjustOn: 0
+  normalProfile: {fileID: 11400000, guid: e31e6e6403f0bfa46b8d9853fc2483de, type: 2}
+  farSightedProfile: {fileID: 11400000, guid: 421b455c34abb364f8ee3a000f29fd79, type: 2}
+  nearSightedProfile: {fileID: 11400000, guid: 3da6f96c58691304e8a9ab0e3fdea8b8, type: 2}
+  everythingIsBadProfile: {fileID: 11400000, guid: 5ce6c01aeb8205c4aa8c9faf2407e89f,
+    type: 2}
 --- !u!114 &7409482822922048988
 MonoBehaviour:
   m_ObjectHideFlags: 0

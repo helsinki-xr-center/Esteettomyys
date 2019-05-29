@@ -35,3 +35,11 @@ public enum ColorblindMode
 	Tritanomaly,
 	Monochromacy
 }
+
+public enum EyesightMode
+{
+	Normal,
+	NearSighted,
+	FarSighted,
+	Bad
+}
