@@ -97,6 +97,14 @@ namespace Valve.VR
             }
         }
         
+        public virtual SteamVR_Action_Boolean TeleportRightHand
+        {
+            get
+            {
+                return SteamVR_Actions.default_TeleportRightHand;
+            }
+        }
+        
         public virtual SteamVR_Action_Vibration Haptic
         {
             get

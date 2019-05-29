@@ -22,7 +22,7 @@ public class Settings
 
 	//Settings here
 	public bool voiceChatEnabled = true;
-
+	public static bool leftHandMode = false;
 
 
 

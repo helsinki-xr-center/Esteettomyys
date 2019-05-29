@@ -1,18 +1,20 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class OptionsTab : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+	[SerializeField] Button[] buttons;
+	[SerializeField] Slider[] sliders;
+
+	private void Start()
+	{
+		buttons = transform.GetChild(1).transform.GetChild(1).transform.GetChild(1).GetComponentsInChildren<Button>();
+		buttons = transform.GetChild(1).transform.GetChild(1).transform.GetChild(2).GetComponentsInChildren<Button>();
+		sliders = transform.GetChild(1).transform.GetChild(1).transform.GetChild(0).GetComponentsInChildren<Slider>();
+
+	}
+
 }

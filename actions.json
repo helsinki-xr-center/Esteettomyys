@@ -45,6 +45,10 @@
       "type": "boolean"
     },
     {
+      "name": "/actions/default/in/TeleportRightHand",
+      "type": "boolean"
+    },
+    {
       "name": "/actions/default/out/Haptic",
       "type": "vibration"
     },
