@@ -130,7 +130,7 @@ PrefabInstance:
     - target: {fileID: 7409482822922048991, guid: 8956b533fd454e142a9d983cd49a1176,
         type: 3}
       propertyPath: m_Name
-      value: ColorblindSimulator
+      value: VisionEffects
       objectReference: {fileID: 0}
     - target: {fileID: 7409482822922048989, guid: 8956b533fd454e142a9d983cd49a1176,
         type: 3}
