@@ -22,11 +22,8 @@ public class Settings
 
 	//Settings here
 	public bool voiceChatEnabled = true;
-	public static bool leftHandMode = false;
-
-
-
-
+	public bool leftHandMode = false;
+	public bool wheelChairMode = false;
 
 
 	/**

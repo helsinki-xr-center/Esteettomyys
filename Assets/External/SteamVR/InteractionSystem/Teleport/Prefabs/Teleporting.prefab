@@ -1036,6 +1036,7 @@ GameObject:
   - component: {fileID: 475244}
   - component: {fileID: 11445746}
   - component: {fileID: 11445956}
+  - component: {fileID: 4956711771494298150}
   m_Layer: 0
   m_Name: Teleporting
   m_TagString: Untagged
@@ -1149,6 +1150,24 @@ MonoBehaviour:
   arcSpeed: 0.2
   material: {fileID: 2100000, guid: 140bd0e59d9bee94f9f0284c9eef5b32, type: 2}
   traceLayerMask: 0
+--- !u!114 &4956711771494298150
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 153878}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 18008afcd31c2094f8e9f35c7d3dc7d5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rightHandModeInput:
+    actionPath: /actions/default/in/TeleportLeftHand
+    needsReinit: 0
+  leftHandModeInput:
+    actionPath: /actions/default/in/TeleportRightHand
+    needsReinit: 0
 --- !u!1 &165400
 GameObject:
   m_ObjectHideFlags: 0

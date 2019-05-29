@@ -120,42 +120,6 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
---- !u!4 &171248119 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 1778556319601492693, guid: 234d649ce8dfd554d97fe0b7af723199,
-    type: 3}
-  m_PrefabInstance: {fileID: 1778556320096315261}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &275144841
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 275144842}
-  m_Layer: 0
-  m_Name: FrontPosition
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &275144842
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 275144841}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1.5, z: 1.5}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 171248119}
-  m_RootOrder: 6
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &289526132
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -223,98 +187,8 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 2481316926103880645, guid: 5bee62c19b1245244a96f2321541dcd3,
-        type: 3}
-      propertyPath: pickUpMovable.actionPath
-      value: /actions/default/in/Teleport
-      objectReference: {fileID: 0}
-    - target: {fileID: 2481316926103880645, guid: 5bee62c19b1245244a96f2321541dcd3,
-        type: 3}
-      propertyPath: howeringColor.r
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2481316926103880645, guid: 5bee62c19b1245244a96f2321541dcd3,
-        type: 3}
-      propertyPath: howeringColor.g
-      value: 0.98728806
-      objectReference: {fileID: 0}
-    - target: {fileID: 2481316926103880645, guid: 5bee62c19b1245244a96f2321541dcd3,
-        type: 3}
-      propertyPath: howeringColor.b
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2481316926103880645, guid: 5bee62c19b1245244a96f2321541dcd3,
-        type: 3}
-      propertyPath: selectedColor.r
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2481316926103880645, guid: 5bee62c19b1245244a96f2321541dcd3,
-        type: 3}
-      propertyPath: selectedColor.g
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2481316926103880645, guid: 5bee62c19b1245244a96f2321541dcd3,
-        type: 3}
-      propertyPath: selectedColor.b
-      value: 0.078252554
-      objectReference: {fileID: 0}
-    - target: {fileID: 2481316926103880645, guid: 5bee62c19b1245244a96f2321541dcd3,
-        type: 3}
-      propertyPath: criticalObjectColor.r
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2481316926103880645, guid: 5bee62c19b1245244a96f2321541dcd3,
-        type: 3}
-      propertyPath: criticalObjectColor.g
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2481316926103880645, guid: 5bee62c19b1245244a96f2321541dcd3,
-        type: 3}
-      propertyPath: criticalObjectColor.b
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2481316926103880645, guid: 5bee62c19b1245244a96f2321541dcd3,
-        type: 3}
-      propertyPath: clickUIButton.actionPath
-      value: /actions/default/in/GrabPinch
-      objectReference: {fileID: 0}
-    - target: {fileID: 2481316926103880645, guid: 5bee62c19b1245244a96f2321541dcd3,
-        type: 3}
-      propertyPath: selectObj.actionPath
-      value: /actions/default/in/Teleport
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5bee62c19b1245244a96f2321541dcd3, type: 3}
---- !u!1 &304586133
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 304586134}
-  m_Layer: 0
-  m_Name: BackPosition
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &304586134
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 304586133}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1.5, z: -1.5}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 171248119}
-  m_RootOrder: 7
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1024645383
 GameObject:
   m_ObjectHideFlags: 0
@@ -358,26 +232,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1887157185 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1778556319601124527, guid: 234d649ce8dfd554d97fe0b7af723199,
-    type: 3}
-  m_PrefabInstance: {fileID: 1778556320096315261}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &1887157192
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1887157185}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: efcfe1d853e8b1a419954a448cf61ede, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  defaultHeight: 0.49
-  cam: {fileID: 0}
 --- !u!1001 &1778556320096315261
 PrefabInstance:
   m_ObjectHideFlags: 0

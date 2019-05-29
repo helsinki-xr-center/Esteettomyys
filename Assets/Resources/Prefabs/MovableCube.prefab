@@ -17,7 +17,7 @@ GameObject:
   - component: {fileID: 4277611477924377093}
   - component: {fileID: 2633175896884231781}
   - component: {fileID: 500915371293640454}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: MovableCube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -31,7 +31,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3674657305726470271}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -0.5571687, y: -0.6854553, z: -3.3965914}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
@@ -63,7 +63,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 00551016673b7c94f846a38b141b9949, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -104,11 +104,11 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3674657305726470271}
   serializedVersion: 2
-  m_Mass: 1
+  m_Mass: 100
   m_Drag: 0
   m_AngularDrag: 0.05
   m_UseGravity: 1
-  m_IsKinematic: 1
+  m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
@@ -175,6 +175,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7828a4a926bf4404aae61fb8dae3faa6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  hoveringColor: {r: 0.998315, g: 1, b: 0, a: 1}
+  selectedColor: {r: 1, g: 1, b: 1, a: 0}
+  examHoveringColor: {r: 0, g: 0, b: 0, a: 0}
+  standardColor: {r: 0, g: 0, b: 0, a: 0}
+  criticalColor: {r: 0, g: 0, b: 0, a: 0}
+  objectType: 1
+  manuallyPickedColors: 0
+  selected: 0
 --- !u!114 &2633175896884231781
 MonoBehaviour:
   m_ObjectHideFlags: 0

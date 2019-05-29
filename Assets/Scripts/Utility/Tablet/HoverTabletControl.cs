@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using Valve.VR;
 
+/// <summary>
+/// This Class controls the hovertablet movement
+/// </summary>
 public class HoverTabletControl : MonoBehaviour
 {
 
@@ -34,6 +37,9 @@ public class HoverTabletControl : MonoBehaviour
 
 	}
 
+	/// <summary>
+	/// Makes Hovertable follow and lookat players position
+	/// </summary>
 	private void TabletMovement()
 	{
 
@@ -60,6 +66,9 @@ public class HoverTabletControl : MonoBehaviour
 		transform.LookAt(new Vector3(playerPosition.transform.position.x, playerPosition.transform.position.y + height, playerPosition.transform.position.z));
 	}
 
+	/// <summary>
+	/// Brings tablet front or back of player from GribButton
+	/// </summary>
 	private void BringTabletToFront()
 	{
 		if (GlobalValues.controllerMode == ControllerMode.VR)
@@ -92,17 +101,28 @@ public class HoverTabletControl : MonoBehaviour
 		}
 	}
 
+	/// <summary>
+	/// Sets new follow distance
+	/// </summary>
+	/// <param name="value"></param>
 	public void SetFrontDistance( float value)
 	{
 		frontDistance = value;
 	}
 
+	/// <summary>
+	/// Sets new follow distance
+	/// </summary>
+	/// <param name="value"></param>
 	public void SetFollowDistance(float value)
 	{
 		followDistance = value;
 	}
 
-
+	/// <summary>
+	/// Calculates follow position for hovertablet
+	/// </summary>
+	/// <returns>Vector3 follow position</returns>
 	public Vector3 GetBackPosition()
 	{
 		Vector3 direction = playerPosition.GetRotation() * -Vector3.forward;
@@ -116,10 +136,14 @@ public class HoverTabletControl : MonoBehaviour
 			headHeight = 1.8f;
 		}
 		
-		backPosition = playerPosition.GetPosition() + new Vector3(direction.x * followDistance, headHeight / 2, direction.z * followDistance);
+		backPosition = playerPosition.GetPosition() + new Vector3(direction.x * followDistance, headHeight , direction.z * followDistance);
 		return backPosition;
 	}
 
+	/// <summary>
+	/// Calculates front position for hovertablet
+	/// </summary>
+	/// <returns>Vector3 front position</returns>
 	public Vector3 GetFrontPosition()
 	{
 		Vector3 direction = playerPosition.GetRotation() * Vector3.forward;
@@ -132,7 +156,7 @@ public class HoverTabletControl : MonoBehaviour
 		{
 			headHeight = 1.8f;
 		}
-		frontPosition = playerPosition.GetPosition() + new Vector3(direction.x * frontDistance, headHeight / 2, direction.z * frontDistance);
+		frontPosition = playerPosition.GetPosition() + new Vector3(direction.x * frontDistance, headHeight , direction.z * frontDistance);
 		return frontPosition;
 	}
 }

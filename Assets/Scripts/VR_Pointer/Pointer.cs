@@ -100,17 +100,32 @@ public class Pointer : MonoBehaviour
 	/// <param name="hit"></param>
 	public void UpdatePointerPositionByHitPoint(RaycastHit hit)
 	{
-
-		pointerLineRenderer.SetPosition(0, rightHand.position);
+		if (!GlobalValues.settings.leftHandMode)
+		{
+			pointerLineRenderer.SetPosition(0, rightHand.position);
+		}
+		else
+		{
+			pointerLineRenderer.SetPosition(0, leftHand.position);
+		}
 		pointerLineRenderer.SetPosition(1, hit.point);
 		pointerDot.transform.position = hit.point;
 	}
 
 	public void UpdatePointerPositionCalculated()
 	{
-		pointerLineRenderer.SetPosition(0, rightHand.position);
-		pointerLineRenderer.SetPosition(1, rightHand.position + rightHand.forward * rayCastLength);
-		pointerDot.transform.position = rightHand.position + rightHand.forward * rayCastLength;
+		if (!GlobalValues.settings.leftHandMode)
+		{
+			pointerLineRenderer.SetPosition(0, rightHand.position);
+			pointerLineRenderer.SetPosition(1, rightHand.position + rightHand.forward * rayCastLength);
+			pointerDot.transform.position = rightHand.position + rightHand.forward * rayCastLength;
+		}
+		else
+		{
+			pointerLineRenderer.SetPosition(0, leftHand.position);
+			pointerLineRenderer.SetPosition(1, leftHand.position + leftHand.forward * rayCastLength);
+			pointerDot.transform.position = leftHand.position + leftHand.forward * rayCastLength;
+		}
 	}
 
 	/// <summary>
@@ -120,8 +135,18 @@ public class Pointer : MonoBehaviour
 	public void RayCastFromHand()
 	{
 		RaycastHit hit;
+		bool rayHits;
+		bool clickObj;
+		bool clickUI;
 
-		bool rayHits = Physics.Raycast(rightHand.position, rightHand.forward, out hit, rayCastLength, hitMask);
+		if (!GlobalValues.settings.leftHandMode)
+		{
+			rayHits = Physics.Raycast(rightHand.position, rightHand.forward, out hit, rayCastLength, hitMask);
+		}
+		else
+		{
+			rayHits = Physics.Raycast(leftHand.position, leftHand.forward, out hit, rayCastLength, hitMask);
+		}
 
 		//Debug.DrawRay(rightHand.position, rightHand.forward * rayCastLength, Color.red, 0.1f);
 		if (lockLaserOn)
@@ -158,21 +183,30 @@ public class Pointer : MonoBehaviour
 				OnPointerHover(hit);
 
 				//Debug.Log("HOVERING ON OBJECT");
+				if (!GlobalValues.settings.leftHandMode)
+				{
+					 clickObj = selectObj.GetLastStateDown(SteamVR_Input_Sources.RightHand);
+				}
+				else
+				{
+					clickObj = selectObj.GetLastStateDown(SteamVR_Input_Sources.LeftHand);
+				}
 
-				if (selectObj.GetStateDown(SteamVR_Input_Sources.RightHand) && targetObj == hit.transform.gameObject && !hasTarget)
+				if (clickObj && targetObj == hit.transform.gameObject && !hasTarget)
 				{
 					Debug.Log("SELECTED OBJECT");
 					OnPointerClick(hit);
 					selectedObj = hit.transform.gameObject;
 
 				}
-				else if (selectObj.GetStateDown(SteamVR_Input_Sources.RightHand) && selectedObj == targetObj && selectedObj != null && hasTarget)
+				else if (clickObj && selectedObj == targetObj && selectedObj != null && hasTarget)
 				{
 					Debug.Log("DESELECTED OBJECT");
 					selectedObj = null;
 
 					DropObject();
 				}
+				
 			}
 			else
 			{
@@ -183,7 +217,16 @@ public class Pointer : MonoBehaviour
 				targetObj = hit.transform.gameObject;
 				OnPointerHover(hit);
 
-				if (clickUIButton.GetStateDown(SteamVR_Input_Sources.RightHand) && isSenderActive)
+				if ( !GlobalValues.settings.leftHandMode)
+				{
+					clickUI = clickUIButton.GetStateDown(SteamVR_Input_Sources.RightHand);
+				}
+				else
+				{
+					clickUI = clickUIButton.GetStateDown(SteamVR_Input_Sources.LeftHand);
+				}
+
+				if (clickUI && isSenderActive)
 				{
 					OnPointerClick(hit);
 				}
@@ -193,7 +236,16 @@ public class Pointer : MonoBehaviour
 		{
 			OnPointerLeft(hit);
 
-			if (selectObj.GetStateDown(SteamVR_Input_Sources.RightHand) && selectedObj != null)
+			if (!GlobalValues.settings.leftHandMode)
+			{
+				clickObj = selectObj.GetLastStateDown(SteamVR_Input_Sources.RightHand);
+			}
+			else
+			{
+				clickObj = selectObj.GetLastStateDown(SteamVR_Input_Sources.LeftHand);
+			}
+
+			if (clickObj && selectedObj != null)
 			{
 				Debug.Log("DESELECTED OBJECT");
 				selectedObj.GetComponent<InteractableObject>().selected = false;
