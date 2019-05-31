@@ -10,6 +10,7 @@ public class VRPlayerHeight : MonoBehaviour
 
 	[SerializeField] private float defaultHeight = 1.8f;
 	[SerializeField] private float wheelChairHeight = 0.8f;
+	[SerializeField] private float wheelChairWidth = 1f;
 	[SerializeField] private Camera cam;
 	PlayerPosition playerPosition;
 
