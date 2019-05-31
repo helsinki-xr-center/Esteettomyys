@@ -51,6 +51,7 @@ public class Pointer : MonoBehaviour
 	public static event PointerHitInfoDelegate PointerHit;
 	public static event PointerHitInfoDelegate PointerLeft;
 	public static event PointerHitInfoDelegate PointerClick;
+	public static event PointerHitInfoDelegate PointerDrag;
 	#endregion
 
 	/// <summary>
@@ -138,6 +139,7 @@ public class Pointer : MonoBehaviour
 		bool rayHits;
 		bool clickObj;
 		bool clickUI;
+		bool dragUI;
 
 		if (!GlobalValues.settings.leftHandMode)
 		{
@@ -220,18 +222,23 @@ public class Pointer : MonoBehaviour
 				if ( !GlobalValues.settings.leftHandMode)
 				{
 					clickUI = clickUIButton.GetStateDown(SteamVR_Input_Sources.RightHand);
-					clickUI = clickUIButton.GetState(SteamVR_Input_Sources.RightHand);
+					dragUI = clickUIButton.GetState(SteamVR_Input_Sources.RightHand);
 
 				}
 				else
 				{
 					clickUI = clickUIButton.GetStateDown(SteamVR_Input_Sources.LeftHand);
-					clickUI = clickUIButton.GetState(SteamVR_Input_Sources.LeftHand);
+					dragUI = clickUIButton.GetState(SteamVR_Input_Sources.LeftHand);
 				}
 
 				if (clickUI && isSenderActive)
 				{
 					OnPointerClick(hit);
+				}
+
+				if (dragUI && isSenderActive)
+				{
+					OnPointerDrag(hit);
 				}
 			}
 		}
@@ -302,6 +309,18 @@ public class Pointer : MonoBehaviour
 			newHitData.hitPoint = hit.point;
 			newHitData.target = targetObj.transform;
 			PointerClick(this, newHitData);
+		}
+	}
+
+	public void OnPointerDrag(RaycastHit hit)
+	{
+		if (PointerDrag != null && isSenderActive)
+		{
+			RayCastData newHitData = new RayCastData();
+			newHitData.distance = hit.distance;
+			newHitData.hitPoint = hit.point;
+			newHitData.target = targetObj.transform;
+			PointerDrag(this, newHitData);
 		}
 	}
 
