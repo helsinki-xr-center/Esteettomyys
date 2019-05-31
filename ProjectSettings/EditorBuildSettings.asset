@@ -9,7 +9,7 @@ EditorBuildSettings:
     path: Assets/Scenes/MainMenu.unity
     guid: 93692de46519b3046a0faf854bce7d61
   - enabled: 1
-    path: Assets/Scenes/VR_Scene.unity
+    path: Assets/Scenes/TestingRoom.unity
     guid: d1c3109bdb54ad54c8a2b2838528e640
   - enabled: 1
     path: Assets/Scenes/PC/Lobby_PC.unity
