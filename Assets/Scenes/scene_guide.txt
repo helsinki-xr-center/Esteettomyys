@@ -1,0 +1,39 @@
+Hello!
+
+This is a guide to navigating the scene maze of this project.
+
+
+The game starts from MainMenu.
+
+Next scene is either the Lobby_PC or Lobby_VR scene depending on which control mode was chosen.
+
+After lobby, a root game scene is loaded. (Multiplayer, Tutorial, SoloTraining, Exam etc..)
+These will contain all the necessary components for that game mode.
+
+Player related scenes (PCPlayer, VRPlayer) will be loaded on top of these root scenes or Lobby scene if in VR.
+These contain all the necessary objects for the player of the current control mode.
+
+Environment related scenes will also be loaded additively on top. (Different rooms with problems etc.)
+Same rooms should theoretically be able to be used in multiple game modes.
+
+Any extra scenes will be loaded additively on top of the root scenes.
+(Postprocessing, AudioManager etc...)
+
+
+TLDR:
+
+		MainMenu
+			|
+			|
+			v
+Lobby_PC 	or 	Lobby_VR
+	|				|	----> Load additive (VRPlayer)
+	|				|
+	v				v
+	
+	Root Game scenes
+			------------> Load additive   	(PCPlayer if no VRPlayer)
+			
+			------------> Load additive		(Room environment)
+	
+			------------> Load additive		(Extra utility scenes)

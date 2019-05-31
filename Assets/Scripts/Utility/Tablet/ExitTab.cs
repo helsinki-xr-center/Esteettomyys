@@ -7,7 +7,8 @@ public class ExitTab : MonoBehaviour
 {
 	Button[] buttons;
 	public delegate void ExitDelegate();
-	public static event ExitDelegate ExitEvent;
+	public static event ExitDelegate ExitToMenuEvent;
+	public static event ExitDelegate ExitAppEvent;
 
 	private void Start()
 	{
@@ -28,18 +29,11 @@ public class ExitTab : MonoBehaviour
 
 	void ExitToMenu()
 	{
-		if(ExitEvent != null)
-		{
-			ExitEvent();
-		}
-
+		ExitToMenuEvent?.Invoke();
 	}
 
 	void ExitApplication()
 	{
-		if(ExitEvent != null)
-		{
-			ExitEvent();
-		}
+		ExitAppEvent?.Invoke();
 	}
 }

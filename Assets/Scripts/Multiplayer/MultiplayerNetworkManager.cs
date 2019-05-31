@@ -40,14 +40,4 @@ public class MultiplayerNetworkManager : MonoBehaviour
 
 		FindObjectOfType<PlayerPosition>().transform.position = location.transform.position;
 	}
-
-	private void Update()
-	{
-		if (Input.GetKeyDown(KeyCode.Escape))
-		{
-			PhotonNetwork.LeaveRoom();
-			string lobbyName = GlobalValues.controllerMode == ControllerMode.PC ? pcLobby : vrLobby;
-			SceneLoaderAsync.instance.LoadSceneAndUnloadCurrent(lobbyName);
-		}
-	}
 }
