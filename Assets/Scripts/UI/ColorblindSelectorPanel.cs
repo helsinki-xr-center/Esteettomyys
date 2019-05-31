@@ -8,7 +8,7 @@ using UnityEngine;
  * Author: Nomi Lakkala
  * 
  * <summary>
- * UI script for a temporary colorblind mode selector panel.
+ * UI script for colorblind mode selector panel.
  * </summary>
  */
 public class ColorblindSelectorPanel : MonoBehaviour

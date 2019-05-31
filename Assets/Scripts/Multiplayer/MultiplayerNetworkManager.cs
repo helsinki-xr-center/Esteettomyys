@@ -19,8 +19,8 @@ public class MultiplayerNetworkManager : MonoBehaviour
 	public string vrLobby;
 	public string pcLobby;
 
-    IEnumerator Start()
-    {
+	IEnumerator Start()
+	{
 		yield return new WaitForSeconds(0.1f);
 		MoveLocalPlayerToSpawnLocation();
 		yield return new WaitForSeconds(1);
@@ -32,7 +32,8 @@ public class MultiplayerNetworkManager : MonoBehaviour
 	 * Chooses a random spawn location from the scene and moves the player to one of them.
 	 * </summary>
 	 */
-	private void MoveLocalPlayerToSpawnLocation(){
+	private void MoveLocalPlayerToSpawnLocation()
+	{
 		var locations = FindObjectsOfType<SpawnLocation>();
 		if (locations.Length == 0) return;
 		SpawnLocation location = locations[PhotonNetwork.LocalPlayer.GetPlayerNumber() % locations.Length];
@@ -42,7 +43,8 @@ public class MultiplayerNetworkManager : MonoBehaviour
 
 	private void Update()
 	{
-		if(Input.GetKeyDown(KeyCode.Escape)){
+		if (Input.GetKeyDown(KeyCode.Escape))
+		{
 			PhotonNetwork.LeaveRoom();
 			string lobbyName = GlobalValues.controllerMode == ControllerMode.PC ? pcLobby : vrLobby;
 			SceneLoaderAsync.instance.LoadSceneAndUnloadCurrent(lobbyName);
