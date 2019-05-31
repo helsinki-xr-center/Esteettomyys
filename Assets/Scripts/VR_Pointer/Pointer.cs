@@ -220,10 +220,13 @@ public class Pointer : MonoBehaviour
 				if ( !GlobalValues.settings.leftHandMode)
 				{
 					clickUI = clickUIButton.GetStateDown(SteamVR_Input_Sources.RightHand);
+					clickUI = clickUIButton.GetState(SteamVR_Input_Sources.RightHand);
+
 				}
 				else
 				{
 					clickUI = clickUIButton.GetStateDown(SteamVR_Input_Sources.LeftHand);
+					clickUI = clickUIButton.GetState(SteamVR_Input_Sources.LeftHand);
 				}
 
 				if (clickUI && isSenderActive)

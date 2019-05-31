@@ -93,7 +93,12 @@ public class VRUIInput : MonoBehaviour
 		{
 			if(EventSystem.current.currentSelectedGameObject != null)
 			{
-				ExecuteEvents.Execute(EventSystem.current.currentSelectedGameObject, new PointerEventData(EventSystem.current), ExecuteEvents.submitHandler);
+				PointerEventData eventData = new PointerEventData(EventSystem.current);
+				eventData.dragging = true;
+				eventData.position = hitInfo.hitPoint;
+				
+				ExecuteEvents.Execute(EventSystem.current.currentSelectedGameObject, eventData, ExecuteEvents.dragHandler);
+				
 			}
 		}
 	}
