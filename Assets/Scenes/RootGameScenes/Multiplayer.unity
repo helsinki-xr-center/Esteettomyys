@@ -579,7 +579,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 24bd9ba6ad9385f49a803890b2ba1a7b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sceneName: VR_Scene
+  sceneName: TestingRoom
 --- !u!4 &696191612
 Transform:
   m_ObjectHideFlags: 0
