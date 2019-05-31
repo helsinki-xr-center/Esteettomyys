@@ -88,25 +88,32 @@ public class NearSightedAdjuster : MonoBehaviour
 	 */
 	public void SetSightMode(EyesightMode mode)
 	{
-		dofAdjustOn = false;
-		switch (mode)
+		if (GlobalValues.controllerMode == ControllerMode.PC)
 		{
-			case EyesightMode.Normal:
-				volume.profile = normalProfile;
-				break;
-			case EyesightMode.NearSighted:
-				volume.profile = nearSightedProfile;
-				dofAdjustOn = true;
-				dof = volume.profile.GetSetting<DepthOfField>();
-				break;
-			case EyesightMode.FarSighted:
-				volume.profile = farSightedProfile;
-				break;
-			case EyesightMode.Bad:
-				volume.profile = everythingIsBadProfile;
-				break;
-			default:
-				break;
+			dofAdjustOn = false;
+			switch (mode)
+			{
+				case EyesightMode.Normal:
+					volume.profile = normalProfile;
+					break;
+				case EyesightMode.NearSighted:
+					volume.profile = nearSightedProfile;
+					dofAdjustOn = true;
+					dof = volume.profile.GetSetting<DepthOfField>();
+					break;
+				case EyesightMode.FarSighted:
+					volume.profile = farSightedProfile;
+					break;
+				case EyesightMode.Bad:
+					volume.profile = everythingIsBadProfile;
+					break;
+				default:
+					break;
+			}
+		}
+		else
+		{
+			//TODO: VR implementation
 		}
 	}
 
@@ -140,7 +147,8 @@ public class NearSightedAdjuster : MonoBehaviour
 					Gizmos.color = Color.green;
 					Gizmos.DrawLine(camP, hit.point);
 				}
-				else{
+				else
+				{
 					Gizmos.color = Color.grey;
 					Gizmos.DrawLine(camP, camP + raycastAngles[i] * camF * maxFocalPoint);
 				}
