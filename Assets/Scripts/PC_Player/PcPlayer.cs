@@ -48,6 +48,17 @@ public class PcPlayer : MonoBehaviour
 		newHitData.target = null;
 	}
 
+	private void OnEnable()
+	{
+		OptionsTab.ChangeHeightEvent += OnWheelChairModeEnabled;
+	}
+
+	private void OnDisable()
+	{
+		OptionsTab.ChangeHeightEvent -= OnWheelChairModeEnabled;
+	}
+
+
 	private void Update()
 	{
 		HasObjectSelected();
@@ -206,6 +217,25 @@ public class PcPlayer : MonoBehaviour
 		if (rayHit)
 		{
 			transform.position = hit.point;
+		}
+
+	}
+
+	public void OnWheelChairModeEnabled(bool status, float curHeight, float targetHeight)
+	{
+
+		if (!GlobalValues.settings.wheelChairMode)
+		{
+
+			GlobalValues.settings.wheelChairMode = true;
+			transform.localScale = new Vector3(transform.localScale.x, targetHeight / curHeight, transform.localScale.z);
+
+		}
+		else
+		{
+			GlobalValues.settings.wheelChairMode = false;
+			transform.localScale = new Vector3(transform.localScale.x, 1, transform.localScale.z);
+
 		}
 
 	}

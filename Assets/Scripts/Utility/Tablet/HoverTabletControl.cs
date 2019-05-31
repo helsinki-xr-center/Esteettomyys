@@ -60,7 +60,14 @@ public class HoverTabletControl : MonoBehaviour
 		}
 		else
 		{
-			height = 1.8f;
+			if (!GlobalValues.settings.wheelChairMode)
+			{
+				height = 1.8f; //If Change get reference
+			}
+			else
+			{
+				height = 1f;
+			}
 		}
 
 		transform.LookAt(new Vector3(playerPosition.transform.position.x, playerPosition.transform.position.y + height, playerPosition.transform.position.z));
@@ -133,7 +140,14 @@ public class HoverTabletControl : MonoBehaviour
 		}
 		else
 		{
-			headHeight = 1.8f;
+			if (!GlobalValues.settings.wheelChairMode)
+			{
+				headHeight = 1.8f; //If Change get reference
+			}
+			else
+			{
+				headHeight = 1f;
+			}
 		}
 		
 		backPosition = playerPosition.GetPosition() + new Vector3(direction.x * followDistance, headHeight , direction.z * followDistance);
@@ -154,7 +168,14 @@ public class HoverTabletControl : MonoBehaviour
 		}
 		else
 		{
-			headHeight = 1.8f;
+			if (!GlobalValues.settings.wheelChairMode)
+			{
+				headHeight = 1.8f; //If Change get reference
+			}
+			else
+			{
+				headHeight = 1f;
+			}
 		}
 		frontPosition = playerPosition.GetPosition() + new Vector3(direction.x * frontDistance, headHeight , direction.z * frontDistance);
 		return frontPosition;

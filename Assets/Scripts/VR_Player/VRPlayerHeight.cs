@@ -8,9 +8,6 @@ using UnityEngine;
 public class VRPlayerHeight : MonoBehaviour
 {
 
-	[SerializeField] private float defaultHeight = 1.8f;
-	[SerializeField] private float wheelChairHeight = 0.8f;
-	[SerializeField] private float wheelChairWidth = 1f;
 	[SerializeField] private Camera cam;
 	PlayerPosition playerPosition;
 
@@ -27,31 +24,12 @@ public class VRPlayerHeight : MonoBehaviour
 
 	private void OnEnable()
 	{
-		OptionsTab.WheelChairModeEvent += OnWheelChairModeEnabled;
+		OptionsTab.ChangeHeightEvent += OnWheelChairModeEnabled;
 	}
 
 	private void OnDisable()
 	{
-		OptionsTab.WheelChairModeEvent -= OnWheelChairModeEnabled;
-	}
-
-	/// <summary>
-	/// Scales size can make player look like giant 
-	/// </summary>
-	private void Resize()
-	{
-		float headHeight = playerPosition.GetHeadHeightFromBase();
-		float scale = defaultHeight / headHeight;
-		transform.localScale = Vector3.one * scale;
-	}
-
-	/// <summary>
-	/// if default height changes
-	/// </summary>
-	/// <param name="height"> quessed player height </param>
-	public void SetDefaultHeight(float height)
-	{
-		defaultHeight = height;
+		OptionsTab.ChangeHeightEvent -= OnWheelChairModeEnabled;
 	}
 
 	/// <summary>
@@ -59,7 +37,7 @@ public class VRPlayerHeight : MonoBehaviour
 	/// Need some improvements
 	/// </summary>
 	/// <param name="status">on/off</param>
-	public void OnWheelChairModeEnabled(bool status)
+	public void OnWheelChairModeEnabled(bool status, float currentHeight, float targetHeight)
 	{
 
 		float headHeight = playerPosition.GetHeadHeightFromBase();
@@ -68,7 +46,7 @@ public class VRPlayerHeight : MonoBehaviour
 		{
 
 			GlobalValues.settings.wheelChairMode = true;
-			transform.localScale = new Vector3(transform.localScale.x, wheelChairHeight/headHeight, transform.localScale.z);
+			transform.localScale = new Vector3(transform.localScale.x, targetHeight/headHeight, transform.localScale.z);
 			
 		}
 		else

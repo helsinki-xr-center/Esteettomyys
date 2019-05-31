@@ -14,8 +14,12 @@ public class OptionsTab : MonoBehaviour
 	[SerializeField] Slider[] sliders;
 	[SerializeField] TextMeshProUGUI[] texts;
 
-	public delegate void WheelChairModeDelegate(bool status);
-	public static event WheelChairModeDelegate WheelChairModeEvent;
+	[SerializeField] private float defaultHeight = 1.8f;
+	[SerializeField] private float wheelChairHeight = 0.8f;
+	[SerializeField] private float wheelChairWidth = 1f;
+
+	public delegate void ChangeHeightDelegate(bool status, float currentHeight , float targetHeight);
+	public static event ChangeHeightDelegate ChangeHeightEvent;
 
 	private void Start()
 	{
@@ -88,10 +92,28 @@ public class OptionsTab : MonoBehaviour
 	void WheelChairMode()
 	{
 		
-		if( WheelChairModeEvent != null)
+		if( ChangeHeightEvent != null)
 		{
-			WheelChairModeEvent(GlobalValues.settings.wheelChairMode);
+			ChangeHeightEvent(GlobalValues.settings.wheelChairMode, defaultHeight, wheelChairHeight);
 			texts[0].text = GlobalValues.settings.wheelChairMode.ToString();
 		}
+	}
+
+	/// <summary>
+	/// if default height changes
+	/// </summary>
+	/// <param name="height"> quessed player height </param>
+	public void SetDefaultHeight(float height)
+	{
+		defaultHeight = height;
+	}
+
+	/// <summary>
+	/// if wheelChair height changes
+	/// </summary>
+	/// <param name="height"> wheelchair height </param>
+	public void SetDefaultWheelChairHeight(float height)
+	{
+		wheelChairHeight = height;
 	}
 }

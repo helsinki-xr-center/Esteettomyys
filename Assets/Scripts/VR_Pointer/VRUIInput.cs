@@ -118,12 +118,15 @@ public class VRUIInput : MonoBehaviour
 				
 			}
 		}
+
 		if (hitInfo.target.GetComponent<Dropdown>())
 		{
 			if (EventSystem.current.currentSelectedGameObject != null)
 			{
 				PointerEventData eventData = new PointerEventData(EventSystem.current);
-				ExecuteEvents.Execute(EventSystem.current.currentSelectedGameObject, new PointerEventData(EventSystem.current), ExecuteEvents.selectHandler);
+				eventData.pressPosition = hitInfo.hitPoint;
+				
+				ExecuteEvents.Execute(EventSystem.current.currentSelectedGameObject, eventData, ExecuteEvents.submitHandler);
 			}
 		}
 	}
