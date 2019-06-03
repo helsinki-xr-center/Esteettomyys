@@ -43,3 +43,11 @@ public enum EyesightMode
 	FarSighted,
 	Bad
 }
+
+public enum FollowMode
+{
+	FollowBehind,
+	FollowLeft,
+	FollowLeftAndHide,
+	Instant,
+}

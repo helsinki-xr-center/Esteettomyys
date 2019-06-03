@@ -21,12 +21,23 @@ public class WallCollision : MonoBehaviour
 	{
 		Collider[] wallColliders = Physics.OverlapSphere(pos.vrCamera.position, radius, hitMask);
 		
+		if (wallColliders.Length == 0)
+		{
+			SteamVR_Fade.Start(Color.clear, timeToClear);
+		}
 
 		foreach (var col in wallColliders)
 		{
-			if ( col)
-			{				
-				StartCoroutine(TeleportToBegin(timeToBlack + timeToBlack + timeToBlack));
+			if (col)
+			{
+				if (col.gameObject.layer == LayerMask.NameToLayer("Wall"))
+				{
+					StartCoroutine(TeleportToBegin(timeToBlack + timeToBlack + timeToBlack));
+				}
+				else
+				{
+					SteamVR_Fade.Start(Color.black, timeToBlack);
+				}
 			}
 		}			
 	}

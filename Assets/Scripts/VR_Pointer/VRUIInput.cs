@@ -31,30 +31,31 @@ public class VRUIInput : MonoBehaviour
 	/// <param name="hitInfo">Information of the Raycast hit </param>
 	public void HandlePointerHit(object sender, RayCastData hitInfo)
 	{
+
 		//if (hitInfo.target.GetComponent<Button>() != null)
 		//{
-			Button button = hitInfo.target.GetComponent<Button>();
-			if (button != null)
-			{
-				button.Select();
-			}
+		Button button = hitInfo.target.GetComponent<Button>();
+		if (button != null)
+		{
+			button.Select();
+		}
 		//}
 		//if (hitInfo.target.GetComponent<Slider>() != null)
 		//{
-			Slider slider = hitInfo.target.GetComponent<Slider>();
-			if (slider != null)
-			{
-				slider.Select();
-			}
+		Slider slider = hitInfo.target.GetComponent<Slider>();
+		if (slider != null)
+		{
+			slider.Select();
+		}
 		//}
 
 		/*if(hitInfo.target.GetComponent<Dropdown>() != null)
 		{*/
-			Dropdown dropdown = hitInfo.target.GetComponent<Dropdown>();
-			if(dropdown != null)
-			{
-				dropdown.Select();
-			}
+		Dropdown dropdown = hitInfo.target.GetComponent<Dropdown>();
+		if (dropdown != null)
+		{
+			dropdown.Select();
+		}
 		//}
 		//Debug.Log("POINTER HITS");
 	}
@@ -66,28 +67,28 @@ public class VRUIInput : MonoBehaviour
 	/// <param name="hitInfo"> Information of the Raycast hit </param>
 	public void HandlePointerLeft(object sender, RayCastData hitInfo)
 	{
-		
-			Button button = hitInfo.target.GetComponent<Button>();
-			if (button != null)
-			{
-				EventSystem.current.SetSelectedGameObject(null);
-			}
-		
-		
-			Slider slider = hitInfo.target.GetComponent<Slider>();
-			if (slider != null)
-			{
-				EventSystem.current.SetSelectedGameObject(null);
-			}
-		
 
-		
-			Dropdown dropdown = hitInfo.target.GetComponent<Dropdown>();
-			if (dropdown != null)
-			{
-				EventSystem.current.SetSelectedGameObject(null);
-			}
-		
+		Button button = hitInfo.target.GetComponent<Button>();
+		if (button != null)
+		{
+			EventSystem.current.SetSelectedGameObject(null);
+		}
+
+
+		Slider slider = hitInfo.target.GetComponent<Slider>();
+		if (slider != null)
+		{
+			EventSystem.current.SetSelectedGameObject(null);
+		}
+
+
+
+		Dropdown dropdown = hitInfo.target.GetComponent<Dropdown>();
+		if (dropdown != null)
+		{
+			EventSystem.current.SetSelectedGameObject(null);
+		}
+
 		//Debug.Log("POINTER LEFT");
 	}
 
@@ -98,6 +99,7 @@ public class VRUIInput : MonoBehaviour
 	/// <param name="hitInfo"> Information of the Raycast hit </param>
 	public void HandlePointerClick(object sender, RayCastData hitInfo)
 	{
+
 		//Debug.Log("CLICKED");
 		if (hitInfo.target.GetComponent<Button>() != null)
 		{
@@ -108,14 +110,14 @@ public class VRUIInput : MonoBehaviour
 		}
 		if (hitInfo.target.GetComponent<Slider>() != null)
 		{
-			if(EventSystem.current.currentSelectedGameObject != null)
+			if (EventSystem.current.currentSelectedGameObject != null)
 			{
 				PointerEventData eventData = new PointerEventData(EventSystem.current);
 				eventData.dragging = true;
 				eventData.position = hitInfo.hitPoint;
-				
+
 				ExecuteEvents.Execute(EventSystem.current.currentSelectedGameObject, eventData, ExecuteEvents.dragHandler);
-				
+
 			}
 		}
 
@@ -125,7 +127,7 @@ public class VRUIInput : MonoBehaviour
 			{
 				PointerEventData eventData = new PointerEventData(EventSystem.current);
 				eventData.pressPosition = hitInfo.hitPoint;
-				
+
 				ExecuteEvents.Execute(EventSystem.current.currentSelectedGameObject, eventData, ExecuteEvents.submitHandler);
 			}
 		}
@@ -133,6 +135,7 @@ public class VRUIInput : MonoBehaviour
 
 	public void HandlePointerDrag(object sender, RayCastData hitInfo)
 	{
+
 		if (hitInfo.target.GetComponent<Slider>() != null)
 		{
 			if (EventSystem.current.currentSelectedGameObject != null)

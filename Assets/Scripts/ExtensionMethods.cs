@@ -39,4 +39,23 @@ public static class ExtensionMethods
 			mr.material.color = newColor;
 		}
 	}
+
+	//public static void ColorFade(Transform target, float time , bool status)
+	//{
+	//	MeshRenderer[] mrs = target.gameObject.GetComponentsInChildren<MeshRenderer>();
+
+	//	foreach (MeshRenderer mr in mrs)
+	//	{
+	//		if (status)
+	//		{
+	//			Color newColor = new Color(mr.material.color.r, mr.material.color.b, mr.material.color.g, 0);
+	//			mr.material.color = newColor;
+	//		}
+	//		else
+	//		{
+	//			Color newColor = new Color(mr.material.color.r, mr.material.color.b, mr.material.color.g, 255);
+	//			mr.material.color = newColor;
+	//		}
+	//	}		
+	//}
 }
