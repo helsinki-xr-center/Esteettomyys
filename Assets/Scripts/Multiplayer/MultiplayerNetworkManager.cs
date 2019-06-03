@@ -40,7 +40,7 @@ public class MultiplayerNetworkManager : MonoBehaviour
 		SpawnLocation location = locations[PhotonNetwork.LocalPlayer.GetPlayerNumber() % locations.Length];
 		if (!location.IsFree())
 		{
-			location = locations.Where(x => x.IsFree()).SingleOrDefault();
+			location = locations.Where(x => x.IsFree()).FirstOrDefault();
 		}
 		if (location == null)
 		{
