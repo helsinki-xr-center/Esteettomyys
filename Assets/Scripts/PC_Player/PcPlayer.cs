@@ -31,6 +31,9 @@ public class PcPlayer : MonoBehaviour
 	public static event MouseDelegate mouseHoverOut;
 	public static event MouseDelegate mouseClick;
 
+	public delegate void OpenMenuDelegate(bool havingObj);
+	public static event OpenMenuDelegate OpenMenuEvent;
+
 	private void Start()
 	{
 		movement = gameObject.GetComponent<Movement>();
@@ -76,6 +79,11 @@ public class PcPlayer : MonoBehaviour
 		{
 			hasObjSelected = false;
 		}
+	}
+
+	public void InteractionMenu()
+	{
+		OpenMenuEvent?.Invoke(hasObjSelected);
 	}
 
 	public void RayCastToPointer()

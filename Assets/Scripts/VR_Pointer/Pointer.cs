@@ -39,6 +39,7 @@ public class Pointer : MonoBehaviour
 	[Tooltip("Enables Pointer hit events")] public bool isSenderActive;
 	[Tooltip("Enabled when pointer is pointing on target")] public bool hovering;
 	public bool lockLaserOn;
+	public bool changedObj;
 	#endregion
 
 	/// <summary>
@@ -52,6 +53,9 @@ public class Pointer : MonoBehaviour
 	public static event PointerHitInfoDelegate PointerLeft;
 	public static event PointerHitInfoDelegate PointerClick;
 	public static event PointerHitInfoDelegate PointerDrag;
+
+	public delegate void SelectedObjectDelegate(bool havingObj, Transform obj);
+	public static event SelectedObjectDelegate SelectedObjectEvent;
 	#endregion
 
 	/// <summary>
@@ -78,10 +82,24 @@ public class Pointer : MonoBehaviour
 		if (selectedObj != null)
 		{
 			hasTarget = true;
+			
+			if ( SelectedObjectEvent != null && !changedObj)
+			{
+				Debug.Log(hasTarget);
+				changedObj = true;
+				SelectedObjectEvent(hasTarget, selectedObj.transform);
+			}
 		}
 		else
 		{
 			hasTarget = false;
+			
+			if (SelectedObjectEvent != null && changedObj && selectedObj != null)
+			{
+				Debug.Log(hasTarget);
+				changedObj = false;
+				SelectedObjectEvent(hasTarget, selectedObj.transform);
+			}
 		}
 	}
 
@@ -284,7 +302,17 @@ public class Pointer : MonoBehaviour
 
 		//SaveExitData(targetObj.transform);			
 		hasTarget = false;
+
+		if (SelectedObjectEvent != null && changedObj && selectedObj != null)
+		{
+			Debug.Log(hasTarget);
+			changedObj = false;
+			SelectedObjectEvent(hasTarget, selectedObj.transform);
+		}
+
+
 		selectedObj = null;
+		
 
 	}
 

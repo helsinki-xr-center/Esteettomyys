@@ -11,6 +11,7 @@ public class HoverTabletUI : MonoBehaviour
 	[SerializeField] Button[] buttons;
 	[SerializeField] Transform[] contentPages;
 	Transform trackPos;
+	bool hasObj;
 
 	private void Start()
 	{
@@ -34,6 +35,16 @@ public class HoverTabletUI : MonoBehaviour
 		buttons[3].onClick.AddListener(() => OpenExitTab());
 	}
 
+	private void OnEnable()
+	{
+		Pointer.SelectedObjectEvent += EnableObjectScreen;
+	}
+
+	private void OnDisable()
+	{
+		Pointer.SelectedObjectEvent -= EnableObjectScreen;
+	}
+
 	private void Update()
 	{
 
@@ -41,64 +52,112 @@ public class HoverTabletUI : MonoBehaviour
 
 	}
 
+	public void EnableObjectScreen(bool hasObj, Transform obj)
+	{
+
+		if (hasObj && !contentPages[4].gameObject.activeSelf)
+		{
+			ActivateIndex(4, false);
+			hasObj = true;
+		}
+		else
+		{
+			ActivateIndex(0, true);
+			hasObj = false;
+		}
+
+	}
+
+	public void ActivateIndex(int index, bool deactivateAll)
+	{
+		if (deactivateAll)
+		{
+			for (int i = 0; i < contentPages.Length; i++)
+			{
+				contentPages[i].gameObject.SetActive(false);
+			}
+		}
+		else
+		{
+			for (int i = 0; i < contentPages.Length; i++)
+			{
+				if (i != index)
+				{
+					contentPages[i].gameObject.SetActive(false);
+				}
+				else
+				{
+					contentPages[i].gameObject.SetActive(true);
+				}
+
+			}
+		}
+	}
+
 	void OpenFilterTab()
 	{
 		if (!contentPages[0].gameObject.activeSelf)
 		{
-			contentPages[0].gameObject.SetActive(true);
+			ActivateIndex(0, false);
+		}
+		else if (contentPages[0].gameObject.activeSelf && hasObj)
+		{
+			ActivateIndex(4, false);
 		}
 		else
 		{
-			contentPages[0].gameObject.SetActive(false);
+			ActivateIndex(0, true);
 		}
-		contentPages[1].gameObject.SetActive(false);
-		contentPages[2].gameObject.SetActive(false);
-		contentPages[3].gameObject.SetActive(false);
 
 	}
 
 	void OpenOptionsTab()
 	{
-		contentPages[0].gameObject.SetActive(false);
 		if (!contentPages[1].gameObject.activeSelf)
 		{
-			contentPages[1].gameObject.SetActive(true);
+			ActivateIndex(1, false);
+		}
+		else if (contentPages[1].gameObject.activeSelf && hasObj)
+		{
+			ActivateIndex(4, false);
 		}
 		else
 		{
-			contentPages[1].gameObject.SetActive(false);
+			ActivateIndex(1, true);
 		}
-		contentPages[2].gameObject.SetActive(false);
-		contentPages[3].gameObject.SetActive(false);
 	}
 
 	void OpenMapTab()
 	{
-		contentPages[0].gameObject.SetActive(false);
-		contentPages[1].gameObject.SetActive(false);
+		
 		if (!contentPages[2].gameObject.activeSelf)
 		{
-			contentPages[2].gameObject.SetActive(true);
+			ActivateIndex(2, false);
+		}
+		else if (contentPages[2].gameObject.activeSelf && hasObj)
+		{
+			ActivateIndex(4, false);
 		}
 		else
 		{
-			contentPages[2].gameObject.SetActive(false);
+			ActivateIndex(2, true);
 		}
-		contentPages[3].gameObject.SetActive(false);
 	}
 
 	void OpenExitTab()
 	{
-		contentPages[0].gameObject.SetActive(false);
-		contentPages[1].gameObject.SetActive(false);
-		contentPages[2].gameObject.SetActive(false);
+		
 		if (!contentPages[3].gameObject.activeSelf)
 		{
-			contentPages[3].gameObject.SetActive(true);
+			ActivateIndex(3, false);
+		}
+		else if (contentPages[3].gameObject.activeSelf && hasObj)
+		{	
+			ActivateIndex(4, false);
 		}
 		else
 		{
-			contentPages[3].gameObject.SetActive(false);
+			ActivateIndex(3, true);
 		}
 	}
 }

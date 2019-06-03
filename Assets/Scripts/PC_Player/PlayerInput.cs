@@ -46,6 +46,11 @@ public class PlayerInput : MonoBehaviour
 			player.PCTeleport();
 		}
 
+		if(Input.GetButtonDown("Cancel"))
+		{
+			player.InteractionMenu();
+		}
+
 	}
 
 }
