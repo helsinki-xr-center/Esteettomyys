@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -76,38 +77,37 @@ namespace SaveSystem
 
 			var data = this;
 			var roots = scene.GetRootGameObjects();
+			IEnumerable<Transform> matchingItems = Array.Empty<Transform>();
+
 			if (rootName != name)
 			{
 				var matchingRoots = roots.Select(x => x.transform).Where(x => x.name == data.rootName);
-				foreach (Transform root in matchingRoots)
+				matchingItems = matchingRoots.SelectMany(x => x.GetChildrenRecursive().Where(y => y.name == data.name));
+
+			}
+			else
+			{
+				matchingItems = roots.Select(x => x.transform).Where(x => x.name == data.rootName);
+			}
+
+
+			if (matchingItems.Count() > 1)
+			{
+				var matching = matchingItems.SingleOrDefault(x => x.GetSiblingIndex() == data.siblingIndex);
+				if (matching != null)
 				{
-					Transform found = root.Find(name);
-					if (found != null)
-					{
-						return found;
-					}
+					return matching;
 				}
 			}
 			else
 			{
-				var matchingRoots = roots.Select(x => x.transform).Where(x => x.name == data.rootName);
-				if (matchingRoots.Count() > 1)
+				var matching = matchingItems.SingleOrDefault();
+				if (matching != null)
 				{
-					var matching = matchingRoots.SingleOrDefault(x => x.GetSiblingIndex() == data.siblingIndex);
-					if (matching != null)
-					{
-						return matching;
-					}
-				}
-				else
-				{
-					var matching = matchingRoots.SingleOrDefault();
-					if (matching != null)
-					{
-						return matching;
-					}
+					return matching;
 				}
 			}
+
 			//Didn't work somehow. Just return null.
 			return null;
 		}

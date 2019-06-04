@@ -39,4 +39,23 @@ public static class ExtensionMethods
 			mr.material.color = newColor;
 		}
 	}
+
+	public static Transform[] GetChildrenRecursive(this Transform transform)
+	{
+		List<Transform> transforms = new List<Transform>();
+		Queue<Transform> toTraverse = new Queue<Transform>();
+
+		toTraverse.Enqueue(transform);
+
+		while(toTraverse.Count > 0)
+		{
+			Transform current = toTraverse.Dequeue();
+			foreach(Transform child in current)
+			{
+				toTraverse.Enqueue(child);
+				transforms.Add(child);
+			}
+		}
+		return transforms.ToArray();
+	}
 }
