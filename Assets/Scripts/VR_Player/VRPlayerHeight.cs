@@ -37,21 +37,20 @@ public class VRPlayerHeight : MonoBehaviour
 	/// Need some improvements
 	/// </summary>
 	/// <param name="status">on/off</param>
-	public void OnWheelChairModeEnabled(bool status, float currentHeight, float targetHeight)
+	public void OnWheelChairModeEnabled()
 	{
 
 		float headHeight = playerPosition.GetHeadHeightFromBase();
 
-		if (!GlobalValues.settings.wheelChairMode)
+		if (GlobalValues.settings.wheelChairMode)
 		{
-
-			GlobalValues.settings.wheelChairMode = true;
-			transform.localScale = new Vector3(transform.localScale.x, targetHeight/headHeight, transform.localScale.z);
-			
+		
+			transform.localScale = new Vector3(transform.localScale.x, GlobalValues.settings.wheelChairHeight/headHeight, transform.localScale.z);
+		
 		}
 		else
 		{
-			GlobalValues.settings.wheelChairMode = false;
+		
 			transform.localScale = new Vector3(transform.localScale.x, 1, transform.localScale.z);
 			
 		}

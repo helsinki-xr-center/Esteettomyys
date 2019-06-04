@@ -56,6 +56,21 @@ public class VRUIInput : MonoBehaviour
 		{
 			dropdown.Select();
 		}
+
+		ScrollRect scrollRect = hitInfo.target.GetComponent<ScrollRect>();
+		if (scrollRect != null)
+		{
+			EventSystem.current.SetSelectedGameObject(hitInfo.target.gameObject);
+		}
+
+		//ScrollRect scrollrect = hitInfo.target.GetComponent<ScrollRect>();
+		//if (scrollrect != null)
+		//{
+		//	PointerEventData pointerEvent = new PointerEventData(EventSystem.current);
+		//	pointerEvent.position = hitInfo.hitPoint;
+		//	scrollrect.OnScroll(pointerEvent);
+		//}
+
 		//}
 		//Debug.Log("POINTER HITS");
 	}
@@ -85,6 +100,12 @@ public class VRUIInput : MonoBehaviour
 
 		Dropdown dropdown = hitInfo.target.GetComponent<Dropdown>();
 		if (dropdown != null)
+		{
+			EventSystem.current.SetSelectedGameObject(null);
+		}
+
+		ScrollRect scrollRect = hitInfo.target.GetComponent<ScrollRect>();
+		if(scrollRect != null)
 		{
 			EventSystem.current.SetSelectedGameObject(null);
 		}
@@ -148,6 +169,20 @@ public class VRUIInput : MonoBehaviour
 
 			}
 		}
+		if (hitInfo.target.GetComponent<ScrollRect>() != null)
+		{
+			Debug.Log(EventSystem.current.currentSelectedGameObject);
+			PointerEventData eventData = new PointerEventData(EventSystem.current);
+			eventData.dragging = true;
+			eventData.position = hitInfo.hitPoint;
+			ScrollRect scrollRect = hitInfo.target.GetComponent<ScrollRect>();
+			scrollRect.OnBeginDrag(eventData);
+			scrollRect.OnDrag(eventData); 
+			//ExecuteEvents.Execute(hitInfo.target.gameObject, eventData, ExecuteEvents.submitHandler);
+			ExecuteEvents.Execute(EventSystem.current.currentSelectedGameObject, eventData, ExecuteEvents.dragHandler);
+
+		}
 	}
 }
+
 

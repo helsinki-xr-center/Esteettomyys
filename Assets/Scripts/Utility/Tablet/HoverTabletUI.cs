@@ -60,9 +60,9 @@ public class HoverTabletUI : MonoBehaviour
 			ActivateIndex(4, false);
 			hasObj = true;
 		}
-		else
+		if(!hasObj)
 		{
-			ActivateIndex(0, true);
+			contentPages[4].gameObject.SetActive(false);
 			hasObj = false;
 		}
 

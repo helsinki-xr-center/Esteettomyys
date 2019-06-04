@@ -229,21 +229,16 @@ public class PcPlayer : MonoBehaviour
 
 	}
 
-	public void OnWheelChairModeEnabled(bool status, float curHeight, float targetHeight)
+	public void OnWheelChairModeEnabled()
 	{
 
-		if (!GlobalValues.settings.wheelChairMode)
+		if (GlobalValues.settings.wheelChairMode)
 		{
-
-			GlobalValues.settings.wheelChairMode = true;
-			transform.localScale = new Vector3(transform.localScale.x, targetHeight / curHeight, transform.localScale.z);
-
+			transform.localScale = new Vector3(transform.localScale.x, GlobalValues.settings.wheelChairHeight / GlobalValues.settings.defaultHeight, transform.localScale.z);
 		}
 		else
 		{
-			GlobalValues.settings.wheelChairMode = false;
 			transform.localScale = new Vector3(transform.localScale.x, 1, transform.localScale.z);
-
 		}
 
 	}

@@ -213,17 +213,14 @@ public class Pointer : MonoBehaviour
 				}
 
 				if (clickObj && targetObj == hit.transform.gameObject && !hasTarget)
-				{
-					Debug.Log("SELECTED OBJECT");
+				{			
 					OnPointerClick(hit);
 					selectedObj = hit.transform.gameObject;
 
 				}
 				else if (clickObj && selectedObj == targetObj && selectedObj != null && hasTarget)
-				{
-					Debug.Log("DESELECTED OBJECT");
-					selectedObj = null;
-
+				{			
+				
 					DropObject();
 				}
 				
@@ -275,11 +272,10 @@ public class Pointer : MonoBehaviour
 
 			if (clickObj && selectedObj != null)
 			{
-				Debug.Log("DESELECTED OBJECT");
+				
 				selectedObj.GetComponent<InteractableObject>().selected = false;
 				ExtensionMethods.MaterialColorChange(selectedObj, Color.white);
-				selectedObj = null;
-
+			
 				DropObject();
 			}
 			if (!lockLaserOn)
@@ -298,8 +294,6 @@ public class Pointer : MonoBehaviour
 	public void DropObject()
 	{
 
-		Debug.Log("DESELECTED OBJECT");
-
 		//SaveExitData(targetObj.transform);			
 		hasTarget = false;
 
@@ -310,10 +304,8 @@ public class Pointer : MonoBehaviour
 			SelectedObjectEvent(hasTarget, selectedObj.transform);
 		}
 
-
 		selectedObj = null;
-		
-
+	
 	}
 
 	public void OnPointerHover(RaycastHit hit)
