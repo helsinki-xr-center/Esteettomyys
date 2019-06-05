@@ -31,11 +31,11 @@ public class PlayerInput : MonoBehaviour
 			player.movement.RotationalMove(mouseX, mouseY);
 		}
 
-
 		if (Input.GetButton("Fire3"))
 		{
 			lockRotation = true;
 		}
+
 		if (Input.GetButtonUp("Fire3"))
 		{
 			lockRotation = false;

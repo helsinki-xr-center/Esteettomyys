@@ -24,12 +24,19 @@ public class VRPlayerHeight : MonoBehaviour
 
 	private void OnEnable()
 	{
-		OptionsTab.ChangeHeightEvent += OnWheelChairModeEnabled;
+		Settings.OnSettingsChanged += CheckSettings;
 	}
 
 	private void OnDisable()
 	{
-		OptionsTab.ChangeHeightEvent -= OnWheelChairModeEnabled;
+		Settings.OnSettingsChanged -= CheckSettings;
+	}
+
+	public void CheckSettings(Settings settings)
+	{
+		
+		OnWheelChairModeEnabled();
+		
 	}
 
 	/// <summary>

@@ -32,27 +32,9 @@ public class PCSettings : MonoBehaviour
 			buttons[i] = transform.GetChild(i).GetComponentInChildren<Button>();
 		}
 
-		buttons[0].onClick.AddListener(() => WheelChair());
-		buttons[0].transform.parent.GetChild(0).transform.gameObject.GetComponent<TextMeshProUGUI>().text = "Wheelchairmode";
-
 		//More Settings
 	}
 
-	void WheelChair()
-	{
-		
-		if (!GlobalValues.settings.wheelChairMode)
-		{
-			GlobalValues.settings.wheelChairMode = true;
-			
-		}
-		else
-		{
-			GlobalValues.settings.wheelChairMode = false;
-		}
-				
-		buttons[0].transform.parent.GetChild(2).transform.gameObject.GetComponent<TextMeshProUGUI>().text = GlobalValues.settings.wheelChairMode.ToString();
-		
-	}
+	
 
 }

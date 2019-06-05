@@ -94,13 +94,16 @@ public class OptionsTab : MonoBehaviour
 		if (GlobalValues.settings.wheelChairMode)
 		{
 			GlobalValues.settings.wheelChairMode = false;
+		
 		}
 		else
 		{
 			GlobalValues.settings.wheelChairMode = true;
 		}
 
-		if( ChangeHeightEvent != null)
+		Settings.Save();
+
+		if ( ChangeHeightEvent != null)
 		{
 			
 			ChangeHeightEvent();

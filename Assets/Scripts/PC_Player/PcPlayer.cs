@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 /// <summary>
 /// @Author = Veli-Matti Vuoti
@@ -25,6 +26,7 @@ public class PcPlayer : MonoBehaviour
 	public bool hovering;
 	public bool hasObjSelected;
 	public bool senderActive;
+	public bool canTeleport;
 
 	public delegate void MouseDelegate(object sender, RayCastData hitData);
 	public static event MouseDelegate mouseHoverIn;
@@ -53,30 +55,40 @@ public class PcPlayer : MonoBehaviour
 
 	private void OnEnable()
 	{
-		OptionsTab.ChangeHeightEvent += OnWheelChairModeEnabled;
+		Settings.OnSettingsChanged += CheckSettings;
 	}
 
 	private void OnDisable()
 	{
-		OptionsTab.ChangeHeightEvent -= OnWheelChairModeEnabled;
+		Settings.OnSettingsChanged -= CheckSettings;
 	}
 
+	public void CheckSettings(Settings settings)
+	{
+
+		OnWheelChairModeEnabled();
+
+	}
 
 	private void Update()
 	{
 		HasObjectSelected();
-		RayCastToPointer();
-
+		if (!EventSystem.current.IsPointerOverGameObject())
+		{
+			RayCastToPointer();
+		}
 	}
 
 	private void HasObjectSelected()
 	{
 		if (selectedObject != null)
 		{
+			canTeleport = false;
 			hasObjSelected = true;
 		}
 		else
 		{
+			canTeleport = true;
 			hasObjSelected = false;
 		}
 	}
@@ -128,7 +140,7 @@ public class PcPlayer : MonoBehaviour
 						objSnapPoint.connectedBody.useGravity = false;
 					}
 				}
-				else if (Input.GetMouseButtonDown(0) && selectedObject == hoveredGameObject && selectedObject != null && hasObjSelected)
+				else if (Input.GetMouseButtonDown(1) && selectedObject == hoveredGameObject && selectedObject != null && hasObjSelected)
 				{
 					Debug.Log("DESELECTED OBJECT");
 					selectedObject = null;
@@ -156,7 +168,7 @@ public class PcPlayer : MonoBehaviour
 		{
 			MouseExited(hit);
 
-			if (Input.GetMouseButtonDown(0) && selectedObject != null)
+			if (Input.GetMouseButtonDown(1) && selectedObject != null)
 			{
 				Debug.Log("DESELECTED OBJECT");
 				selectedObject.AddComponent<InteractableObject>().selected = false;
@@ -222,9 +234,9 @@ public class PcPlayer : MonoBehaviour
 		Ray ray = eyeSight.ScreenPointToRay(Input.mousePosition);
 		bool rayHit = Physics.Raycast(ray, out hit, rayCastDistance, teleportMask);
 
-		if (rayHit)
+		if (rayHit && canTeleport)
 		{
-			transform.position = hit.point;
+			transform.position = hit.point + Vector3.up*0.01f;
 		}
 
 	}
