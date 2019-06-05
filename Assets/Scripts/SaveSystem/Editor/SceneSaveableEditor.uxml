@@ -1,0 +1,7 @@
+<UXML xmlns:ui="UnityEngine.UIElements" xmlns:ue="UnityEditor.UIElements">
+  <ui:VisualElement name="row">
+    <ui:Label name="top-label" text="Save object" style="font-style: bold; margin-top: 5"/>
+    <ue:PropertyField binding-path="saveableID" name="save-id-field" />
+    <ue:PropertyField binding-path="saveTransform" name="save-transform-field" />
+  </ui:VisualElement>
+</UXML>

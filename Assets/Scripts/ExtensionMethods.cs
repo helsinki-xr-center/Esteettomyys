@@ -40,22 +40,22 @@ public static class ExtensionMethods
 		}
 	}
 
-	//public static void ColorFade(Transform target, float time , bool status)
-	//{
-	//	MeshRenderer[] mrs = target.gameObject.GetComponentsInChildren<MeshRenderer>();
+	public static Transform[] GetChildrenRecursive(this Transform transform)
+	{
+		List<Transform> transforms = new List<Transform>();
+		Queue<Transform> toTraverse = new Queue<Transform>();
 
-	//	foreach (MeshRenderer mr in mrs)
-	//	{
-	//		if (status)
-	//		{
-	//			Color newColor = new Color(mr.material.color.r, mr.material.color.b, mr.material.color.g, 0);
-	//			mr.material.color = newColor;
-	//		}
-	//		else
-	//		{
-	//			Color newColor = new Color(mr.material.color.r, mr.material.color.b, mr.material.color.g, 255);
-	//			mr.material.color = newColor;
-	//		}
-	//	}		
-	//}
+		toTraverse.Enqueue(transform);
+
+		while(toTraverse.Count > 0)
+		{
+			Transform current = toTraverse.Dequeue();
+			foreach(Transform child in current)
+			{
+				toTraverse.Enqueue(child);
+				transforms.Add(child);
+			}
+		}
+		return transforms.ToArray();
+	}
 }
