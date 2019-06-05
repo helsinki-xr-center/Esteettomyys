@@ -3,20 +3,34 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.Serialization;
 
 namespace SaveSystem
 {
 	public static class SaveManager
 	{
-		public static SceneSaveData SaveSceneObjects(Scene scene)
+		private static SaveData currentData = new SaveData();
+
+
+		public static SaveData Save(string saveName)
+		{
+			currentData.saveName = saveName;
+			currentData.timestamp = System.DateTime.Now;
+			return currentData;
+		}
+
+		public static void Load(SaveData data) => currentData = data;
+
+
+		public static void SaveSceneObjects(Scene scene)
 		{
 			if (!scene.isLoaded)
 			{
-				return default(SceneSaveData);
+				return;
 			}
 
-			var sceneSaveables = GameObject.FindObjectsOfType<SceneSaveable>().Where(x => x.gameObject.scene == scene).ToArray();
-			var spawnedSaveables = GameObject.FindObjectsOfType<SpawnedSaveable>().Where(x => x.gameObject.scene == scene).ToArray();
+			var sceneSaveables = GameObject.FindObjectsOfType<SceneSaveable>().Where(x => x.gameObject.scene == scene).Reverse().ToArray();
+			var spawnedSaveables = GameObject.FindObjectsOfType<SpawnedSaveable>().Where(x => x.gameObject.scene == scene).Reverse().ToArray();
 
 			SceneSaveData saveData = new SceneSaveData()
 			{
@@ -35,26 +49,55 @@ namespace SaveSystem
 				saveData.spawnedData[i] = spawnedSaveables[i].GetSaveData();
 			}
 
-			return saveData;
+			if (currentData.savedScenes == null)
+			{
+				currentData.savedScenes = new SceneSaveData[1];
+				currentData.savedScenes[0] = saveData;
+			}
+			else
+			{
+				int idx = currentData.savedScenes.FirstIndexOf(x => x.sceneName == saveData.sceneName);
+
+				if (idx > -1)
+				{
+					currentData.savedScenes[idx] = saveData;
+				}
+				else
+				{
+					currentData.savedScenes = currentData.savedScenes.Append(saveData);
+				}
+			}
+
+
 		}
 
-		public static void LoadSceneObjects(SceneSaveData saveData)
+		public static void LoadSceneObjects(Scene scene)
 		{
-			var scenes = GetAllLoadedScenes();
-
-			Scene scene = scenes.SingleOrDefault(x => x.name == saveData.sceneName);
-			if (scene == null)
+			if (!scene.isLoaded)
 			{
-				Debug.LogWarning($"Scene {saveData.sceneName} that matches saveData is not loaded!");
+				Debug.LogWarning($"Scene {scene.name} is not loaded!");
+				return;
+			}
+
+			if(currentData.savedScenes == null)
+			{
+				Debug.Log($"No saved scenes in current save. Have you called SaveManager.Load ?");
+				return;
+			}
+
+			SceneSaveData saveData = currentData.savedScenes.SingleOrDefault(x => x.sceneName == scene.name);
+			if (string.IsNullOrEmpty(saveData.sceneName))
+			{
+				Debug.Log($"No saved data found for {scene.name}.");
 				return;
 			}
 
 			var sceneSaveables = GameObject.FindObjectsOfType<SceneSaveable>().Where(x => x.gameObject.scene == scene).ToArray();
-			
-			foreach(var objectData in saveData.sceneData)
+
+			foreach (var objectData in saveData.sceneData)
 			{
 				var matching = sceneSaveables.SingleOrDefault(x => x.saveableID == objectData.saveableID);
-				if(matching == null)
+				if (matching == null)
 				{
 					Debug.LogWarning($"No matching SceneSaveable found for {objectData.saveableID}.");
 					continue;
@@ -62,17 +105,17 @@ namespace SaveSystem
 				matching.LoadSaveData(objectData);
 			}
 
-			foreach (var spawnedData in saveData.spawnedData)
+			foreach (var spawnedData in saveData.spawnedData.OrderBy(x => x.spawnIndex))
 			{
 				GameObject prefab = Resources.Load<GameObject>(spawnedData.resourcePath);
-				if(prefab == null)
+				if (prefab == null)
 				{
 					Debug.LogWarning($"No matching prefab found for {spawnedData.resourcePath}.");
 					continue;
 				}
 				GameObject spawned = GameObject.Instantiate(prefab);
 				SpawnedSaveable saveable = spawned.GetComponent<SpawnedSaveable>();
-				if(saveable == null)
+				if (saveable == null)
 				{
 					Debug.LogWarning($"No SpawnedSaveable script found in prefab {spawnedData.resourcePath}.");
 					GameObject.Destroy(spawned);

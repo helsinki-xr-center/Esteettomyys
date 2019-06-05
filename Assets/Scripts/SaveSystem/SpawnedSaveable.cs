@@ -6,14 +6,26 @@ namespace SaveSystem
 {
 	public sealed class SpawnedSaveable : MonoBehaviour
 	{
+		public static int nextSpawnIndex = 0;
+
 		public string resourcePath;
 		public bool saveParent = false;
 		public UnityEngine.Object[] saveables;
+
+		private int spawnIndex;
+
+		private void Awake()
+		{
+			spawnIndex = nextSpawnIndex;
+			nextSpawnIndex++;
+		}
 
 		internal SpawnedObjectSaveData GetSaveData()
 		{
 			SpawnedObjectSaveData data = new SpawnedObjectSaveData()
 			{
+				spawnIndex = spawnIndex,
+				objectName = gameObject.name,
 				resourcePath = resourcePath,
 				saveParent = saveParent,
 				position = transform.position,
@@ -39,6 +51,12 @@ namespace SaveSystem
 
 		internal void LoadSaveData(SpawnedObjectSaveData saveData)
 		{
+			spawnIndex = saveData.spawnIndex;
+			if(spawnIndex <= nextSpawnIndex)
+			{
+				nextSpawnIndex = spawnIndex + 1;
+			}
+
 			if (saveData.saveParent)
 			{
 				transform.SetParent(saveData.parent.GetTransform(gameObject.scene));
@@ -46,6 +64,8 @@ namespace SaveSystem
 			transform.position = saveData.position;
 			transform.eulerAngles = saveData.rotation;
 			transform.localScale = saveData.localScale;
+
+			gameObject.name = saveData.objectName;
 
 			if (saveData.saveables.Length != saveables.Length)
 			{

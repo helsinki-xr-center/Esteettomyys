@@ -8,6 +8,34 @@ using UnityEngine.SceneManagement;
 namespace SaveSystem
 {
 	[System.Serializable]
+	public class SaveData
+	{
+		public string saveName;
+		public DateTime timestamp;
+		public SceneSaveData[] savedScenes;
+
+		public string AsString()
+		{
+			return SaveSerializer.Serialize(this);
+		}
+
+		public string AsStringCompressed()
+		{
+			return StringCompress.Compress(AsString());
+		}
+
+		public static SaveData FromString(string saveData)
+		{
+			return SaveSerializer.Deserialize<SaveData>(saveData);
+		}
+
+		public static SaveData FromStringCompressed(string compressedData)
+		{
+			return FromString(StringCompress.Decompress(compressedData));
+		}
+	}
+
+	[System.Serializable]
 	public struct SceneSaveData
 	{
 		public string sceneName;
@@ -29,6 +57,8 @@ namespace SaveSystem
 	[System.Serializable]
 	public struct SpawnedObjectSaveData
 	{
+		public int spawnIndex;
+		public string objectName;
 		public string resourcePath;
 		public bool saveParent;
 		public Vector3SaveData position;
@@ -50,6 +80,8 @@ namespace SaveSystem
 		public string name;
 		public string rootName;
 		public int siblingIndex;
+		public int rootSiblingIndex;
+		public Vector3SaveData position;
 
 		public ParentData(Transform source)
 		{
@@ -58,19 +90,23 @@ namespace SaveSystem
 				name = string.Empty;
 				siblingIndex = 0;
 				rootName = string.Empty;
+				rootSiblingIndex = 0;
+				position = Vector3.zero;
 			}
 			else
 			{
 				name = source.name;
 				siblingIndex = source.GetSiblingIndex();
 				rootName = source.root.name;
+				rootSiblingIndex = source.root.GetSiblingIndex();
+				position = source.position;
 			}
 
 		}
 
 		public Transform GetTransform(Scene scene)
 		{
-			if (string.IsNullOrEmpty(name))
+			if (string.IsNullOrEmpty(name)) // no parent
 			{
 				return null;
 			}
@@ -79,27 +115,35 @@ namespace SaveSystem
 			var roots = scene.GetRootGameObjects();
 			IEnumerable<Transform> matchingItems = Array.Empty<Transform>();
 
-			if (rootName != name)
+			if (rootName != name) //the parent is a child of one of the root objects
 			{
 				var matchingRoots = roots.Select(x => x.transform).Where(x => x.name == data.rootName);
+				if(matchingRoots.Count() > 1) //more than one matching root, find by sibling index
+				{
+					matchingRoots = matchingRoots.Where(x => x.GetSiblingIndex() == data.rootSiblingIndex);
+				}
 				matchingItems = matchingRoots.SelectMany(x => x.GetChildrenRecursive().Where(y => y.name == data.name));
 
-			}
+			}  //the parent is one of the root objects
 			else
 			{
 				matchingItems = roots.Select(x => x.transform).Where(x => x.name == data.rootName);
 			}
 
 
-			if (matchingItems.Count() > 1)
+			if (matchingItems.Count() > 1) // more than one match. match by sibling index.
 			{
-				var matching = matchingItems.SingleOrDefault(x => x.GetSiblingIndex() == data.siblingIndex);
-				if (matching != null)
+				var matching = matchingItems.Where(x => x.GetSiblingIndex() == data.siblingIndex);
+				if (matching.Count() == 1)
 				{
-					return matching;
+					return matching.Single();
+				}
+				else //find closest position
+				{
+					return matching.MinBy(x => Vector3.Distance(data.position, x.position));
 				}
 			}
-			else
+			else // found perfect match.
 			{
 				var matching = matchingItems.SingleOrDefault();
 				if (matching != null)
@@ -108,7 +152,7 @@ namespace SaveSystem
 				}
 			}
 
-			//Didn't work somehow. Just return null.
+			//nothing worked. Just return null.
 			return null;
 		}
 
