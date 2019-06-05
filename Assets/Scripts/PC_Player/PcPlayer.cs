@@ -35,6 +35,8 @@ public class PcPlayer : MonoBehaviour
 
 	public delegate void OpenMenuDelegate(bool havingObj);
 	public static event OpenMenuDelegate OpenMenuEvent;
+	public delegate void OnDeselectObjectDelegate(GameObject obj);
+	public static event OnDeselectObjectDelegate OnDeselectObjectEvent;
 
 	private void Start()
 	{
@@ -129,22 +131,21 @@ public class PcPlayer : MonoBehaviour
 
 				if (Input.GetMouseButtonDown(0) && hoveredGameObject == hit.transform.gameObject && !hasObjSelected)
 				{
-					Debug.Log("SELECTED OBJECT");
+					//Debug.Log("SELECTED OBJECT");
 					MouseClicked(hit);
 					selectedObject = hit.transform.gameObject;
 					if (hit.distance <= 2f)
 					{
-						Debug.Log("PICKED UP THE OBJECT");
+						//Debug.Log("PICKED UP THE OBJECT");
 						hit.transform.position = rightHand.position;
 						objSnapPoint.connectedBody = hit.rigidbody;
 						objSnapPoint.connectedBody.useGravity = false;
 					}
 				}
 				else if (Input.GetMouseButtonDown(1) && selectedObject == hoveredGameObject && selectedObject != null && hasObjSelected)
-				{
-					Debug.Log("DESELECTED OBJECT");
+				{			
+					OnDeselectObjectEvent?.Invoke(selectedObject);
 					selectedObject = null;
-
 					DropObject();
 				}
 			}
@@ -169,12 +170,9 @@ public class PcPlayer : MonoBehaviour
 			MouseExited(hit);
 
 			if (Input.GetMouseButtonDown(1) && selectedObject != null)
-			{
-				Debug.Log("DESELECTED OBJECT");
-				selectedObject.AddComponent<InteractableObject>().selected = false;
-				ExtensionMethods.MaterialColorChange(selectedObject, Color.white);
+			{			
+				OnDeselectObjectEvent?.Invoke(selectedObject);				
 				selectedObject = null;
-
 				DropObject();
 			}
 
@@ -201,7 +199,7 @@ public class PcPlayer : MonoBehaviour
 		{
 			newHitData.distance = hit.distance;
 			newHitData.hitPoint = hit.point;
-			newHitData.target = hoveredGameObject.transform;
+			newHitData.target = hit.transform;
 			mouseClick(this, newHitData);
 		}
 	}
@@ -221,9 +219,10 @@ public class PcPlayer : MonoBehaviour
 	{
 		if (objSnapPoint.connectedBody != null)
 		{
-			Debug.Log("DROPPED OBJECT");
+			//Debug.Log("DROPPED OBJECT");		
 			objSnapPoint.connectedBody.useGravity = true;
 			objSnapPoint.connectedBody = null;
+			
 		}
 	}
 

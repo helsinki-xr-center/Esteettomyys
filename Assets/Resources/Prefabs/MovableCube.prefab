@@ -175,13 +175,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7828a4a926bf4404aae61fb8dae3faa6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hoveringColor: {r: 0.998315, g: 1, b: 0, a: 1}
-  selectedColor: {r: 1, g: 1, b: 1, a: 0}
-  examHoveringColor: {r: 0, g: 0, b: 0, a: 0}
-  standardColor: {r: 0, g: 0, b: 0, a: 0}
-  criticalColor: {r: 0, g: 0, b: 0, a: 0}
   objectType: 1
-  manuallyPickedColors: 0
+  objData: {fileID: 11400000, guid: 4ba76f527357aed4ea154d1641f18675, type: 2}
   selected: 0
 --- !u!114 &2633175896884231781
 MonoBehaviour:

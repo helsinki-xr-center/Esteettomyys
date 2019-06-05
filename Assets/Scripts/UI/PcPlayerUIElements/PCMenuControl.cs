@@ -46,11 +46,13 @@ public class PCMenuControl : MonoBehaviour
 	private void OnEnable()
 	{
 		PcPlayer.OpenMenuEvent += OpenMenu;
+		PcPlayer.OnDeselectObjectEvent += OnDeselectObject;
 	}
 
 	private void OnDisable()
 	{
 		PcPlayer.OpenMenuEvent -= OpenMenu;
+		PcPlayer.OnDeselectObjectEvent -= OnDeselectObject;
 	}
 
 	void OpenFilterContent()
@@ -103,28 +105,52 @@ public class PCMenuControl : MonoBehaviour
 
 	public void OpenMenu(bool hasObj)
 	{
+		if(hasObj)
+		{
+			if(!fullMenu.gameObject.activeSelf)
+			{
+				if (!partMenu.gameObject.activeSelf)
+				{
+					partMenu.gameObject.SetActive(true);
+				}
+				else
+				{
+					partMenu.gameObject.SetActive(false);
+				}
+			}
+			else
+			{
+				fullMenu.gameObject.SetActive(false);
+			}
+		}
+		else
+		{
+			
+			if(!partMenu.gameObject.activeSelf)
+			{
+				if(!fullMenu.gameObject.activeSelf)
+				{
+					fullMenu.gameObject.SetActive(true);
+				}
+				else
+				{
+					fullMenu.gameObject.SetActive(false);
+				}
+			}
+			else
+			{
+				partMenu.gameObject.SetActive(false);
+			}
+		}
 
-		if (hasObj && !partMenu.gameObject.activeSelf)
-		{
-			partMenu.gameObject.SetActive(true);
-			fullMenu.gameObject.SetActive(false);
-		}
-		else if (hasObj && partMenu.gameObject.activeSelf)
-		{
-			partMenu.gameObject.SetActive(false);
-			fullMenu.gameObject.SetActive(false);
-		}
-		else if (!hasObj && !fullMenu.gameObject.activeSelf)
-		{
-			fullMenu.gameObject.SetActive(true);
-			partMenu.gameObject.SetActive(false);
-		}
-		else if (!hasObj && fullMenu.gameObject.activeSelf)
-		{
-			fullMenu.gameObject.SetActive(false);
-			partMenu.gameObject.SetActive(false);
-		}
+	}
 
+	public void OnDeselectObject(GameObject obj)
+	{
+		if (partMenu.gameObject.activeSelf)
+		{
+			partMenu.gameObject.SetActive(false);
+		}
 	}
 
 }
