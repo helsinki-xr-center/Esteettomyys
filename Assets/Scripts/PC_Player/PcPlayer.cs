@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 /// <summary>
 /// @Author = Veli-Matti Vuoti
@@ -25,11 +26,15 @@ public class PcPlayer : MonoBehaviour
 	public bool hovering;
 	public bool hasObjSelected;
 	public bool senderActive;
+	public bool canTeleport;
 
 	public delegate void MouseDelegate(object sender, RayCastData hitData);
 	public static event MouseDelegate mouseHoverIn;
 	public static event MouseDelegate mouseHoverOut;
 	public static event MouseDelegate mouseClick;
+
+	public delegate void OpenMenuDelegate(bool havingObj);
+	public static event OpenMenuDelegate OpenMenuEvent;
 
 	private void Start()
 	{
@@ -50,32 +55,47 @@ public class PcPlayer : MonoBehaviour
 
 	private void OnEnable()
 	{
-		OptionsTab.ChangeHeightEvent += OnWheelChairModeEnabled;
+		Settings.OnSettingsChanged += CheckSettings;
 	}
 
 	private void OnDisable()
 	{
-		OptionsTab.ChangeHeightEvent -= OnWheelChairModeEnabled;
+		Settings.OnSettingsChanged -= CheckSettings;
 	}
 
+	public void CheckSettings(Settings settings)
+	{
+
+		OnWheelChairModeEnabled();
+
+	}
 
 	private void Update()
 	{
 		HasObjectSelected();
-		RayCastToPointer();
-
+		if (!EventSystem.current.IsPointerOverGameObject())
+		{
+			RayCastToPointer();
+		}
 	}
 
 	private void HasObjectSelected()
 	{
 		if (selectedObject != null)
 		{
+			canTeleport = false;
 			hasObjSelected = true;
 		}
 		else
 		{
+			canTeleport = true;
 			hasObjSelected = false;
 		}
+	}
+
+	public void InteractionMenu()
+	{
+		OpenMenuEvent?.Invoke(hasObjSelected);
 	}
 
 	public void RayCastToPointer()
@@ -120,7 +140,7 @@ public class PcPlayer : MonoBehaviour
 						objSnapPoint.connectedBody.useGravity = false;
 					}
 				}
-				else if (Input.GetMouseButtonDown(0) && selectedObject == hoveredGameObject && selectedObject != null && hasObjSelected)
+				else if (Input.GetMouseButtonDown(1) && selectedObject == hoveredGameObject && selectedObject != null && hasObjSelected)
 				{
 					Debug.Log("DESELECTED OBJECT");
 					selectedObject = null;
@@ -148,7 +168,7 @@ public class PcPlayer : MonoBehaviour
 		{
 			MouseExited(hit);
 
-			if (Input.GetMouseButtonDown(0) && selectedObject != null)
+			if (Input.GetMouseButtonDown(1) && selectedObject != null)
 			{
 				Debug.Log("DESELECTED OBJECT");
 				selectedObject.AddComponent<InteractableObject>().selected = false;
@@ -214,28 +234,23 @@ public class PcPlayer : MonoBehaviour
 		Ray ray = eyeSight.ScreenPointToRay(Input.mousePosition);
 		bool rayHit = Physics.Raycast(ray, out hit, rayCastDistance, teleportMask);
 
-		if (rayHit)
+		if (rayHit && canTeleport)
 		{
-			transform.position = hit.point;
+			transform.position = hit.point + Vector3.up*0.01f;
 		}
 
 	}
 
-	public void OnWheelChairModeEnabled(bool status, float curHeight, float targetHeight)
+	public void OnWheelChairModeEnabled()
 	{
 
-		if (!GlobalValues.settings.wheelChairMode)
+		if (GlobalValues.settings.wheelChairMode)
 		{
-
-			GlobalValues.settings.wheelChairMode = true;
-			transform.localScale = new Vector3(transform.localScale.x, targetHeight / curHeight, transform.localScale.z);
-
+			transform.localScale = new Vector3(transform.localScale.x, GlobalValues.settings.wheelChairHeight / GlobalValues.settings.defaultHeight, transform.localScale.z);
 		}
 		else
 		{
-			GlobalValues.settings.wheelChairMode = false;
 			transform.localScale = new Vector3(transform.localScale.x, 1, transform.localScale.z);
-
 		}
 
 	}
