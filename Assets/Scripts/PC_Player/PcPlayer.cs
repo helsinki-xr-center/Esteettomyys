@@ -27,6 +27,7 @@ public class PcPlayer : MonoBehaviour
 	public bool hasObjSelected;
 	public bool senderActive;
 	public bool canTeleport;
+	public GameObject teleportIndicator;
 
 	public delegate void MouseDelegate(object sender, RayCastData hitData);
 	public static event MouseDelegate mouseHoverIn;
@@ -72,9 +73,11 @@ public class PcPlayer : MonoBehaviour
 
 	}
 
-	private void Update()
+	private void FixedUpdate()
 	{
+
 		HasObjectSelected();
+
 		if (!EventSystem.current.IsPointerOverGameObject())
 		{
 			RayCastToPointer();
@@ -226,6 +229,22 @@ public class PcPlayer : MonoBehaviour
 		}
 	}
 
+	public void PortalIndicator()
+	{
+		RaycastHit hit;
+
+		Ray ray = eyeSight.ScreenPointToRay(Input.mousePosition);
+		bool rayHit = Physics.Raycast(ray, out hit, rayCastDistance, teleportMask);
+
+		if (rayHit)
+		{
+			if ( teleportIndicator != null && !teleportIndicator.activeSelf)
+			{
+				teleportIndicator.SetActive(true);
+			}
+		}
+	}
+
 	public void PCTeleport()
 	{
 		RaycastHit hit;
@@ -235,6 +254,11 @@ public class PcPlayer : MonoBehaviour
 
 		if (rayHit && canTeleport)
 		{
+			if (teleportIndicator != null && !teleportIndicator.activeSelf)
+			{
+				teleportIndicator.SetActive(false);
+			}
+
 			transform.position = hit.point + Vector3.up*0.01f;
 		}
 

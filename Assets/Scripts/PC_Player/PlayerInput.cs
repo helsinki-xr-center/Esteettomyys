@@ -41,10 +41,15 @@ public class PlayerInput : MonoBehaviour
 			lockRotation = false;
 		}
 
-		if (Input.GetMouseButtonDown(1))
+		if( Input.GetMouseButtonDown(1))
+		{
+			player.PortalIndicator();
+		}
+		if (Input.GetMouseButtonUp(1))
 		{
 			player.PCTeleport();
 		}
+
 
 		if(Input.GetButtonDown("Cancel"))
 		{
