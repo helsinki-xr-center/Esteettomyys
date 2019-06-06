@@ -193,6 +193,7 @@ public class HoverTabletControl : MonoBehaviour
 			if (!LockedOnPlace)
 			{
 				LockedOnPlace = true;
+				TabletTrackPlayerHead();
 
 				for (int i = 0; i < transform.childCount; i++)
 				{
