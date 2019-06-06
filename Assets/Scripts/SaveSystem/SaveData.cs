@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -33,6 +34,15 @@ namespace SaveSystem
 		{
 			return FromString(StringCompress.Decompress(compressedData));
 		}
+
+		public static Stream AsStream() => throw new NotImplementedException();
+
+		public static SaveData FromStream(Stream source) => throw new NotImplementedException();
+
+		public static Stream AsStreamCompressed() => throw new NotImplementedException();
+
+		public static SaveData FromStreamCompressed(Stream source) => throw new NotImplementedException();
+
 	}
 
 	[System.Serializable]
@@ -75,7 +85,7 @@ namespace SaveSystem
 	}
 
 	[System.Serializable]
-	public struct ParentData
+	public class ParentData
 	{
 		public string name;
 		public string rootName;
@@ -156,7 +166,7 @@ namespace SaveSystem
 			return null;
 		}
 
-		public static implicit operator ParentData(Transform src) => new ParentData(src);
+		public static implicit operator ParentData(Transform src) => src != null ? new ParentData(src) : null;
 	}
 
 	[System.Serializable]

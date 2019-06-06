@@ -9,6 +9,7 @@ namespace SaveSystem
 		public static int nextSpawnIndex = 0;
 
 		public string resourcePath;
+		public bool loadAfterStart = true;
 		public bool saveParent = false;
 		public UnityEngine.Object[] saveables;
 
@@ -52,14 +53,14 @@ namespace SaveSystem
 		internal void LoadSaveData(SpawnedObjectSaveData saveData)
 		{
 			spawnIndex = saveData.spawnIndex;
-			if(spawnIndex <= nextSpawnIndex)
+			if (spawnIndex <= nextSpawnIndex)
 			{
 				nextSpawnIndex = spawnIndex + 1;
 			}
 
 			if (saveData.saveParent)
 			{
-				transform.SetParent(saveData.parent.GetTransform(gameObject.scene));
+				transform.SetParent(saveData.parent?.GetTransform(gameObject.scene));
 			}
 			transform.position = saveData.position;
 			transform.eulerAngles = saveData.rotation;
@@ -67,6 +68,25 @@ namespace SaveSystem
 
 			gameObject.name = saveData.objectName;
 
+			if (loadAfterStart)
+			{
+				StartCoroutine(DelayLoading(saveData));
+			}
+			else
+			{
+				LoadSaveablesData(saveData);
+			}
+
+		}
+
+		IEnumerator DelayLoading(SpawnedObjectSaveData saveData)
+		{
+			yield return null;
+			LoadSaveablesData(saveData);
+		}
+
+		private void LoadSaveablesData(SpawnedObjectSaveData saveData)
+		{
 			if (saveData.saveables.Length != saveables.Length)
 			{
 				Debug.LogWarning("Saveable array length doesn't match with save data.", this);
