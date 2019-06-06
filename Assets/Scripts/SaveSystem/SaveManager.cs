@@ -12,14 +12,14 @@ namespace SaveSystem
 		private static SaveData currentData = new SaveData();
 
 
-		public static SaveData Save(string saveName)
+		public static SaveData GetSaveData(string saveName)
 		{
 			currentData.saveName = saveName;
 			currentData.timestamp = System.DateTime.Now;
 			return currentData;
 		}
 
-		public static void Load(SaveData data) => currentData = data;
+		public static void LoadSaveData(SaveData data) => currentData = data;
 
 
 		public static void SaveSceneObjects(Scene scene)
@@ -79,7 +79,7 @@ namespace SaveSystem
 				return;
 			}
 
-			if(currentData.savedScenes == null)
+			if (currentData.savedScenes == null)
 			{
 				Debug.Log($"No saved scenes in current save. Have you called SaveManager.Load ?");
 				return;

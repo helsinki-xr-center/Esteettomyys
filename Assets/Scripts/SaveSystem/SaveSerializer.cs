@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
+using System.IO;
 using System.Reflection;
 using UnityEngine;
 
@@ -40,6 +41,28 @@ namespace SaveSystem
 		public static T Deserialize<T>(string serialized)
 		{
 			return JsonConvert.DeserializeObject<T>(serialized, settings);
+		}
+
+
+		public static void SerializeToStream(object value, Stream stream)
+		{
+			using (StreamWriter writer = new StreamWriter(stream))
+			using (JsonTextWriter jsonWriter = new JsonTextWriter(writer))
+			{
+				JsonSerializer ser = new JsonSerializer() { ContractResolver = ShouldSerializeContractResolver.Instance, Formatting = Formatting.Indented };
+				ser.Serialize(jsonWriter, value);
+				jsonWriter.Flush();
+			}
+		}
+
+		public static T DeserializeFromStream<T>(Stream stream)
+		{
+			using (StreamReader reader = new StreamReader(stream))
+			using (JsonTextReader jsonReader = new JsonTextReader(reader))
+			{
+				JsonSerializer ser = new JsonSerializer() { ContractResolver = ShouldSerializeContractResolver.Instance };
+				return ser.Deserialize<T>(jsonReader);
+			}
 		}
 	}
 }

@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System.IO.Compression;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -35,13 +36,31 @@ namespace SaveSystem
 			return FromString(StringCompress.Decompress(compressedData));
 		}
 
-		public static Stream AsStream() => throw new NotImplementedException();
+		public void WriteToStream(Stream stream)
+		{
+			SaveSerializer.SerializeToStream(this, stream);
+		}
 
-		public static SaveData FromStream(Stream source) => throw new NotImplementedException();
+		public static SaveData FromStream(Stream source)
+		{
+			return SaveSerializer.DeserializeFromStream<SaveData>(source);
+		}
 
-		public static Stream AsStreamCompressed() => throw new NotImplementedException();
+		public void WriteToStreamCompressed(Stream stream)
+		{
+			using (var gs = StringCompress.GetCompressionStream(stream))
+			{
+				WriteToStream(gs);
+			}
+		}
 
-		public static SaveData FromStreamCompressed(Stream source) => throw new NotImplementedException();
+		public static SaveData FromStreamCompressed(Stream source)
+		{
+			using (var gs = StringCompress.GetDecompressionStream(source))
+			{
+				return FromStream(gs);
+			}
+		}
 
 	}
 

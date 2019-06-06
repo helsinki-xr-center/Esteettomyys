@@ -18,39 +18,44 @@ public class SaveTestingUI : MonoBehaviour
 	public void SaveScene()
 	{
 		SaveManager.SaveSceneObjects(SceneManager.GetActiveScene());
-		saveData = SaveManager.Save("test");
+		saveData = SaveManager.GetSaveData("test3");
+
+		PlayerPrefsSaveFileManager.instance.Save(saveData);
 
 
 		Debug.Log("Savestring: " + saveData.AsString());
 		Debug.Log(saveData.AsString().Length + " bytes");
 		Debug.Log("Compressed: " + saveData.AsStringCompressed());
-
 		Debug.Log(saveData.AsStringCompressed().Length + " bytes");
-		PlayerPrefs.SetString("testSave", saveData.AsStringCompressed());
-		PlayerPrefs.Save();
+
+
+		FileSystemSaveFileManager.Default.Save(saveData);
 	}
 
 	public void LoadScene()
 	{
-		if(saveData == null || string.IsNullOrEmpty(saveData.saveName))
-		{
-			string saveString = PlayerPrefs.GetString("testSave");
-
-			Debug.Log("Read: " + saveString);
-			Debug.Log(saveString.Length + " bytes");
-
-			saveData = SaveData.FromStringCompressed(saveString);
-		}
-
-
 		var spawned = FindObjectsOfType<SpawnedSaveable>();
 		foreach (var item in spawned)
 		{
 			DestroyImmediate(item.gameObject);
 		}
 
-		SaveManager.Load(saveData);
-		SaveManager.LoadSceneObjects(SceneManager.GetActiveScene());
+		var saveFiles = PlayerPrefsSaveFileManager.instance.GetSaveFiles();
+
+		if(saveFiles.Length > 0)
+		{
+			saveData = PlayerPrefsSaveFileManager.instance.Load(saveFiles[0]);
+			SaveManager.LoadSaveData(saveData);
+			SaveManager.LoadSceneObjects(SceneManager.GetActiveScene());
+		}
+
+		var files = FileSystemSaveFileManager.Default.GetSaveFiles();
+		foreach(var file in files)
+		{
+			Debug.Log(file.saveName);
+			var thing = FileSystemSaveFileManager.Default.Load(file);
+			Debug.Log(thing.AsString());
+		}
 	}
 
 	public void SpawnObject()

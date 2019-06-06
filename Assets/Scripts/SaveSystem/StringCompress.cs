@@ -40,5 +40,15 @@ namespace SaveSystem
 				return Encoding.UTF8.GetString(mso.ToArray());
 			}
 		}
+
+		public static Stream GetCompressionStream(Stream source)
+		{
+			return new GZipStream(source, CompressionMode.Compress);
+		}
+
+		public static Stream GetDecompressionStream(Stream dest)
+		{
+			return new GZipStream(dest, CompressionMode.Decompress);
+		}
 	}
 }
