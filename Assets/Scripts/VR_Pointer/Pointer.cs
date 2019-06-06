@@ -39,6 +39,7 @@ public class Pointer : MonoBehaviour
 	[Tooltip("Enables Pointer hit events")] public bool isSenderActive;
 	[Tooltip("Enabled when pointer is pointing on target")] public bool hovering;
 	public bool lockLaserOn;
+	public bool changedObj;
 	#endregion
 
 	/// <summary>
@@ -52,6 +53,9 @@ public class Pointer : MonoBehaviour
 	public static event PointerHitInfoDelegate PointerLeft;
 	public static event PointerHitInfoDelegate PointerClick;
 	public static event PointerHitInfoDelegate PointerDrag;
+
+	public delegate void SelectedObjectDelegate(bool havingObj, Transform obj);
+	public static event SelectedObjectDelegate SelectedObjectEvent;
 	#endregion
 
 	/// <summary>
@@ -78,10 +82,24 @@ public class Pointer : MonoBehaviour
 		if (selectedObj != null)
 		{
 			hasTarget = true;
+			
+			if ( SelectedObjectEvent != null && !changedObj)
+			{
+				Debug.Log(hasTarget);
+				changedObj = true;
+				SelectedObjectEvent(hasTarget, selectedObj.transform);
+			}
 		}
 		else
 		{
 			hasTarget = false;
+			
+			if (SelectedObjectEvent != null && changedObj && selectedObj != null)
+			{
+				Debug.Log(hasTarget);
+				changedObj = false;
+				SelectedObjectEvent(hasTarget, selectedObj.transform);
+			}
 		}
 	}
 
@@ -195,17 +213,14 @@ public class Pointer : MonoBehaviour
 				}
 
 				if (clickObj && targetObj == hit.transform.gameObject && !hasTarget)
-				{
-					Debug.Log("SELECTED OBJECT");
+				{			
 					OnPointerClick(hit);
 					selectedObj = hit.transform.gameObject;
 
 				}
 				else if (clickObj && selectedObj == targetObj && selectedObj != null && hasTarget)
-				{
-					Debug.Log("DESELECTED OBJECT");
-					selectedObj = null;
-
+				{			
+				
 					DropObject();
 				}
 				
@@ -257,11 +272,10 @@ public class Pointer : MonoBehaviour
 
 			if (clickObj && selectedObj != null)
 			{
-				Debug.Log("DESELECTED OBJECT");
+				
 				selectedObj.GetComponent<InteractableObject>().selected = false;
 				ExtensionMethods.MaterialColorChange(selectedObj, Color.white);
-				selectedObj = null;
-
+			
 				DropObject();
 			}
 			if (!lockLaserOn)
@@ -280,12 +294,18 @@ public class Pointer : MonoBehaviour
 	public void DropObject()
 	{
 
-		Debug.Log("DESELECTED OBJECT");
-
 		//SaveExitData(targetObj.transform);			
 		hasTarget = false;
-		selectedObj = null;
 
+		if (SelectedObjectEvent != null && changedObj && selectedObj != null)
+		{
+			Debug.Log(hasTarget);
+			changedObj = false;
+			SelectedObjectEvent(hasTarget, selectedObj.transform);
+		}
+
+		selectedObj = null;
+	
 	}
 
 	public void OnPointerHover(RaycastHit hit)

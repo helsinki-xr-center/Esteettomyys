@@ -29,4 +29,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Extra/Postprocess.unity
     guid: 36b3360460efd0f4691ba6edd9a5fd62
+  - enabled: 1
+    path: Assets/Scenes/Extra/MappingSystem.unity
+    guid: 6f194cb576a490d45a7d708351a9c56b
   m_configObjects: {}

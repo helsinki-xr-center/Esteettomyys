@@ -18,7 +18,7 @@ public class OptionsTab : MonoBehaviour
 	[SerializeField] private float wheelChairHeight = 0.8f;
 	[SerializeField] private float wheelChairWidth = 1f;
 
-	public delegate void ChangeHeightDelegate(bool status, float currentHeight , float targetHeight);
+	public delegate void ChangeHeightDelegate();
 	public static event ChangeHeightDelegate ChangeHeightEvent;
 
 	private void Start()
@@ -91,10 +91,22 @@ public class OptionsTab : MonoBehaviour
 	/// </summary>
 	void WheelChairMode()
 	{
-		
-		if( ChangeHeightEvent != null)
+		if (GlobalValues.settings.wheelChairMode)
 		{
-			ChangeHeightEvent(GlobalValues.settings.wheelChairMode, defaultHeight, wheelChairHeight);
+			GlobalValues.settings.wheelChairMode = false;
+		
+		}
+		else
+		{
+			GlobalValues.settings.wheelChairMode = true;
+		}
+
+		Settings.Save();
+
+		if ( ChangeHeightEvent != null)
+		{
+			
+			ChangeHeightEvent();
 			texts[0].text = GlobalValues.settings.wheelChairMode.ToString();
 		}
 	}

@@ -31,19 +31,29 @@ public class PlayerInput : MonoBehaviour
 			player.movement.RotationalMove(mouseX, mouseY);
 		}
 
-
 		if (Input.GetButton("Fire3"))
 		{
 			lockRotation = true;
 		}
+
 		if (Input.GetButtonUp("Fire3"))
 		{
 			lockRotation = false;
 		}
 
-		if (Input.GetMouseButtonDown(1))
+		if( Input.GetMouseButtonDown(1))
+		{
+			player.PortalIndicator();
+		}
+		if (Input.GetMouseButtonUp(1))
 		{
 			player.PCTeleport();
+		}
+
+
+		if(Input.GetButtonDown("Cancel"))
+		{
+			player.InteractionMenu();
 		}
 
 	}

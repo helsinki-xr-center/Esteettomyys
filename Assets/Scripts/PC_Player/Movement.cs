@@ -18,23 +18,22 @@ public class Movement : MonoBehaviour
 	#endregion
 
 	#region Player Setup
-	[SerializeField] [Range(0, 3)] float playerHeight = 1.8f;
-	[SerializeField] [Range(0, 3)] float playerWidth = 0.5f;
 	[SerializeField] bool inversedVertical;
 	#endregion
 
 	float rotationX;
 	float rotationY;
 	Rigidbody rb;
-	BoxCollider col;
+	CapsuleCollider col;
 
 	private void Start()
 	{
 		pcCamera = gameObject.GetComponentInChildren<PcCamera>();
-		pcCamera.transform.position = new Vector3 (transform.position.x,transform.position.y + playerHeight,transform.position.z);
+		pcCamera.transform.position = new Vector3 (transform.position.x,transform.position.y + GlobalValues.settings.defaultHeight,transform.position.z);
 		rb = gameObject.GetComponent<Rigidbody>();
-		col = gameObject.GetComponent<BoxCollider>();
-		col.size = new Vector3(playerWidth, playerHeight, playerWidth);
+		col = gameObject.GetComponent<CapsuleCollider>();
+		col.height = GlobalValues.settings.defaultHeight;
+		col.center = Vector3.up * (GlobalValues.settings.defaultHeight / 2);
 	}
 
 	public void SetInversed(bool status)
@@ -59,7 +58,7 @@ public class Movement : MonoBehaviour
 		//Debug.Log(moveY);
 		float moveVertical = moveY * moveSpeed * Time.deltaTime;
 		float moveHorizontal = moveX * strafeSpeed * Time.deltaTime;
-		Vector3 moveDirection = new Vector3( moveHorizontal, transform.position.y , moveVertical);
+		Vector3 moveDirection = new Vector3( moveHorizontal, rb.velocity.y , moveVertical);
 		moveDirection = transform.TransformDirection(moveDirection);
 		rb.velocity = moveDirection;
 	}

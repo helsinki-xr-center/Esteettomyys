@@ -25,6 +25,9 @@ public class Settings
 	public bool leftHandMode = false;
 	public bool wheelChairMode = false;
 
+	public float defaultHeight = 1.8f;
+	public float wheelChairHeight = 0.8f;
+
 
 	/**
 	 * <summary>

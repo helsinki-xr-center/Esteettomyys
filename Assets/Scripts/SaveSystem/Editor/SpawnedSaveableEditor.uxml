@@ -1,0 +1,8 @@
+<UXML xmlns:ui="UnityEngine.UIElements" xmlns:ue="UnityEditor.UIElements">
+  <ui:VisualElement name="row">
+    <ui:Label name="top-label" text="Spawned saveable" style="font-style: bold; margin-top: 5"/>
+    <ue:PropertyField binding-path="saveParent" name="save-parent-field" tooltip="Should the save system try to save the parent of this object?"/>
+    <ue:PropertyField binding-path="loadAfterStart" name="delayed-load-field" tooltip="Should Load be called on ISaveables after or before start?"/>
+    <ue:PropertyField binding-path="resourcePath" name="resource-path-field" />
+  </ui:VisualElement>
+</UXML>
