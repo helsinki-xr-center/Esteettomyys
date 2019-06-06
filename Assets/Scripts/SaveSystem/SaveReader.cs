@@ -23,13 +23,6 @@ namespace SaveSystem
 			return SaveSerializer.Deserialize<T>(s);
 		}
 
-		public Vector3 ReadVector(string key)
-		{
-			string s = data[key];
-			Vector3SaveData d = SaveSerializer.Deserialize<Vector3SaveData>(s);
-			return d;
-		}
-
 		public string ReadString(string key)
 		{
 			string s = data[key];

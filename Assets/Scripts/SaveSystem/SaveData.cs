@@ -58,9 +58,9 @@ namespace SaveSystem
 	{
 		public string saveableID;
 		public bool saveTransform;
-		public Vector3SaveData position;
-		public Vector3SaveData rotation;
-		public Vector3SaveData localScale;
+		public Vector3 position;
+		public Vector3 rotation;
+		public Vector3 localScale;
 		public SaveableSaveData[] saveables;
 	}
 
@@ -71,9 +71,9 @@ namespace SaveSystem
 		public string objectName;
 		public string resourcePath;
 		public bool saveParent;
-		public Vector3SaveData position;
-		public Vector3SaveData rotation;
-		public Vector3SaveData localScale;
+		public Vector3 position;
+		public Vector3 rotation;
+		public Vector3 localScale;
 		public ParentData parent;
 		public SaveableSaveData[] saveables;
 	}
@@ -91,7 +91,7 @@ namespace SaveSystem
 		public string rootName;
 		public int siblingIndex;
 		public int rootSiblingIndex;
-		public Vector3SaveData position;
+		public Vector3 position;
 
 		public ParentData(Transform source)
 		{
@@ -169,24 +169,4 @@ namespace SaveSystem
 		public static implicit operator ParentData(Transform src) => src != null ? new ParentData(src) : null;
 	}
 
-	[System.Serializable]
-	public struct Vector3SaveData
-	{
-		public float x, y, z;
-
-		public static implicit operator Vector3(Vector3SaveData data)
-		{
-			return new Vector3(data.x, data.y, data.z);
-		}
-
-		public static implicit operator Vector3SaveData(Vector3 vec)
-		{
-			return new Vector3SaveData()
-			{
-				x = vec.x,
-				y = vec.y,
-				z = vec.z
-			};
-		}
-	}
 }
