@@ -3,38 +3,59 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using System.IO.Compression;
+using System.IO;
+using System.Text;
+using System;
 
 public class SaveTestingUI : MonoBehaviour
 {
 	public GameObject spawnedObject;
 	public Vector3 spawnLocation;
-	public SceneSaveData saveData;
+	public SaveData saveData;
 	public Transform parent;
 
 	public void SaveScene()
 	{
-		saveData = SaveManager.SaveSceneObjects(SceneManager.GetActiveScene());
-		string saveString = SaveSerializer.Serialize(saveData);
+		SaveManager.SaveSceneObjects(SceneManager.GetActiveScene());
+		saveData = SaveManager.GetSaveData("test3");
 
-		Debug.Log("Savestring: " + saveString);
-		PlayerPrefs.SetString("testSave", saveString);
-		PlayerPrefs.Save();
+		PlayerPrefsSaveFileManager.instance.Save(saveData);
+
+
+		Debug.Log("Savestring: " + saveData.AsString());
+		Debug.Log(saveData.AsString().Length + " bytes");
+		Debug.Log("Compressed: " + saveData.AsStringCompressed());
+		Debug.Log(saveData.AsStringCompressed().Length + " bytes");
+
+
+		FileSystemSaveFileManager.Default.Save(saveData);
 	}
 
 	public void LoadScene()
 	{
-		if(string.IsNullOrEmpty(saveData.sceneName))
-		{
-			string saveString = PlayerPrefs.GetString("testSave");
-			saveData = SaveSerializer.Deserialize<SceneSaveData>(saveString);
-		}
 		var spawned = FindObjectsOfType<SpawnedSaveable>();
 		foreach (var item in spawned)
 		{
-			Destroy(item.gameObject);
+			DestroyImmediate(item.gameObject);
 		}
 
-		SaveManager.LoadSceneObjects(saveData);
+		var saveFiles = PlayerPrefsSaveFileManager.instance.GetSaveFiles();
+
+		if(saveFiles.Length > 0)
+		{
+			saveData = PlayerPrefsSaveFileManager.instance.Load(saveFiles[0]);
+			SaveManager.LoadSaveData(saveData);
+			SaveManager.LoadSceneObjects(SceneManager.GetActiveScene());
+		}
+
+		var files = FileSystemSaveFileManager.Default.GetSaveFiles();
+		foreach(var file in files)
+		{
+			Debug.Log(file.saveName);
+			var thing = FileSystemSaveFileManager.Default.Load(file);
+			Debug.Log(thing.AsString());
+		}
 	}
 
 	public void SpawnObject()

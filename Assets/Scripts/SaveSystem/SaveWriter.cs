@@ -15,12 +15,6 @@ namespace SaveSystem
 			WriteString(key, val);
 		}
 
-		public void WriteVector(string key, Vector3 vector)
-		{
-			string val = SaveSerializer.Serialize((Vector3SaveData)vector);
-			WriteString(key, val);
-		}
-
 		public void WriteString(string key, string value)
 		{
 			data.Add(key, value);
