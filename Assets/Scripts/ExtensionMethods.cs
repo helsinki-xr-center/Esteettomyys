@@ -60,6 +60,15 @@ public static class ExtensionMethods
 		return transforms.ToArray();
 	}
 
+	public static IEnumerable<Transform> EnumerateChildrenRecursive(this Transform transform)
+	{
+		foreach(Transform child in transform)
+		{
+			yield return child;
+			foreach (var cc in child.EnumerateChildrenRecursive()) yield return cc;
+		}
+	}
+
 
 	public static T MinBy<T>(this IEnumerable<T> enumerable, Func<T, float> predicate)
 	{

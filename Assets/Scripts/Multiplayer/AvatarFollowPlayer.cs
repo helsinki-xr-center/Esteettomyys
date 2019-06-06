@@ -61,4 +61,9 @@ public class AvatarFollowPlayer : MonoBehaviour
 			head.transform.position = transform.position + (Vector3.up * player.GetHeadHeightFromBase());
 		}
 	}
+
+	public bool IsLocal()
+	{
+		return photonView.IsMine;
+	}
 }
