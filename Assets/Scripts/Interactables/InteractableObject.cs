@@ -7,16 +7,16 @@
 /// </summary>
 public class InteractableObject : MonoBehaviour
 {
-
-	[SerializeField] Color hoveringColor;
-	[SerializeField] Color selectedColor;
-	[SerializeField] Color examHoveringColor;
-	[SerializeField] Color standardColor;
-	[SerializeField] Color criticalColor;
+	//RuntimeColors
+	Color hoveringColor;
+	Color selectedColor;
+	Color objColor;
 
 	public ObjectType objectType;
-	public bool manuallyPickedColors;
-
+	public InteractableObjectData objData;
+	string objname;
+	string objdesc;
+	
 	public bool selected;
 
 	private void OnEnable()
@@ -27,6 +27,7 @@ public class InteractableObject : MonoBehaviour
 		Pointer.PointerHit += IsHovered;
 		Pointer.PointerLeft += HoveredEnd;
 		Pointer.PointerClick += IsClicked;
+		PcPlayer.OnDeselectObjectEvent += OnDeselect;
 	}
 
 	private void OnDisable()
@@ -37,6 +38,7 @@ public class InteractableObject : MonoBehaviour
 		Pointer.PointerHit -= IsHovered;
 		Pointer.PointerLeft -= HoveredEnd;
 		Pointer.PointerClick -= IsClicked;
+		PcPlayer.OnDeselectObjectEvent -= OnDeselect;
 	}
 
 	public void Start()
@@ -46,56 +48,68 @@ public class InteractableObject : MonoBehaviour
 
 	private void ObjIndicatorColor()
 	{
-		if (!manuallyPickedColors)
+	
+		if (objData != null)
 		{
-			hoveringColor = Color.yellow;
-			selectedColor = Color.yellow;
-			examHoveringColor = Color.yellow;
-			standardColor = Color.green;
-			criticalColor = Color.red;
-		}
+			objname = objData.objectName;
+			objdesc = objData.objectDescription;
+			objColor = objData.objColor;
 
-		if (GlobalValues.gameMode == GameMode.Tutorial ||
-					GlobalValues.gameMode == GameMode.Training)
-		{
-			switch (objectType)
+			if (GlobalValues.gameMode == GameMode.Tutorial ||
+						GlobalValues.gameMode == GameMode.Training)
 			{
-				case ObjectType.Critical:
-					hoveringColor = criticalColor;
-					selectedColor = criticalColor;
-					break;
-				case ObjectType.Standard:
-					hoveringColor = standardColor;
-					selectedColor = standardColor;
-					break;
-				default:
-					break;
+				switch (objectType)
+				{
+					case ObjectType.Critical:
+						hoveringColor = objData.criticalColor;
+						selectedColor = objData.criticalColor;
+						break;
+					case ObjectType.Standard:
+						hoveringColor = objData.standardColor;
+						selectedColor = objData.standardColor;
+						break;
+					default:
+						break;
+				}
+			}
+			else
+			{
+				switch (objectType)
+				{
+					case ObjectType.Critical:
+						hoveringColor = objData.hoveringColor;
+						selectedColor = objData.criticalColor;
+						break;
+					case ObjectType.Standard:
+						hoveringColor = objData.hoveringColor;
+						selectedColor = objData.standardColor;
+						break;
+					default:
+						break;
+				}
 			}
 		}
-		else if (GlobalValues.gameMode == GameMode.Exam)
+	}
+
+	public void OnDeselect(GameObject obj)
+	{
+		if (obj == gameObject)
 		{
-			switch (objectType)
-			{
-				case ObjectType.Critical:
-					hoveringColor = examHoveringColor;
-					selectedColor = criticalColor;
-					break;
-				case ObjectType.Standard:
-					hoveringColor = examHoveringColor;
-					selectedColor = standardColor;
-					break;
-				default:
-					break;
-			}
+			selected = false;
+			ExtensionMethods.MaterialColorChange(gameObject, objColor);
+			Debug.Log("DESELECTED" + gameObject.name);
 		}
 	}
 
 	public void IsHovered(object sender, RayCastData hitData)
 	{
-		if (hitData.target == transform)
+		if (hitData.target.gameObject == transform.gameObject)
 		{
-			//Debug.Log("IM HOVERED OVER" + gameObject.name);
-			ExtensionMethods.MaterialColorChange(gameObject, hoveringColor);
+			if (!selected)
+			{
+				//Debug.Log("IM HOVERED OVER" + gameObject.name);
+				ExtensionMethods.MaterialColorChange(gameObject, hoveringColor);
+			}
 		}
 	}
 
@@ -111,8 +125,9 @@ public class InteractableObject : MonoBehaviour
 
 				if (pl.selectedObject != gameObject)
 				{
-					selected = false;
-					ExtensionMethods.MaterialColorChange(gameObject, Color.white);
+
+					ExtensionMethods.MaterialColorChange(gameObject, objColor);
+
 				}
 			}
 			else if (sender.GetType() == typeof(Pointer))
@@ -121,8 +136,9 @@ public class InteractableObject : MonoBehaviour
 
 				if (pl.selectedObj != gameObject)
 				{
-					selected = false;
-					ExtensionMethods.MaterialColorChange(gameObject, Color.white);
+
+					ExtensionMethods.MaterialColorChange(gameObject, objColor);
+
 				}
 			}
 		}
@@ -135,32 +151,29 @@ public class InteractableObject : MonoBehaviour
 			//Debug.Log("IM CLICKED" + gameObject.name);
 			if (sender.GetType() == typeof(PcPlayer))
 			{
-				PcPlayer pl = (PcPlayer)sender;
-
-				if (pl.selectedObject == gameObject)
+				
+				if (hitData.target.gameObject == gameObject)
 				{
 					selected = true;
 					ExtensionMethods.MaterialColorChange(gameObject, selectedColor);
+					Debug.Log("SELECTED" + gameObject.name);
 				}
-				else
-				{
-					selected = false;
-					ExtensionMethods.MaterialColorChange(gameObject, Color.white);
-				}
+				
 			}
 			else if (sender.GetType() == typeof(Pointer))
 			{
-				Pointer pl = (Pointer)sender;
-
-				if (pl.selectedObj == gameObject)
+				
+				if (hitData.target.gameObject == gameObject)
 				{
 					selected = true;
 					ExtensionMethods.MaterialColorChange(gameObject, selectedColor);
+					Debug.Log("SELECTED" + gameObject.name);
 				}
 				else
 				{
 					selected = false;
-					ExtensionMethods.MaterialColorChange(gameObject, Color.white);
+					ExtensionMethods.MaterialColorChange(gameObject, objColor);
+					Debug.Log("DESELECTED" + gameObject.name);
 				}
 
 			}

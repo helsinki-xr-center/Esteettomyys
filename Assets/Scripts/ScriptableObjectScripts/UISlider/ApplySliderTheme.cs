@@ -13,17 +13,21 @@ public class ApplySliderTheme : MonoBehaviour
 
 	private void OnValidate()
 	{
-		slider = GetComponent<Slider>();
-		bg = transform.GetChild(0).GetComponent<Image>();
-		fill = transform.GetChild(1).transform.GetChild(0).GetComponent<Image>();
-		var colors = slider.colors;
-		colors.highlightedColor = sliderTheme.highlightedColor;
-		colors.normalColor = sliderTheme.normalColor;
-		colors.pressedColor = sliderTheme.pressedColor;
-		colors.selectedColor = sliderTheme.selectedColor;
-		fill.color = sliderTheme.fillColor;
-		bg.color = sliderTheme.backgroundColor;
-		bg.sprite = sliderTheme.backGround;
-		fill.sprite = sliderTheme.fillSprite;
+		if (sliderTheme != null)
+		{
+
+			slider = GetComponent<Slider>();
+			bg = transform.GetChild(0).GetComponent<Image>();
+			fill = transform.GetChild(1).transform.GetChild(0).GetComponent<Image>();
+			var colors = slider.colors;
+			colors.highlightedColor = sliderTheme.highlightedColor;
+			colors.normalColor = sliderTheme.normalColor;
+			colors.pressedColor = sliderTheme.pressedColor;
+			colors.selectedColor = sliderTheme.selectedColor;
+			fill.color = sliderTheme.fillColor;
+			bg.color = sliderTheme.backgroundColor;
+			bg.sprite = sliderTheme.backGround;
+			fill.sprite = sliderTheme.fillSprite;
+		}
 	}
 }

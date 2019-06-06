@@ -10,5 +10,6 @@ public class ButtonColors : ScriptableObject
 	public Color highlightedColor;
 	public Color pressedColor;
 	public Color selectedColor;
+	public Color buttonTextColor;
 
 }
