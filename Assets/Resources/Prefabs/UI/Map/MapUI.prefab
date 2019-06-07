@@ -466,7 +466,7 @@ MonoBehaviour:
   m_ChildControlWidth: 1
   m_ChildControlHeight: 0
   m_ChildScaleWidth: 0
-  m_ChildScaleHeight: 0
+  m_ChildScaleHeight: 1
 --- !u!1 &4069787766003049171
 GameObject:
   m_ObjectHideFlags: 0
@@ -882,7 +882,17 @@ PrefabInstance:
     - target: {fileID: 6671386546694184129, guid: 8d60addac71274646a211e8052e9eef5,
         type: 3}
       propertyPath: m_fontSize
-      value: 19.15
+      value: 24
+      objectReference: {fileID: 0}
+    - target: {fileID: 6671386546694184129, guid: 8d60addac71274646a211e8052e9eef5,
+        type: 3}
+      propertyPath: m_firstOverflowCharacterIndex
+      value: -1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6671386546694184129, guid: 8d60addac71274646a211e8052e9eef5,
+        type: 3}
+      propertyPath: m_textInfo.lineCount
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8d60addac71274646a211e8052e9eef5, type: 3}
@@ -1008,6 +1018,21 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Pivot.y
       value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8425667647081703014, guid: df7777f8a81167142826e510e0af2109,
+        type: 3}
+      propertyPath: m_fontSize
+      value: 26
+      objectReference: {fileID: 0}
+    - target: {fileID: 8425667647081703014, guid: df7777f8a81167142826e510e0af2109,
+        type: 3}
+      propertyPath: m_firstOverflowCharacterIndex
+      value: -1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8425667647081703014, guid: df7777f8a81167142826e510e0af2109,
+        type: 3}
+      propertyPath: m_textInfo.lineCount
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: df7777f8a81167142826e510e0af2109, type: 3}
