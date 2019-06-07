@@ -89,6 +89,13 @@ public class PlayerPosition : MonoBehaviour
 		return rightHand.position;
 	}
 
+	public Vector3 GetRightHandFront()
+	{
+		if (rightHand == null) return transform.position;
+
+		return rightHand.forward;
+	}
+
 	/**
 	 * <summary>
 	 * Returns the players left hand position in world space. If not tracking hands, returns the transform.position.
@@ -98,7 +105,14 @@ public class PlayerPosition : MonoBehaviour
 	{
 		if (leftHand == null) return transform.position;
 
-		return leftHand.position;
+		return leftHand.forward;
+	}
+
+	public Vector3 GetLeftHandFront()
+	{
+		if (rightHand == null) return transform.position;
+
+		return rightHand.forward;
 	}
 
 	/**

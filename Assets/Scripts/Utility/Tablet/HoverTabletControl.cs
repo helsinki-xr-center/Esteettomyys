@@ -187,23 +187,24 @@ public class HoverTabletControl : MonoBehaviour
 			if (tabletToFront.GetLastStateDown(SteamVR_Input_Sources.LeftHand))
 			{
 				following = !following;
-				transform.SetPositionAndRotation(playerPosition.GetLeftHandPosition(), playerPosition.GetLeftHandRotation());
-				
+				transform.position = GetControllerFrontPosition(false);
+
 			}
 			else if (tabletToFront.GetLastStateDown(SteamVR_Input_Sources.RightHand))
 			{
 				following = !following;
-				transform.SetPositionAndRotation(playerPosition.GetRightHandPosition(), playerPosition.GetRightHandRotation());
+				transform.position = GetControllerFrontPosition(true);
 
-
+				/*new Vector3 (playerPosition.GetRightHandPosition().x, playerPosition.GetRightHandPosition().y, playerPosition.GetRightHandPosition().z)*/
 			}
-			if(following)
+			if (following)
 			{
 				ActivateTablet(false);
 			}
 			else
 			{
 				ActivateTablet(true);
+				
 			}
 		}
 	}
@@ -315,6 +316,21 @@ public class HoverTabletControl : MonoBehaviour
 	{
 		leftPosition = playerPosition.GetPosition() + new Vector3(-playerPosition.transform.right.x * leftDistance, height, -playerPosition.transform.right.z * leftDistance);
 		return leftPosition;
+	}
+
+	public Vector3 GetControllerFrontPosition(bool right)
+	{
+		if (right) {
+			Vector3 direction = playerPosition.GetRightHandRotation() * Vector3.forward;
+			frontPosition = playerPosition.GetRightHandPosition() + new Vector3(direction.x * frontDistance, playerPosition.GetRightHandPosition().y, direction.z * frontDistance);
+			return frontPosition;
+		}
+		else
+		{
+			Vector3 direction = playerPosition.GetLeftHandRotation() * Vector3.forward;
+			frontPosition = playerPosition.GetLeftHandPosition() + new Vector3(direction.x * frontDistance, playerPosition.GetLeftHandPosition().y, direction.z * frontDistance);
+			return frontPosition;
+		}
 	}
 
 	IEnumerator ActivateAfterTime(float time, bool status)
