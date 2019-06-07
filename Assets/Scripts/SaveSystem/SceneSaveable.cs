@@ -4,11 +4,22 @@ using UnityEngine;
 
 namespace SaveSystem
 {
+	[AddComponentMenu("Saving/Scene Saveable")]
+	[RequireComponent(typeof(GameObjectID))]
 	public sealed class SceneSaveable : MonoBehaviour
 	{
-		public string saveableID;
+		public bool loadAfterStart = true;
 		public bool saveTransform = false;
 		public UnityEngine.Object[] saveables;
+
+		private GameObjectID objectID;
+
+		public string saveableID { get { return objectID.id; } }
+
+		private void Awake()
+		{
+			objectID = GetComponent<GameObjectID>();
+		}
 
 		internal SceneObjectSaveData GetSaveData()
 		{
@@ -47,6 +58,26 @@ namespace SaveSystem
 				transform.localScale = saveData.localScale;
 			}
 
+			if (loadAfterStart)
+			{
+				StartCoroutine(DelayLoading(saveData));
+			}
+			else
+			{
+				LoadSaveablesData(saveData);
+			}
+
+			
+		}
+
+		private IEnumerator DelayLoading(SceneObjectSaveData saveData)
+		{
+			yield return null;
+			LoadSaveablesData(saveData);
+		}
+
+		private void LoadSaveablesData(SceneObjectSaveData saveData)
+		{
 			if (saveData.saveables.Length != saveables.Length)
 			{
 				Debug.LogWarning("Saveable array length doesn't match with save data.", this);

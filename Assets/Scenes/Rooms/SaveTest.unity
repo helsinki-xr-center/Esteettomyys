@@ -864,9 +864,10 @@ GameObject:
   - component: {fileID: 1110859217}
   - component: {fileID: 1110859216}
   - component: {fileID: 1110859215}
+  - component: {fileID: 1110859219}
+  - component: {fileID: 1110859220}
   - component: {fileID: 1110859214}
   - component: {fileID: 1110859213}
-  - component: {fileID: 1110859219}
   m_Layer: 0
   m_Name: Cube
   m_TagString: Untagged
@@ -899,7 +900,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 91ff1d1e48e1d5440aa9205783fe224f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  saveableID: SaveTest_89a8cc3b-2d58-4827-b700-c2835a7fe553
+  loadAfterStart: 1
   saveTransform: 1
   saveables:
   - {fileID: 1110859213}
@@ -992,6 +993,19 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &1110859220
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1110859212}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fdc9820362d91e34baaf34d0a6cd01f6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  id: SaveTest-silly-food
 --- !u!1 &1125922683
 GameObject:
   m_ObjectHideFlags: 0
@@ -1964,9 +1978,10 @@ GameObject:
   - component: {fileID: 1772898788}
   - component: {fileID: 1772898787}
   - component: {fileID: 1772898786}
+  - component: {fileID: 1772898790}
+  - component: {fileID: 1772898791}
   - component: {fileID: 1772898785}
   - component: {fileID: 1772898784}
-  - component: {fileID: 1772898790}
   m_Layer: 0
   m_Name: Cube
   m_TagString: Untagged
@@ -1999,7 +2014,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 91ff1d1e48e1d5440aa9205783fe224f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  saveableID: SaveTest_56accf16-a515-41b5-b4c4-4524be39fcf9
+  loadAfterStart: 1
   saveTransform: 1
   saveables:
   - {fileID: 1772898784}
@@ -2095,6 +2110,19 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &1772898791
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1772898783}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fdc9820362d91e34baaf34d0a6cd01f6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  id: SaveTest-furtive-distance
 --- !u!1 &1830420476
 GameObject:
   m_ObjectHideFlags: 0
@@ -2107,9 +2135,10 @@ GameObject:
   - component: {fileID: 1830420480}
   - component: {fileID: 1830420479}
   - component: {fileID: 1830420478}
-  - component: {fileID: 1830420477}
-  - component: {fileID: 1830420482}
   - component: {fileID: 1830420483}
+  - component: {fileID: 1830420484}
+  - component: {fileID: 1830420482}
+  - component: {fileID: 1830420477}
   m_Layer: 0
   m_Name: Cube
   m_TagString: Untagged
@@ -2126,13 +2155,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 1830420476}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 91ff1d1e48e1d5440aa9205783fe224f, type: 3}
+  m_Script: {fileID: 11500000, guid: d785d4be46a1e6e4090e8ab98641e76a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  saveableID: SaveTest_82286b7a-0f17-47fa-b609-014d4061b43e
-  saveTransform: 1
-  saveables:
-  - {fileID: 1830420482}
+  saved: {r: 0, g: 0, b: 1, a: 1}
 --- !u!65 &1830420478
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -2215,10 +2241,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 1830420476}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d785d4be46a1e6e4090e8ab98641e76a, type: 3}
+  m_Script: {fileID: 11500000, guid: 91ff1d1e48e1d5440aa9205783fe224f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  saved: {r: 0, g: 0, b: 1, a: 1}
+  loadAfterStart: 1
+  saveTransform: 1
+  saveables:
+  - {fileID: 1830420477}
 --- !u!54 &1830420483
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -2235,6 +2264,19 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &1830420484
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1830420476}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fdc9820362d91e34baaf34d0a6cd01f6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  id: SaveTest-gorgeous-cent
 --- !u!1 &1863172772
 GameObject:
   m_ObjectHideFlags: 0

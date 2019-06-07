@@ -24,17 +24,11 @@ public class SceneSaveableEditor : Editor
 		if (targets.Length > 1)
 		{
 			VisualElement uxmlVE = uxml.CloneTree();
-			for (int i = 0; i < targets.Length; i++)
-			{
-				CheckSaveableID(targets[i] as SceneSaveable);
-			}
 			return uxmlVE;
 		}
 		else
 		{
 			SceneSaveable target = this.target as SceneSaveable;
-
-			CheckSaveableID(target);
 
 			if (target.saveables == null)
 			{
@@ -179,25 +173,4 @@ public class SceneSaveableEditor : Editor
 		RedrawList(target, listHolder);
 	}
 
-	private void CheckSaveableID(SceneSaveable target)
-	{
-		if (target.gameObject.scene == null)
-		{
-			target.saveableID = String.Empty;
-			return;
-		}
-
-		if (String.IsNullOrEmpty(target.saveableID))
-		{
-			target.saveableID = target.gameObject.scene.name + "_" + Guid.NewGuid().ToString();
-		}
-
-		var others = FindObjectsOfType<SceneSaveable>().Where(x => x != target).ToArray();
-
-		if (others.Any(x => x.saveableID == target.saveableID))
-		{
-			target.saveableID = target.gameObject.scene.name + "_" + Guid.NewGuid().ToString();
-		}
-
-	}
 }
