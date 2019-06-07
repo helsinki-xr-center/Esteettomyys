@@ -27,6 +27,12 @@ EditorBuildSettings:
     path: Assets/Scenes/RootGameScenes/Multiplayer.unity
     guid: ac7d9bbc88ba6aa4c950cee3550ffa51
   - enabled: 1
+    path: Assets/Scenes/RootGameScenes/Exam.unity
+    guid: dc7e375e7ff80c942bdf7a6b78bbd82e
+  - enabled: 1
+    path: Assets/Scenes/RootGameScenes/Tutorial.unity
+    guid: d592cec5e2e9bd64589a0273fcf692c0
+  - enabled: 1
     path: Assets/Scenes/Extra/Postprocess.unity
     guid: 36b3360460efd0f4691ba6edd9a5fd62
   - enabled: 1
