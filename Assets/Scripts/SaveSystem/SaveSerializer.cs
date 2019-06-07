@@ -7,9 +7,9 @@ using UnityEngine;
 namespace SaveSystem
 {
 
-	public class ShouldSerializeContractResolver : DefaultContractResolver
+	public class NoPropertiesContractResolver : DefaultContractResolver
 	{
-		public new static readonly ShouldSerializeContractResolver Instance = new ShouldSerializeContractResolver();
+		public new static readonly NoPropertiesContractResolver Instance = new NoPropertiesContractResolver();
 
 		protected override JsonProperty CreateProperty(MemberInfo member, MemberSerialization memberSerialization)
 		{
@@ -25,7 +25,7 @@ namespace SaveSystem
 	}
 	internal static class SaveSerializer
 	{
-		private static JsonSerializerSettings settings { get; } = new JsonSerializerSettings() { ContractResolver = ShouldSerializeContractResolver.Instance };
+		private static JsonSerializerSettings settings { get; } = new JsonSerializerSettings() { ContractResolver = NoPropertiesContractResolver.Instance };
 
 		public static string Serialize<T>(T value)
 		{
@@ -33,6 +33,10 @@ namespace SaveSystem
 			{
 				Debug.LogError($"Can't serialize type {typeof(T).Name}!");
 				return "";
+			}
+			if(value is GameObject)
+			{
+				//do gameobject serialization by GameObjectID
 			}
 
 			return JsonConvert.SerializeObject(value, settings);
@@ -49,7 +53,7 @@ namespace SaveSystem
 			using (StreamWriter writer = new StreamWriter(stream))
 			using (JsonTextWriter jsonWriter = new JsonTextWriter(writer))
 			{
-				JsonSerializer ser = new JsonSerializer() { ContractResolver = ShouldSerializeContractResolver.Instance, Formatting = Formatting.Indented };
+				JsonSerializer ser = new JsonSerializer() { ContractResolver = NoPropertiesContractResolver.Instance, Formatting = Formatting.Indented };
 				ser.Serialize(jsonWriter, value);
 				jsonWriter.Flush();
 			}
@@ -60,7 +64,7 @@ namespace SaveSystem
 			using (StreamReader reader = new StreamReader(stream))
 			using (JsonTextReader jsonReader = new JsonTextReader(reader))
 			{
-				JsonSerializer ser = new JsonSerializer() { ContractResolver = ShouldSerializeContractResolver.Instance };
+				JsonSerializer ser = new JsonSerializer() { ContractResolver = NoPropertiesContractResolver.Instance };
 				return ser.Deserialize<T>(jsonReader);
 			}
 		}
