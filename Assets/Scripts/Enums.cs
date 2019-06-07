@@ -50,4 +50,5 @@ public enum FollowMode
 	FollowLeft,
 	FollowLeftAndHide,
 	Instant,
+	ControllerInstant,
 }

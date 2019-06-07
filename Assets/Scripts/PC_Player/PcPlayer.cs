@@ -6,7 +6,7 @@ using UnityEngine.EventSystems;
 /// <summary>
 /// @Author = Veli-Matti Vuoti
 /// </summary>
-[RequireComponent(typeof(Movement),typeof(PlayerInput))]
+[RequireComponent(typeof(Movement), typeof(PlayerInput))]
 public class PcPlayer : MonoBehaviour
 {
 	[HideInInspector] public Movement movement;
@@ -21,13 +21,18 @@ public class PcPlayer : MonoBehaviour
 	Camera eyeSight;
 	RayCastData newHitData;
 
+	public GameObject teleportIndicator;
+
 	public GameObject selectedObject;
 	public GameObject hoveredGameObject;
+
 	public bool hovering;
 	public bool hasObjSelected;
 	public bool senderActive;
 	public bool canTeleport;
-	public GameObject teleportIndicator;
+	public bool telePortKeyDown;
+
+	[SerializeField] float teleRestrictionTime;
 
 	public delegate void MouseDelegate(object sender, RayCastData hitData);
 	public static event MouseDelegate mouseHoverIn;
@@ -46,9 +51,10 @@ public class PcPlayer : MonoBehaviour
 		eyeSight = playerEyes.gameObject.GetComponent<Camera>();
 		leftHand = gameObject.transform.GetChild(1);
 		rightHand = gameObject.transform.GetChild(2);
-		leftHand.transform.localPosition = new Vector3(-1,1.5f,1.5f);
-		rightHand.transform.localPosition = new Vector3(1,1.5f,1.5f);
+		leftHand.transform.localPosition = new Vector3(-1, 1.5f, 1.5f);
+		rightHand.transform.localPosition = new Vector3(1, 1.5f, 1.5f);
 		objSnapPoint = rightHand.GetComponent<FixedJoint>();
+		canTeleport = GlobalValues.settings.PCteleportAvailable;
 
 		RayCastData newHitData = new RayCastData();
 		newHitData.distance = 0;
@@ -75,12 +81,22 @@ public class PcPlayer : MonoBehaviour
 
 	private void FixedUpdate()
 	{
-
+		FallToDeath();
 		HasObjectSelected();
 
 		if (!EventSystem.current.IsPointerOverGameObject())
 		{
+
 			RayCastToPointer();
+
+		}
+	}
+
+	void FallToDeath()
+	{
+		if(transform.position.y <  -5f)
+		{
+			transform.position = Vector3.zero;
 		}
 	}
 
@@ -88,12 +104,10 @@ public class PcPlayer : MonoBehaviour
 	{
 		if (selectedObject != null)
 		{
-			canTeleport = false;
 			hasObjSelected = true;
 		}
 		else
 		{
-			canTeleport = true;
 			hasObjSelected = false;
 		}
 	}
@@ -117,7 +131,7 @@ public class PcPlayer : MonoBehaviour
 			{
 				senderActive = true;
 				hovering = true;
-				if(hoveredGameObject != hit.transform.gameObject && hoveredGameObject != null)
+				if (hoveredGameObject != hit.transform.gameObject && hoveredGameObject != null)
 				{
 					if (mouseHoverOut != null && senderActive)
 					{
@@ -140,13 +154,14 @@ public class PcPlayer : MonoBehaviour
 					if (hit.distance <= 2f)
 					{
 						//Debug.Log("PICKED UP THE OBJECT");
+						canTeleport = false;
 						hit.transform.position = rightHand.position;
 						objSnapPoint.connectedBody = hit.rigidbody;
 						objSnapPoint.connectedBody.useGravity = false;
 					}
 				}
 				else if (Input.GetMouseButtonDown(1) && selectedObject == hoveredGameObject && selectedObject != null && hasObjSelected)
-				{			
+				{
 					OnDeselectObjectEvent?.Invoke(selectedObject);
 					selectedObject = null;
 					DropObject();
@@ -173,8 +188,8 @@ public class PcPlayer : MonoBehaviour
 			MouseExited(hit);
 
 			if (Input.GetMouseButtonDown(1) && selectedObject != null)
-			{			
-				OnDeselectObjectEvent?.Invoke(selectedObject);				
+			{
+				OnDeselectObjectEvent?.Invoke(selectedObject);
 				selectedObject = null;
 				DropObject();
 			}
@@ -225,43 +240,63 @@ public class PcPlayer : MonoBehaviour
 			//Debug.Log("DROPPED OBJECT");		
 			objSnapPoint.connectedBody.useGravity = true;
 			objSnapPoint.connectedBody = null;
-			
+			StartCoroutine(ActivateTeleport(true, teleRestrictionTime));
 		}
 	}
 
 	public void PortalIndicator()
 	{
-		RaycastHit hit;
 
-		Ray ray = eyeSight.ScreenPointToRay(Input.mousePosition);
-		bool rayHit = Physics.Raycast(ray, out hit, rayCastDistance, teleportMask);
-
-		if (rayHit)
+		if (!canTeleport || !GlobalValues.settings.PCteleportAvailable || hasObjSelected)
 		{
-			if ( teleportIndicator != null && !teleportIndicator.activeSelf)
+			return;
+		}
+		else
+		{
+
+			telePortKeyDown = true;
+			RaycastHit hit;
+
+			Ray ray = eyeSight.ScreenPointToRay(Input.mousePosition);
+			bool rayHit = Physics.Raycast(ray, out hit, rayCastDistance, teleportMask);
+
+			if (rayHit)
 			{
-				teleportIndicator.SetActive(true);
+				if (teleportIndicator != null && !teleportIndicator.activeSelf)
+				{
+					teleportIndicator.SetActive(true);
+				}
 			}
 		}
 	}
 
 	public void PCTeleport()
 	{
-		RaycastHit hit;
 
-		Ray ray = eyeSight.ScreenPointToRay(Input.mousePosition);
-		bool rayHit = Physics.Raycast(ray, out hit, rayCastDistance, teleportMask);
-
-		if (rayHit && canTeleport)
+		if (!canTeleport || !GlobalValues.settings.PCteleportAvailable || hasObjSelected)
 		{
-			if (teleportIndicator != null && !teleportIndicator.activeSelf)
+			return;
+		}
+		else
+		{
+
+			RaycastHit hit;
+
+			Ray ray = eyeSight.ScreenPointToRay(Input.mousePosition);
+			bool rayHit = Physics.Raycast(ray, out hit, rayCastDistance, teleportMask);
+			telePortKeyDown = false;
+
+			if (rayHit)
 			{
-				teleportIndicator.SetActive(false);
+				if (teleportIndicator != null && !teleportIndicator.activeSelf)
+				{
+					teleportIndicator.SetActive(false);
+				}
+
+				transform.position = hit.point + Vector3.up * 0.01f;
 			}
 
-			transform.position = hit.point + Vector3.up*0.01f;
 		}
-
 	}
 
 	public void OnWheelChairModeEnabled()
@@ -276,6 +311,12 @@ public class PcPlayer : MonoBehaviour
 			transform.localScale = new Vector3(transform.localScale.x, 1, transform.localScale.z);
 		}
 
+	}
+
+	public IEnumerator ActivateTeleport(bool status, float time)
+	{
+		yield return new WaitForSeconds(time);
+		canTeleport = status;
 	}
 }
 

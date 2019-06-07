@@ -47,9 +47,11 @@ public class HoverTabletControl : MonoBehaviour
 	{
 		//Debug.DrawRay(transform.position, GetBackPosition(), Color.red, 0.1f);
 		//Debug.DrawRay(transform.position, GetFrontPosition(), Color.blue, 0.1f);
-		
 
-		BringTabletToFront();
+		if (followMode != FollowMode.ControllerInstant)
+		{
+			BringTabletToFront();
+		}
 
 		if (!LockedOnPlace)
 		{
@@ -69,6 +71,9 @@ public class HoverTabletControl : MonoBehaviour
 				break;
 			case FollowMode.Instant:
 				TabletModeInstant();
+				break;
+			case FollowMode.ControllerInstant:
+				TabletModeInstantController();
 				break;
 			default:
 				break;
@@ -153,7 +158,7 @@ public class HoverTabletControl : MonoBehaviour
 
 		if (following)
 		{
-			
+
 			tabletCol.enabled = false;
 			for (int i = 0; i < transform.childCount; i++)
 			{
@@ -163,7 +168,7 @@ public class HoverTabletControl : MonoBehaviour
 		}
 		else
 		{
-		
+
 			tabletCol.enabled = true;
 			for (int i = 0; i < transform.childCount; i++)
 			{
@@ -175,32 +180,57 @@ public class HoverTabletControl : MonoBehaviour
 
 		}
 	}
+	void TabletModeInstantController()
+	{
+		if (GlobalValues.controllerMode == ControllerMode.VR)
+		{
+			if (tabletToFront.GetLastStateDown(SteamVR_Input_Sources.LeftHand))
+			{
+				following = !following;
+				transform.SetPositionAndRotation(playerPosition.GetLeftHandPosition(), playerPosition.GetLeftHandRotation());
+				
+			}
+			else if (tabletToFront.GetLastStateDown(SteamVR_Input_Sources.RightHand))
+			{
+				following = !following;
+				transform.SetPositionAndRotation(playerPosition.GetRightHandPosition(), playerPosition.GetRightHandRotation());
+
+
+			}
+			if(following)
+			{
+				ActivateTablet(false);
+			}
+			else
+			{
+				ActivateTablet(true);
+			}
+		}
+	}
+
+	void ActivateTablet(bool status)
+	{
+		LockedOnPlace = status;
+		tabletCol.enabled = status;
+		for (int i = 0; i < transform.childCount; i++)
+		{
+			tablet[i].gameObject.SetActive(status);
+		}
+	}
 
 	void TabletModeInstant()
 	{
 
 		if (following)
 		{
-			LockedOnPlace = false;
-			tabletCol.enabled = false;
-			for (int i = 0; i < transform.childCount; i++)
-			{
-				tablet[i].gameObject.SetActive(false);
-			}
+			ActivateTablet(false);
 		}
 		else
 		{
 			if (!LockedOnPlace)
 			{
-				LockedOnPlace = true;
 				TabletTrackPlayerHead();
-
-				for (int i = 0; i < transform.childCount; i++)
-				{
-					tablet[i].gameObject.SetActive(true);
-				}
-
-				tabletCol.enabled = true;		
+				ActivateTablet(true);
 				transform.position = GetFrontPosition();
 			}
 		}
