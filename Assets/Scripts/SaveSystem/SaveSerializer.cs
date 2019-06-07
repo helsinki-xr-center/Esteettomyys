@@ -34,9 +34,27 @@ namespace SaveSystem
 				Debug.LogError($"Can't serialize type {typeof(T).Name}!");
 				return "";
 			}
-			if(value is GameObject)
+			if(value is GameObject go)
 			{
-				//do gameobject serialization by GameObjectID
+				if(value == null)
+				{
+					return JsonConvert.SerializeObject(new GameObjectReference(), settings);
+				}
+				GameObjectID id = go.GetComponent<GameObjectID>();
+				if(id == null)
+				{
+					Debug.LogWarning("Trying to serialize a GameObject reference without GameObjectID component. Please add a GameObjectID to the GameObject in the scene.", go);
+					return JsonConvert.SerializeObject(new GameObjectReference(), settings);
+				}
+				if(string.IsNullOrEmpty(id.id))
+				{
+					Debug.LogWarning("Trying to serialize a GameObject without id. Is this an instantiated GameObject?", go);
+					return JsonConvert.SerializeObject(new GameObjectReference(), settings);
+				}
+
+				GameObjectReference reference = new GameObjectReference() { id = id.id };
+
+				return JsonConvert.SerializeObject(reference, settings);
 			}
 
 			return JsonConvert.SerializeObject(value, settings);
@@ -44,6 +62,13 @@ namespace SaveSystem
 
 		public static T Deserialize<T>(string serialized)
 		{
+			if (typeof(T).IsAssignableFrom(typeof(GameObject)))
+			{
+				object go;
+				var reference = JsonConvert.DeserializeObject<GameObjectReference>(serialized, settings);
+				go = reference.GetGameObject();
+				return (T)go;
+			}
 			return JsonConvert.DeserializeObject<T>(serialized, settings);
 		}
 

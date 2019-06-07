@@ -188,4 +188,22 @@ namespace SaveSystem
 		public static implicit operator ParentData(Transform src) => src != null ? new ParentData(src) : null;
 	}
 
+	[System.Serializable]
+	internal class GameObjectReference
+	{
+		public string id = null;
+
+		public GameObject GetGameObject()
+		{
+			if(string.IsNullOrEmpty(id))
+			{
+				return null;
+			}
+			else
+			{
+				return GameObjectID.GetObjectByID(id);
+			}
+		}
+	}
+
 }

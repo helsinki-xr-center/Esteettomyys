@@ -7,6 +7,7 @@ using UnityEngine;
 public class TestSaveable : MonoBehaviour, ISaveable
 {
 	public Color saved = Color.blue;
+	public GameObject saved2;
 
 	private Material material;
 
@@ -28,11 +29,13 @@ public class TestSaveable : MonoBehaviour, ISaveable
 	public void Load(SaveReader save)
 	{
 		saved = save.Read<Color>(nameof(saved));
+		saved2 = save.Read<GameObject>(nameof(saved2));
 		material.color = saved;
 	}
 
 	public void Save(SaveWriter save)
 	{
 		save.Write(nameof(saved), saved);
+		save.Write(nameof(saved2), saved2);
 	}
 }
