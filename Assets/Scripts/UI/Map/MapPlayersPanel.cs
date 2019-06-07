@@ -9,6 +9,7 @@ public class MapPlayersPanel : MonoBehaviour
 	public string multiplayerScene = "Multiplayer";
 	public GameObject playerListPrefab;
 	public Transform listParent;
+	public Transform mapImage;
 
 	private Mapper mapper;
 
@@ -74,7 +75,7 @@ public class MapPlayersPanel : MonoBehaviour
 		foreach(var player in FindObjectsOfType<AvatarFollowPlayer>())
 		{
 			GameObject listItem = Instantiate(playerListPrefab, listParent);
-			listItem.GetComponent<MapPlayerListItem>().SetValues(player);
+			listItem.GetComponent<MapPlayerListItem>().SetValues(player, mapImage);
 		}
 	}
 

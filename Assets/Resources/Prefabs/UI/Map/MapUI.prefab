@@ -91,6 +91,7 @@ MonoBehaviour:
   playerListPrefab: {fileID: 5269652235054139106, guid: df7777f8a81167142826e510e0af2109,
     type: 3}
   listParent: {fileID: 1548979992584805236}
+  mapImage: {fileID: 5661782463771981543}
 --- !u!1 &2805543068888515471
 GameObject:
   m_ObjectHideFlags: 0
