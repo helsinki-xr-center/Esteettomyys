@@ -4,6 +4,7 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
+[RequireComponent(typeof(Camera))]
 public class Mapper : MonoBehaviour
 {
 	public int renderTextureResolution = 512;
@@ -52,7 +53,7 @@ public class Mapper : MonoBehaviour
 
 		if (playerTransform != null)
 		{
-			Vector2 pos = WorldToMapPositionXZ(playerTransform.position);
+			Vector2 pos = XZWorldToMapPositionXY(playerTransform.position);
 			DrawTexture(pos, new Vector2(0.05f, 0.05f), playerTexture);
 		}
 
@@ -61,7 +62,7 @@ public class Mapper : MonoBehaviour
 			if (otherTransform == null)
 				continue;
 
-			Vector2 pos = WorldToMapPositionXZ(otherTransform.position);
+			Vector2 pos = XZWorldToMapPositionXY(otherTransform.position);
 			DrawTexture(pos, new Vector2(0.05f, 0.05f), otherPlayerTexture);
 		}
 	}
@@ -76,6 +77,14 @@ public class Mapper : MonoBehaviour
 		DebugDrawBounds(bounds);
 	}
 
+	public Vector2 XZWorldToMapPositionXY(Vector3 worldPos)
+	{
+
+		float y = 1 - Mathf.InverseLerp(camera.transform.position.z - camera.orthographicSize, camera.transform.position.z + camera.orthographicSize, worldPos.z);
+		float x = Mathf.InverseLerp(camera.transform.position.x - camera.orthographicSize, camera.transform.position.x + camera.orthographicSize, worldPos.x);
+
+		return new Vector2(x, y);
+	}
 
 	private void CalculateBounds()
 	{
@@ -155,16 +164,6 @@ public class Mapper : MonoBehaviour
 
 		GL.PopMatrix(); //Restores projection and modelview matrices.
 		RenderTexture.active = null;
-	}
-
-
-	public Vector2 WorldToMapPositionXZ(Vector3 worldPos)
-	{
-		
-		float y = 1 - Mathf.InverseLerp(camera.transform.position.z - camera.orthographicSize, camera.transform.position.z + camera.orthographicSize, worldPos.z);
-		float x = Mathf.InverseLerp(camera.transform.position.x - camera.orthographicSize, camera.transform.position.x + camera.orthographicSize, worldPos.x);
-
-		return new Vector2(x, y);
 	}
 
 	private void SceneLoadedCallback(Scene s, LoadSceneMode mode)

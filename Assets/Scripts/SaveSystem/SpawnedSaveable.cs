@@ -4,6 +4,7 @@ using UnityEngine;
 
 namespace SaveSystem
 {
+	[AddComponentMenu("Saving/Spawned Saveable")]
 	public sealed class SpawnedSaveable : MonoBehaviour
 	{
 		public static int nextSpawnIndex = 0;
@@ -79,7 +80,7 @@ namespace SaveSystem
 
 		}
 
-		IEnumerator DelayLoading(SpawnedObjectSaveData saveData)
+		private IEnumerator DelayLoading(SpawnedObjectSaveData saveData)
 		{
 			yield return null;
 			LoadSaveablesData(saveData);
