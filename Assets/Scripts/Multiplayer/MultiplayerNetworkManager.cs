@@ -47,6 +47,6 @@ public class MultiplayerNetworkManager : MonoBehaviour
 			location = locations[0];
 		}
 
-		FindObjectOfType<PlayerPosition>().transform.position = location.transform.position;
+		new TeleportMessage(location.transform.position).Deliver();
 	}
 }
