@@ -16,8 +16,8 @@ namespace SaveSystem
 	[AddComponentMenu("Saving/GameObjectID")]
 	public class GameObjectID : MonoBehaviour
 	{
-		private static System.Random r = new System.Random();
-		private static Dictionary<string, GameObjectID> allIds = new Dictionary<string, GameObjectID>();
+		private static readonly System.Random r = new System.Random();
+		private static readonly Dictionary<string, GameObjectID> allIds = new Dictionary<string, GameObjectID>();
 		public string id;
 
 		private void Awake()
@@ -32,7 +32,7 @@ namespace SaveSystem
 		}
 
 #if UNITY_EDITOR
-		// Update is called once per frame
+		
 		void Update()
 		{
 			if (Application.isPlaying)

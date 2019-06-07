@@ -48,7 +48,7 @@ namespace SaveSystem
 				}
 				if(string.IsNullOrEmpty(id.id))
 				{
-					Debug.LogWarning("Trying to serialize a GameObject without id. Is this an instantiated GameObject?", go);
+					Debug.LogWarning("Trying to serialize a GameObject without an id. Is this an instantiated GameObject?", go);
 					return JsonConvert.SerializeObject(new GameObjectReference(), settings);
 				}
 
