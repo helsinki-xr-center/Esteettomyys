@@ -231,6 +231,8 @@ GameObject:
   - component: {fileID: 3749277730232695602}
   - component: {fileID: 3102668793727116590}
   - component: {fileID: 1766641332060478369}
+  - component: {fileID: 2375150692724603252}
+  - component: {fileID: 5941857489173306931}
   m_Layer: 5
   m_Name: TeleportButton
   m_TagString: Untagged
@@ -363,3 +365,28 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   colorTheme: {fileID: 11400000, guid: 753a41d6879ef72458736b1b65b01c9a, type: 2}
+--- !u!114 &2375150692724603252
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8460237078791084591}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6416a2132f609ca4cb5b8e4b6f96b66d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!65 &5941857489173306931
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8460237078791084591}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 40, y: 40, z: 0}
+  m_Center: {x: -19.999996, y: -20, z: 0}
