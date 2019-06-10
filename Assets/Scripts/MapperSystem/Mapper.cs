@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -16,11 +17,13 @@ using UnityEngine.SceneManagement;
 public class Mapper : MonoBehaviour
 {
 	public int renderTextureResolution = 512;
+	public Material replaceMaterial = null;
 
 	private new Camera camera;
 	private RenderTexture texture;
 	private CullingGroup cullingGroup;
 	private Bounds bounds;
+	private ReplaceMaterialOnCameraRender[] replaceMaterials;
 
 	private void Awake()
 	{
@@ -33,15 +36,14 @@ public class Mapper : MonoBehaviour
 
 	private void Start()
 	{
-		CalculateBounds();
+		CalculateBoundsAndAddReplaceMaterials();
 	}
 
 	private void OnEnable()
 	{
 		SceneManager.sceneLoaded += SceneLoadedCallback;
 		SceneManager.sceneUnloaded += SceneUnloadedCallback;
-		CalculateBounds();
-
+		CalculateBoundsAndAddReplaceMaterials();
 	}
 
 	private void OnDisable()
@@ -57,7 +59,15 @@ public class Mapper : MonoBehaviour
 	 */
 	public void RenderFrame()
 	{
+		foreach(var mat in replaceMaterials)
+		{
+			mat.ReplaceMaterial();
+		}
 		camera.Render();
+		foreach (var mat in replaceMaterials)
+		{
+			mat.ResetMaterial();
+		}
 	}
 
 	/**
@@ -92,10 +102,10 @@ public class Mapper : MonoBehaviour
 
 	/**
 	 * <summary>
-	 * Calculates the combined bounds of every visible object in currently loaded scenes.
+	 * Calculates the combined bounds of every visible object in currently loaded scenes. Also adds <see cref="ReplaceMaterialOnCameraRender"/> script to all visible Renderers.
 	 * </summary>
 	 */
-	private void CalculateBounds()
+	private void CalculateBoundsAndAddReplaceMaterials()
 	{
 		int includeLayers = camera.cullingMask;
 
@@ -114,8 +124,16 @@ public class Mapper : MonoBehaviour
 			// encapsulate all bounds into a single bounds
 			bounds = allBounds.Aggregate((combined, next) => { combined.Encapsulate(next); return combined; });
 		}
-		
-		
+
+		var missingRenderers = renderers.Where(x => x.GetComponent<ReplaceMaterialOnCameraRender>() == null);
+		foreach(var r in missingRenderers)
+		{
+			var replacer = r.gameObject.AddComponent<ReplaceMaterialOnCameraRender>();
+			replacer.targetCamera = camera;
+			replacer.mapper = this;
+		}
+
+		replaceMaterials = renderers.Select(x => x.GetComponent<ReplaceMaterialOnCameraRender>()).ToArray();
 
 		float centerX = (bounds.min.x + bounds.max.x) / 2;
 		float centerZ = (bounds.min.z + bounds.max.z) / 2;
@@ -186,11 +204,11 @@ public class Mapper : MonoBehaviour
 
 	private void SceneLoadedCallback(Scene s, LoadSceneMode mode)
 	{
-		Invoke("CalculateBounds", 1);
+		Invoke("CalculateBoundsAndAddReplaceMaterials", 1);
 	}
 
 	private void SceneUnloadedCallback(Scene s)
 	{
-		Invoke("CalculateBounds", 1);
+		Invoke("CalculateBoundsAndAddReplaceMaterials", 1);
 	}
 }

@@ -151,6 +151,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   renderTextureResolution: 512
+  replaceMaterial: {fileID: 2100000, guid: aa07c8ef992e4df4f8a355cc249c2a41, type: 2}
 --- !u!20 &1211007855
 Camera:
   m_ObjectHideFlags: 0
