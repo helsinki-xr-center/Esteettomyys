@@ -4,6 +4,13 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
+/**
+ * Author: Nomi Lakkala
+ * 
+ * <summary>
+ * UI panel script for handling the players panel in map UI.
+ * </summary>
+ */
 public class MapPlayersPanel : MonoBehaviour
 {
 	public string multiplayerScene = "Multiplayer";
@@ -53,7 +60,11 @@ public class MapPlayersPanel : MonoBehaviour
 		SceneManager.sceneUnloaded -= SceneUnloadedCallback;
 	}
 
-
+	/**
+	 * <summary>
+	 * Checks if Multiplayer scene is loaded and sets this panel active accordingly.
+	 * </summary>
+	 */
 	private void CheckIfInMultiplayer()
 	{
 		if(SceneExtensions.GetAllLoadedScenes().Any(x => x.name == multiplayerScene))
@@ -65,6 +76,11 @@ public class MapPlayersPanel : MonoBehaviour
 		}
 	}
 
+	/**
+	 * <summary>
+	 * Populates the list with instantiated MapPlayerListItems, and sets their values.
+	 * </summary>
+	 */
 	private void PopulateList()
 	{
 		if(mapper == null)
@@ -79,6 +95,11 @@ public class MapPlayersPanel : MonoBehaviour
 		}
 	}
 
+	/**
+	 * <summary>
+	 * Clears the current list.
+	 * </summary>
+	 */
 	private void ClearList()
 	{
 		foreach(Transform child in listParent)
