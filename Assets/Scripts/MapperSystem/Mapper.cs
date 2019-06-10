@@ -51,6 +51,7 @@ public class Mapper : MonoBehaviour
 	{
 		camera.Render();
 
+		/*
 		if (playerTransform != null)
 		{
 			Vector2 pos = XZWorldToMapPositionXY(playerTransform.position);
@@ -64,7 +65,7 @@ public class Mapper : MonoBehaviour
 
 			Vector2 pos = XZWorldToMapPositionXY(otherTransform.position);
 			DrawTexture(pos, new Vector2(0.05f, 0.05f), otherPlayerTexture);
-		}
+		}*/
 	}
 
 	public RenderTexture GetTexture()
@@ -80,7 +81,7 @@ public class Mapper : MonoBehaviour
 	public Vector2 XZWorldToMapPositionXY(Vector3 worldPos)
 	{
 
-		float y = 1 - Mathf.InverseLerp(camera.transform.position.z - camera.orthographicSize, camera.transform.position.z + camera.orthographicSize, worldPos.z);
+		float y = Mathf.InverseLerp(camera.transform.position.z - camera.orthographicSize, camera.transform.position.z + camera.orthographicSize, worldPos.z);
 		float x = Mathf.InverseLerp(camera.transform.position.x - camera.orthographicSize, camera.transform.position.x + camera.orthographicSize, worldPos.x);
 
 		return new Vector2(x, y);
