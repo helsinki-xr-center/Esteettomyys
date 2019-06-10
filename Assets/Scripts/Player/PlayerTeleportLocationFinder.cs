@@ -2,11 +2,25 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+
+/**
+ * Author: Nomi Lakkala
+ * <summary>
+ * A static helper class that finds a suitable teleport location near the desired target.
+ * </summary>
+ */
 public static class PlayerTeleportLocationFinder
 {
 	private const float range = 2f;
 	private const float colliderRange = 1f;
 
+
+	/**
+	 * <summary>
+	 * Finds a position around the targetPosition with no intersecting colliders. Y is checked to be the ground level.
+	 * Rather expensive in terms of GC allocations so don't use this every frame for some reason.
+	 * </summary>
+	 */
 	public static Vector3 FindTeleportLocation(Vector3 targetPosition)
 	{
 

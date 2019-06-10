@@ -307,7 +307,7 @@ MonoBehaviour:
   audioClip: {fileID: 0}
   loopAudioClip: 1
   reactOnSystemChanges: 1
-  autoStart: 1
+  autoStart: 0
 --- !u!114 &437433161
 MonoBehaviour:
   m_ObjectHideFlags: 0

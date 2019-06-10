@@ -2,6 +2,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+
+/**
+ * Author: Nomi Lakkala
+ * <summary>
+ * Listens for <see cref="TeleportMessage"/> and teleports the player to the desired location. Should be attached to both PC and VR player roots.
+ * </summary>
+ */
 public class PlayerAutoTeleporter : MonoBehaviour
 {
 	private void OnEnable()

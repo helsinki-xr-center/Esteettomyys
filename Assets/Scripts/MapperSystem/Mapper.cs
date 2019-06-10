@@ -1,23 +1,29 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
+
+/**
+ * Author: Nomi Lakkala
+ * 
+ * <summary>
+ * A script for rendering the map. Calculates the bounds of every visible object in the map and fits the orthgraphic view to the bounds.
+ * </summary>
+ */
 [RequireComponent(typeof(Camera))]
 public class Mapper : MonoBehaviour
 {
 	public int renderTextureResolution = 512;
-	public Texture playerTexture;
-	public Texture otherPlayerTexture;
-
-	public Transform playerTransform;
-	public List<Transform> otherPlayerTransforms = new List<Transform>();
+	public Material replaceMaterial = null;
 
 	private new Camera camera;
 	private RenderTexture texture;
 	private CullingGroup cullingGroup;
 	private Bounds bounds;
+	private ReplaceMaterialOnCameraRender[] replaceMaterials;
 
 	private void Awake()
 	{
@@ -30,15 +36,14 @@ public class Mapper : MonoBehaviour
 
 	private void Start()
 	{
-		CalculateBounds();
+		CalculateBoundsAndAddReplaceMaterials();
 	}
 
 	private void OnEnable()
 	{
 		SceneManager.sceneLoaded += SceneLoadedCallback;
 		SceneManager.sceneUnloaded += SceneUnloadedCallback;
-		CalculateBounds();
-
+		CalculateBoundsAndAddReplaceMaterials();
 	}
 
 	private void OnDisable()
@@ -47,27 +52,37 @@ public class Mapper : MonoBehaviour
 		SceneManager.sceneUnloaded -= SceneUnloadedCallback;
 	}
 
+	/**
+	 * <summary>
+	 * Renders the camera view. The camera is not rendered automatically so this should be called when a new view is required from the map.
+	 * </summary>
+	 */
 	public void RenderFrame()
 	{
-		camera.Render();
-
-		/*
-		if (playerTransform != null)
+		if (replaceMaterial != null)
 		{
-			Vector2 pos = XZWorldToMapPositionXY(playerTransform.position);
-			DrawTexture(pos, new Vector2(0.05f, 0.05f), playerTexture);
+			foreach (var mat in replaceMaterials)
+			{
+				mat.ReplaceMaterial();
+			}
 		}
 
-		foreach (var otherTransform in otherPlayerTransforms)
-		{
-			if (otherTransform == null)
-				continue;
+		camera.Render();
 
-			Vector2 pos = XZWorldToMapPositionXY(otherTransform.position);
-			DrawTexture(pos, new Vector2(0.05f, 0.05f), otherPlayerTexture);
-		}*/
+		if (replaceMaterial != null)
+		{
+			foreach (var mat in replaceMaterials)
+			{
+				mat.ResetMaterial();
+			}
+		}
 	}
 
+	/**
+	 * <summary>
+	 * Gets the render texture that the map will be rendered to.
+	 * </summary>
+	 */
 	public RenderTexture GetTexture()
 	{
 		return texture;
@@ -78,6 +93,11 @@ public class Mapper : MonoBehaviour
 		DebugDrawBounds(bounds);
 	}
 
+	/**
+	 * <summary>
+	 * Transfroms a world position in XZ to a map coordinate XY in range of [0-1, 0-1].
+	 * </summary>
+	 */
 	public Vector2 XZWorldToMapPositionXY(Vector3 worldPos)
 	{
 
@@ -87,7 +107,13 @@ public class Mapper : MonoBehaviour
 		return new Vector2(x, y);
 	}
 
-	private void CalculateBounds()
+
+	/**
+	 * <summary>
+	 * Calculates the combined bounds of every visible object in currently loaded scenes. Also adds <see cref="ReplaceMaterialOnCameraRender"/> script to all visible Renderers.
+	 * </summary>
+	 */
+	private void CalculateBoundsAndAddReplaceMaterials()
 	{
 		int includeLayers = camera.cullingMask;
 
@@ -98,16 +124,25 @@ public class Mapper : MonoBehaviour
 		var renderers = visible.Select(x => x.GetComponent<Renderer>()).Where(x => x != null);
 		var allBounds = renderers.Select(x => x.bounds);
 
-		if(allBounds.Count() == 0)
+		if (allBounds.Count() == 0)
 		{
 			bounds = new Bounds(Vector3.zero, Vector3.one * 10);
-		}else
+		}
+		else
 		{
 			// encapsulate all bounds into a single bounds
 			bounds = allBounds.Aggregate((combined, next) => { combined.Encapsulate(next); return combined; });
 		}
-		
-		
+
+		var missingRenderers = renderers.Where(x => x.GetComponent<ReplaceMaterialOnCameraRender>() == null);
+		foreach (var r in missingRenderers)
+		{
+			var replacer = r.gameObject.AddComponent<ReplaceMaterialOnCameraRender>();
+			replacer.targetCamera = camera;
+			replacer.mapper = this;
+		}
+
+		replaceMaterials = renderers.Select(x => x.GetComponent<ReplaceMaterialOnCameraRender>()).ToArray();
 
 		float centerX = (bounds.min.x + bounds.max.x) / 2;
 		float centerZ = (bounds.min.z + bounds.max.z) / 2;
@@ -121,6 +156,11 @@ public class Mapper : MonoBehaviour
 		camera.farClipPlane = lengthY * 2;
 	}
 
+	/**
+	 * <summary>
+	 * Draws bounds Editor window with lines.
+	 * </summary>
+	 */
 	private void DebugDrawBounds(Bounds b, float delay = 0)
 	{
 		// bottom
@@ -152,7 +192,11 @@ public class Mapper : MonoBehaviour
 		Debug.DrawLine(p4, p8, Color.cyan, delay);
 	}
 
-
+	/**
+	 * <summary>
+	 * Draws the desired texture directly to the map texture.
+	 * </summary>
+	 */
 	private void DrawTexture(Vector2 position, Vector2 scale, Texture drawTexture)
 	{
 		RenderTexture.active = texture;
@@ -169,11 +213,11 @@ public class Mapper : MonoBehaviour
 
 	private void SceneLoadedCallback(Scene s, LoadSceneMode mode)
 	{
-		Invoke("CalculateBounds", 1);
+		Invoke("CalculateBoundsAndAddReplaceMaterials", 1);
 	}
 
 	private void SceneUnloadedCallback(Scene s)
 	{
-		Invoke("CalculateBounds", 1);
+		Invoke("CalculateBoundsAndAddReplaceMaterials", 1);
 	}
 }

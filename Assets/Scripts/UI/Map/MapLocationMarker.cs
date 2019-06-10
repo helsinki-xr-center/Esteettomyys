@@ -4,10 +4,19 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class MapLocationMarker : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
+
+/**
+ * Author: Nomi Lakkala
+ * 
+ * <summary>
+ * A script for the UI that tracks a single transform in 3D space and sets its own position to match the position in ui space relative to the rendered map image. Also handles hovering and clicking to highlight and select itself.
+ * </summary>
+ */
+public class MapLocationMarker : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler
 {
 	public Mapper mapper;
 	public bool hovered = false;
+	public bool selected = false;
 	public Transform followTransform;
 
 	public Color normalColor = Color.white;
@@ -37,8 +46,22 @@ public class MapLocationMarker : MonoBehaviour, IPointerEnterHandler, IPointerEx
 
 		rect.anchorMin = pos;
 		rect.anchorMax = pos;
-    }
 
+		if (hovered || selected)
+		{
+			image.color = highlightColor;
+		}
+		else
+		{
+			image.color = normalColor;
+		}
+	}
+
+	/**
+	 * <summary>
+	 * Sets the necessary values for this script. Should be called immediately after creating this object.
+	 * </summary>
+	 */
 	public void SetValues(Transform follow)
 	{
 		followTransform = follow;
@@ -47,12 +70,25 @@ public class MapLocationMarker : MonoBehaviour, IPointerEnterHandler, IPointerEx
 	public void OnPointerEnter(PointerEventData eventData)
 	{
 		hovered = true;
-		image.color = highlightColor;
 	}
 
 	public void OnPointerExit(PointerEventData eventData)
 	{
 		hovered = false;
-		image.color = normalColor;
+	}
+
+	/**
+	 * <summary>
+	 * Finds all other MapLocationMarkers and deselects them. Also selects itself.
+	 * </summary>
+	 */
+	public void OnPointerClick(PointerEventData eventData)
+	{
+		foreach (var mark in FindObjectsOfType<MapLocationMarker>())
+		{
+			mark.selected = false;
+		}
+
+		selected = true;
 	}
 }
