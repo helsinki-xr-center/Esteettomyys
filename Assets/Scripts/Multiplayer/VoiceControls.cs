@@ -24,8 +24,8 @@ public class VoiceControls : MonoBehaviour
 	void Start()
 	{
 		recorder = GetComponent<Recorder>();
-
 		SetSettings(GlobalValues.settings);
+		recorder.IsRecording = false;
 	}
 
 	void Update()
