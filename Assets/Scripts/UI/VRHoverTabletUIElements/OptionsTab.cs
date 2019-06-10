@@ -5,6 +5,8 @@ using UnityEngine;
 using UnityEngine.UI;
 
 /// <summary>
+/// @Author : Veli-Matti Vuoti
+/// 
 /// This Class handles hovertablet Options UI
 /// </summary>
 public class OptionsTab : MonoBehaviour

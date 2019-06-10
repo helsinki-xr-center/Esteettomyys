@@ -2,6 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// @Author : Veli-Matti Vuoti
+/// 
+/// Sets Collider around on object on editor or at game start, 
+/// Might be usefull
+/// </summary>
 [RequireComponent (typeof(BoxCollider), typeof(MeshRenderer))]
 public class BoxColliderSetter : MonoBehaviour
 {

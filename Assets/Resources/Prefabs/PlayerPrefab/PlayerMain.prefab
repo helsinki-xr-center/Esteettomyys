@@ -259,7 +259,7 @@ GameObject:
   - component: {fileID: 1778556319597658447}
   m_Layer: 0
   m_Name: FollowHead
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -513,7 +513,11 @@ GameObject:
   - component: {fileID: 1778556319594642557}
   - component: {fileID: 4372901002744862363}
   - component: {fileID: 196246227}
-  m_Layer: 0
+  - component: {fileID: 491813961}
+  - component: {fileID: 491813962}
+  - component: {fileID: 491813965}
+  - component: {fileID: 491813966}
+  m_Layer: 10
   m_Name: PlayerMain
   m_TagString: Player
   m_Icon: {fileID: 3936346786652291628, guid: 0000000000000000d000000000000000, type: 0}
@@ -595,9 +599,62 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: efcfe1d853e8b1a419954a448cf61ede, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  defaultHeight: 1.8
-  wheelChairHeight: 0.8
   cam: {fileID: 0}
+--- !u!65 &491813961
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1778556319601110281}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.5, y: 1, z: 0.5}
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &491813962
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1778556319601110281}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: be96782f073f94a4c9017088ad8069b2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &491813965
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1778556319601110281}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fc6e20d5b72b2eb4f97ec719f30e162b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  radius: 0.08
+  hitMask:
+    serializedVersion: 2
+    m_Bits: 2560
+  timeToBlack: 0.25
+  timeToClear: 1
+--- !u!114 &491813966
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1778556319601110281}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2ad1e469d4e3e04489f9a36419f1a4f8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1778556319601112751
 GameObject:
   m_ObjectHideFlags: 0
@@ -609,7 +666,7 @@ GameObject:
   - component: {fileID: 1778556319601492693}
   m_Layer: 0
   m_Name: SteamVRObjects
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -737,9 +794,9 @@ GameObject:
   - component: {fileID: 1778556319601451877}
   - component: {fileID: 1778556319588321479}
   - component: {fileID: 1778556319595968861}
-  m_Layer: 26
+  m_Layer: 10
   m_Name: HeadCollider
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -801,7 +858,7 @@ GameObject:
   - component: {fileID: 1778556319592388213}
   - component: {fileID: 1778556319593519807}
   - component: {fileID: 2707802565842078232}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: VRCamera
   m_TagString: MainCamera
   m_Icon: {fileID: 0}
@@ -1744,7 +1801,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1731d642c0b250b48bb8cdfb153d9792, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  head: {fileID: 0}
+  head: {fileID: 1778556319601427809}
 --- !u!54 &1778556319595988269
 Rigidbody:
   m_ObjectHideFlags: 0

@@ -2,9 +2,19 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Valve.VR;
+using Valve.VR.InteractionSystem;
 
 /// <summary>
+/// 
+/// @Author: Veli-Matti Vuoti
+/// 
 /// This Class controls the hovertablet movement
+/// currently holds 5 different movement styles:
+/// 1.Follow and bring front on click
+/// 2.Follow Left and bring front on click
+/// 3. Follow Left and click to deactivate
+/// 4. Instant appear front of hmd on click
+/// 5. Instant appear front of controller on click
 /// </summary>
 public class HoverTabletControl : MonoBehaviour
 {
@@ -21,13 +31,14 @@ public class HoverTabletControl : MonoBehaviour
 	public float speed;
 	public float timeToActivate;
 	float height;
+
 	public bool following;
 	public bool grabbed;
 	public bool changedToFollow;
 	public bool LockedOnPlace;
 
 	public FollowMode followMode;
-
+	
 	public SteamVR_Action_Boolean tabletToFront;
 	private Vector3 leftPosition;
 
@@ -43,7 +54,7 @@ public class HoverTabletControl : MonoBehaviour
 
 	}
 
-	private void Update()
+	private void FixedUpdate()
 	{
 		//Debug.DrawRay(transform.position, GetBackPosition(), Color.red, 0.1f);
 		//Debug.DrawRay(transform.position, GetFrontPosition(), Color.blue, 0.1f);
@@ -81,6 +92,9 @@ public class HoverTabletControl : MonoBehaviour
 
 	}
 
+	/// <summary>
+	/// If Moving Mode This tracks player head position
+	/// </summary>
 	void TabletTrackPlayerHead()
 	{
 
@@ -141,6 +155,9 @@ public class HoverTabletControl : MonoBehaviour
 
 	}
 
+	/// <summary>
+	/// Makes Tablet follow left and press brings it front
+	/// </summary>
 	void TabletModeLeft()
 	{
 		if (following)
@@ -153,6 +170,9 @@ public class HoverTabletControl : MonoBehaviour
 		}
 	}
 
+	/// <summary>
+	/// Makes Tables follow left and press makes it disappear
+	/// </summary>
 	void TabletModeLeftHide()
 	{
 
@@ -180,35 +200,47 @@ public class HoverTabletControl : MonoBehaviour
 
 		}
 	}
+
+	/// <summary>
+	/// Instantly spawns tablet front of controller
+	/// </summary>
 	void TabletModeInstantController()
 	{
 		if (GlobalValues.controllerMode == ControllerMode.VR)
 		{
+
 			if (tabletToFront.GetLastStateDown(SteamVR_Input_Sources.LeftHand))
 			{
 				following = !following;
-				transform.position = GetControllerFrontPosition(false);
+
+				PositionFrontOfController(false);
 
 			}
 			else if (tabletToFront.GetLastStateDown(SteamVR_Input_Sources.RightHand))
 			{
 				following = !following;
-				transform.position = GetControllerFrontPosition(true);
 
-				/*new Vector3 (playerPosition.GetRightHandPosition().x, playerPosition.GetRightHandPosition().y, playerPosition.GetRightHandPosition().z)*/
+				PositionFrontOfController(true);
+	
 			}
+
 			if (following)
 			{
 				ActivateTablet(false);
+
 			}
 			else
 			{
 				ActivateTablet(true);
-				
+
 			}
 		}
 	}
 
+	/// <summary>
+	/// Activates or deactivates the tablet
+	/// </summary>
+	/// <param name="status">activate or not</param>
 	void ActivateTablet(bool status)
 	{
 		LockedOnPlace = status;
@@ -318,21 +350,33 @@ public class HoverTabletControl : MonoBehaviour
 		return leftPosition;
 	}
 
-	public Vector3 GetControllerFrontPosition(bool right)
+	/// <summary>
+	/// Sets Tablet Poisition to front of tracked controller
+	/// </summary>
+	/// <param name="right"></param>
+	public void PositionFrontOfController(bool right)
 	{
-		if (right) {
+		
+		if (right)
+		{
 			Vector3 direction = playerPosition.GetRightHandRotation() * Vector3.forward;
-			frontPosition = playerPosition.GetRightHandPosition() + new Vector3(direction.x * frontDistance, playerPosition.GetRightHandPosition().y, direction.z * frontDistance);
-			return frontPosition;
+			transform.position = playerPosition.rightHand.GetComponent<Hand>().trackedObject.transform.position + new Vector3(direction.x, direction.y, direction.z);
+					
 		}
 		else
 		{
 			Vector3 direction = playerPosition.GetLeftHandRotation() * Vector3.forward;
-			frontPosition = playerPosition.GetLeftHandPosition() + new Vector3(direction.x * frontDistance, playerPosition.GetLeftHandPosition().y, direction.z * frontDistance);
-			return frontPosition;
+			transform.position = playerPosition.leftHand.GetComponent<Hand>().trackedObject.transform.position + new Vector3(direction.x, direction.y, direction.z);
+			
 		}
 	}
 
+	/// <summary>
+	/// Activate or Deactivate Tablet with Delay
+	/// </summary>
+	/// <param name="time"></param>
+	/// <param name="status"></param>
+	/// <returns></returns>
 	IEnumerator ActivateAfterTime(float time, bool status)
 	{
 

@@ -3,6 +3,11 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
+/// <summary>
+/// @Author : Veli-Matti Vuoti
+/// 
+/// Extra Filter Settings For PC Filter Content
+/// </summary>
 public class AdditionalFilters : MonoBehaviour
 {
 	[SerializeField] TextMeshProUGUI wheelchairModeStatus;

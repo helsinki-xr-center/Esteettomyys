@@ -46,6 +46,9 @@ public class InteractableObject : MonoBehaviour
 		ObjIndicatorColor();
 	}
 
+	/// <summary>
+	/// Sets the colors for object
+	/// </summary>
 	private void ObjIndicatorColor()
 	{
 	
@@ -91,6 +94,10 @@ public class InteractableObject : MonoBehaviour
 		}
 	}
 
+	/// <summary>
+	/// Sets color back on deselect
+	/// </summary>
+	/// <param name="obj"></param>
 	public void OnDeselect(GameObject obj)
 	{
 		if (obj == gameObject)
@@ -101,6 +108,11 @@ public class InteractableObject : MonoBehaviour
 		}
 	}
 
+	/// <summary>
+	/// Sets hovered color for object
+	/// </summary>
+	/// <param name="sender"></param>
+	/// <param name="hitData"></param>
 	public void IsHovered(object sender, RayCastData hitData)
 	{
 		if (hitData.target.gameObject == transform.gameObject)
@@ -113,6 +125,11 @@ public class InteractableObject : MonoBehaviour
 		}
 	}
 
+	/// <summary>
+	/// Resets color on hovering end
+	/// </summary>
+	/// <param name="sender"></param>
+	/// <param name="hitData"></param>
 	public void HoveredEnd(object sender, RayCastData hitData)
 	{
 		if (hitData.target == transform)
@@ -144,6 +161,11 @@ public class InteractableObject : MonoBehaviour
 		}
 	}
 
+	/// <summary>
+	/// Click color
+	/// </summary>
+	/// <param name="sender"></param>
+	/// <param name="hitData"></param>
 	public void IsClicked(object sender, RayCastData hitData)
 	{
 		if (hitData.target == transform)

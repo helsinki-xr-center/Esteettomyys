@@ -3,6 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+/// <summary>
+/// @Author : Veli-Matti Vuoti
+/// 
+/// Handles The Listeners on PC Menu Exit Tab
+/// </summary>
 public class PCExitTab : MonoBehaviour
 {
 

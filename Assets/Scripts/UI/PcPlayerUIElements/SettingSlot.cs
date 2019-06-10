@@ -4,6 +4,11 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
+/// <summary>
+/// @author : Veli-Matti Vuoti
+/// 
+/// Might Need Later
+/// </summary>
 public class SettingSlot : MonoBehaviour
 {
 

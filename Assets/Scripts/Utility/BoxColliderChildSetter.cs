@@ -2,6 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// @Author : Veli-Matti Vuoti
+/// 
+/// Adds BoxColliders for gameobjects childs
+/// </summary>
 public class BoxColliderChildSetter : MonoBehaviour
 {
 

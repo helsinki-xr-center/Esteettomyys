@@ -4,6 +4,11 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
+/// <summary>
+/// @Author : Veli-Matti Vuoti
+/// 
+/// Applies the scriptable object theme for button
+/// </summary>
 [RequireComponent(typeof(Button))]
 public class ApplyButtonTheme : MonoBehaviour
 {

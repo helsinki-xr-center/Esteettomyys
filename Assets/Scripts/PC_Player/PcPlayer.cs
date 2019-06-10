@@ -5,6 +5,8 @@ using UnityEngine.EventSystems;
 
 /// <summary>
 /// @Author = Veli-Matti Vuoti
+/// 
+/// Controls PC player skills and stuff
 /// </summary>
 [RequireComponent(typeof(Movement), typeof(PlayerInput))]
 public class PcPlayer : MonoBehaviour
@@ -14,6 +16,8 @@ public class PcPlayer : MonoBehaviour
 	Transform rightHand;
 	Transform leftHand;
 	FixedJoint objSnapPoint;
+
+	//public PCControlSet pCCS;
 
 	[Range(0, 15)] public float rayCastDistance;
 	public LayerMask hitMask;
@@ -72,6 +76,7 @@ public class PcPlayer : MonoBehaviour
 		Settings.OnSettingsChanged -= CheckSettings;
 	}
 
+	//Checks if special modes are activated
 	public void CheckSettings(Settings settings)
 	{
 
@@ -92,6 +97,9 @@ public class PcPlayer : MonoBehaviour
 		}
 	}
 
+	/// <summary>
+	/// If the player manages to fall off from map, this function will reset the position back to start
+	/// </summary>
 	void FallToDeath()
 	{
 		if(transform.position.y <  -5f)
@@ -100,6 +108,9 @@ public class PcPlayer : MonoBehaviour
 		}
 	}
 
+	/// <summary>
+	/// If player has object selected
+	/// </summary>
 	private void HasObjectSelected()
 	{
 		if (selectedObject != null)
@@ -112,11 +123,17 @@ public class PcPlayer : MonoBehaviour
 		}
 	}
 
+	/// <summary>
+	/// Opens menu interaction menu if player has object selected
+	/// </summary>
 	public void InteractionMenu()
 	{
 		OpenMenuEvent?.Invoke(hasObjSelected);
 	}
 
+	/// <summary>
+	/// Physical raycasts at pointers position and allows selecting/deselecting objects
+	/// </summary>
 	public void RayCastToPointer()
 	{
 
@@ -200,6 +217,10 @@ public class PcPlayer : MonoBehaviour
 
 	}
 
+	/// <summary>
+	/// Launches event if mouse is on interactable object
+	/// </summary>
+	/// <param name="hit"></param>
 	public void MouseHover(RaycastHit hit)
 	{
 		if (mouseHoverIn != null && senderActive)
@@ -211,6 +232,10 @@ public class PcPlayer : MonoBehaviour
 		}
 	}
 
+	/// <summary>
+	/// Launches event if clicks mouse on interactable object
+	/// </summary>
+	/// <param name="hit"></param>
 	public void MouseClicked(RaycastHit hit)
 	{
 		if (mouseClick != null && senderActive)
@@ -222,6 +247,10 @@ public class PcPlayer : MonoBehaviour
 		}
 	}
 
+	/// <summary>
+	/// Launches event if mouse exits interactable object
+	/// </summary>
+	/// <param name="hit"></param>
 	public void MouseExited(RaycastHit hit)
 	{
 		if (mouseHoverOut != null && senderActive)
@@ -233,6 +262,9 @@ public class PcPlayer : MonoBehaviour
 		}
 	}
 
+	/// <summary>
+	/// Drops the object if holding it
+	/// </summary>
 	public void DropObject()
 	{
 		if (objSnapPoint.connectedBody != null)
@@ -244,6 +276,9 @@ public class PcPlayer : MonoBehaviour
 		}
 	}
 
+	/// <summary>
+	/// Will activate position marker for teleport when holding right mouse button down
+	/// </summary>
 	public void PortalIndicator()
 	{
 
@@ -270,6 +305,9 @@ public class PcPlayer : MonoBehaviour
 		}
 	}
 
+	/// <summary>
+	/// when release right mouse key teleports the player to pointers location
+	/// </summary>
 	public void PCTeleport()
 	{
 
@@ -299,6 +337,9 @@ public class PcPlayer : MonoBehaviour
 		}
 	}
 
+	/// <summary>
+	/// Adjusts player height when activate wheelchair mode
+	/// </summary>
 	public void OnWheelChairModeEnabled()
 	{
 
@@ -313,6 +354,12 @@ public class PcPlayer : MonoBehaviour
 
 	}
 
+	/// <summary>
+	/// Delay to enable or disable teleporting again
+	/// </summary>
+	/// <param name="status"></param>
+	/// <param name="time"></param>
+	/// <returns></returns>
 	public IEnumerator ActivateTeleport(bool status, float time)
 	{
 		yield return new WaitForSeconds(time);
@@ -320,6 +367,9 @@ public class PcPlayer : MonoBehaviour
 	}
 }
 
+/// <summary>
+/// struct for pointer events
+/// </summary>
 public struct RayCastData
 {
 	public float distance;

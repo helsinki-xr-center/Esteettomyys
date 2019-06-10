@@ -3,6 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+/// <summary>
+/// @Author : Veli-Matti Vuoti
+/// 
+/// This Class handles the hovertablet exit tab buttons
+/// </summary>
 public class ExitTab : MonoBehaviour
 {
 	Button[] buttons;

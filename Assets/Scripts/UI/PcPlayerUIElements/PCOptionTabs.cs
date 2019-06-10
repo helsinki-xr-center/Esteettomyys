@@ -3,6 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+/// <summary>
+/// @Author: Veli-Matti Vuoti
+/// 
+/// This Class Handles the PC Option Tabs
+/// </summary>
 public class PCOptionTabs : MonoBehaviour
 {
 
