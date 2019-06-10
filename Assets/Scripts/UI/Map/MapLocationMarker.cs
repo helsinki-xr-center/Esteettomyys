@@ -4,10 +4,11 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class MapLocationMarker : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
+public class MapLocationMarker : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler
 {
 	public Mapper mapper;
 	public bool hovered = false;
+	public bool selected = false;
 	public Transform followTransform;
 
 	public Color normalColor = Color.white;
@@ -37,8 +38,16 @@ public class MapLocationMarker : MonoBehaviour, IPointerEnterHandler, IPointerEx
 
 		rect.anchorMin = pos;
 		rect.anchorMax = pos;
-    }
 
+		if (hovered || selected)
+		{
+			image.color = highlightColor;
+		}
+		else
+		{
+			image.color = normalColor;
+		}
+	}
 	public void SetValues(Transform follow)
 	{
 		followTransform = follow;
@@ -47,12 +56,20 @@ public class MapLocationMarker : MonoBehaviour, IPointerEnterHandler, IPointerEx
 	public void OnPointerEnter(PointerEventData eventData)
 	{
 		hovered = true;
-		image.color = highlightColor;
 	}
 
 	public void OnPointerExit(PointerEventData eventData)
 	{
 		hovered = false;
-		image.color = normalColor;
+	}
+
+	public void OnPointerClick(PointerEventData eventData)
+	{
+		foreach (var mark in FindObjectsOfType<MapLocationMarker>())
+		{
+			mark.selected = false;
+		}
+
+		selected = true;
 	}
 }

@@ -2,9 +2,10 @@
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class MapPlayerListItem : MonoBehaviour
+public class MapPlayerListItem : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler
 {
 	public TextMeshProUGUI playerName;
 	public Button teleportButton;
@@ -25,13 +26,22 @@ public class MapPlayerListItem : MonoBehaviour
 			Destroy(gameObject);
 		}
 
-		if(marker.hovered)
+		if(marker.hovered || marker.selected)
 		{
 			colorTarget.color = highlightColor;
 		}
 		else
 		{
 			colorTarget.color = normalColor;
+		}
+
+		if(marker.selected && !teleportButton.gameObject.activeSelf)
+		{
+			teleportButton.gameObject.SetActive(true);
+		}
+		else if (!marker.selected && teleportButton.gameObject.activeSelf)
+		{
+			teleportButton.gameObject.SetActive(false);
 		}
     }
 	
@@ -61,5 +71,25 @@ public class MapPlayerListItem : MonoBehaviour
 		{
 			Destroy(marker.gameObject);
 		}
+	}
+
+	public void OnPointerEnter(PointerEventData eventData)
+	{
+		marker.hovered = true;
+	}
+
+	public void OnPointerExit(PointerEventData eventData)
+	{
+		marker.hovered = false;
+	}
+
+	public void OnPointerClick(PointerEventData eventData)
+	{
+		foreach(var mark in FindObjectsOfType<MapLocationMarker>())
+		{
+			mark.selected = false;
+		}
+
+		marker.selected = true;
 	}
 }
