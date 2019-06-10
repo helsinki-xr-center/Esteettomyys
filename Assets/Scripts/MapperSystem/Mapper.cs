@@ -59,14 +59,22 @@ public class Mapper : MonoBehaviour
 	 */
 	public void RenderFrame()
 	{
-		foreach(var mat in replaceMaterials)
+		if (replaceMaterial != null)
 		{
-			mat.ReplaceMaterial();
+			foreach (var mat in replaceMaterials)
+			{
+				mat.ReplaceMaterial();
+			}
 		}
+
 		camera.Render();
-		foreach (var mat in replaceMaterials)
+
+		if (replaceMaterial != null)
 		{
-			mat.ResetMaterial();
+			foreach (var mat in replaceMaterials)
+			{
+				mat.ResetMaterial();
+			}
 		}
 	}
 
@@ -116,17 +124,18 @@ public class Mapper : MonoBehaviour
 		var renderers = visible.Select(x => x.GetComponent<Renderer>()).Where(x => x != null);
 		var allBounds = renderers.Select(x => x.bounds);
 
-		if(allBounds.Count() == 0)
+		if (allBounds.Count() == 0)
 		{
 			bounds = new Bounds(Vector3.zero, Vector3.one * 10);
-		}else
+		}
+		else
 		{
 			// encapsulate all bounds into a single bounds
 			bounds = allBounds.Aggregate((combined, next) => { combined.Encapsulate(next); return combined; });
 		}
 
 		var missingRenderers = renderers.Where(x => x.GetComponent<ReplaceMaterialOnCameraRender>() == null);
-		foreach(var r in missingRenderers)
+		foreach (var r in missingRenderers)
 		{
 			var replacer = r.gameObject.AddComponent<ReplaceMaterialOnCameraRender>();
 			replacer.targetCamera = camera;
