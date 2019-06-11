@@ -53,13 +53,13 @@ public class Movement : MonoBehaviour
 		pcCamera.transform.position = new Vector3(transform.position.x, transform.position.y + GlobalValues.settings.defaultHeight, transform.position.z);
 		rb = gameObject.GetComponent<Rigidbody>();
 		col = gameObject.GetComponent<CapsuleCollider>();
-		player = GetComponent<PcPlayer>();
+		player = gameObject.GetComponent<PcPlayer>();
 		col.height = GlobalValues.settings.defaultHeight;
 		col.center = Vector3.up * (GlobalValues.settings.defaultHeight / 2);
 		resetPos = transform.GetChild(0).transform;
 		
 
-		player.movement.StartSlerping();
+		StartSlerping();
 		StartCoroutine(ResetLookAxis());
 	}
 

@@ -58,11 +58,13 @@ public class HoverTabletUI : MonoBehaviour
 		if (hasObj && !contentPages[4].gameObject.activeSelf)
 		{
 			ActivateIndex(4, false);
+			transform.GetChild(0).gameObject.SetActive(false);
 			hasObj = true;
 		}
 		if(!hasObj)
 		{
 			contentPages[4].gameObject.SetActive(false);
+			transform.GetChild(0).gameObject.SetActive(true);
 			hasObj = false;
 		}
 
