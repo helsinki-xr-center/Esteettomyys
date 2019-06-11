@@ -1,5 +1,35 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &583993678
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 583993679}
+  m_Layer: 17
+  m_Name: ResetPos
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &583993679
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 583993678}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 1}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1816393073346743740}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1816393072579236146
 GameObject:
   m_ObjectHideFlags: 0
@@ -30,7 +60,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1816393073346743740}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!54 &1816393072579236151
 Rigidbody:
@@ -96,6 +126,7 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
+  - {fileID: 583993679}
   - {fileID: 1816393073728650925}
   - {fileID: 1816393073546398834}
   - {fileID: 1816393072579236149}
@@ -116,7 +147,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   movement: {fileID: 0}
   playerEyes: {fileID: 0}
-  pCCS: 0
   rayCastDistance: 10.38
   hitMask:
     serializedVersion: 2
@@ -132,6 +162,7 @@ MonoBehaviour:
   senderActive: 0
   canTeleport: 0
   telePortKeyDown: 0
+  activeUI: 0
   teleRestrictionTime: 2
 --- !u!114 &1816393073346743712
 MonoBehaviour:
@@ -145,7 +176,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 880461b801c9d97418832c1ed11d128a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  lockRotation: 0
 --- !u!114 &1816393073346743713
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -158,12 +188,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 614beb8679411594a8bc0347a55ac325, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  pCCS: 1
   moveSpeed: 187.2
-  strafeSpeed: 101.2
+  strafeSpeed: 124.4
   rotationSpeed: 50.1
   verticalHeadMoveSpeed: 80.1
   verticalHeadAngleLimit: 44.9
   inversedVertical: 0
+  lockRotation: 0
+  resetedRotX: 0
+  rotating: 0
+  resetPos: {fileID: 0}
+  leftBounds: 0.1
+  rightBounds: 0.9
+  upBounds: 0.9
+  downBounds: 0.1
+  slerpTime: 1
+  mouseRotateSpeedY: 55
+  mouseRotateSpeedX: 20
 --- !u!114 &1816393073346743742
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -249,7 +291,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1816393073346743740}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1816393073728650920
 GameObject:
@@ -283,7 +325,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1816393073346743740}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!20 &1816393073728650922
 Camera:

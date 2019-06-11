@@ -11,6 +11,7 @@ public class Movement : MonoBehaviour
 {
 
 	PcCamera pcCamera;
+	PcPlayer player;
 
 	public PCControlSet pCCS;
 
@@ -28,8 +29,18 @@ public class Movement : MonoBehaviour
 
 	public bool lockRotation;
 	public bool resetedRotX;
+	public bool rotating;
+	public Transform resetPos;
 	float moveX, moveY, mouseX, mouseY, turnX;
+	Vector3 mousePos;
+	[Tooltip("Bounds Where mouse moves the camera")] public float leftBounds, rightBounds, upBounds, downBounds;
 
+
+	public float slerpTime;
+	public float mouseRotateSpeedY;
+	public float mouseRotateSpeedX;
+	float time;
+	float timer;
 	float rotationX;
 	float rotationY;
 	Quaternion previousRotation;
@@ -39,12 +50,16 @@ public class Movement : MonoBehaviour
 	private void Start()
 	{
 		pcCamera = gameObject.GetComponentInChildren<PcCamera>();
-		pcCamera.transform.position = new Vector3 (transform.position.x,transform.position.y + GlobalValues.settings.defaultHeight,transform.position.z);
+		pcCamera.transform.position = new Vector3(transform.position.x, transform.position.y + GlobalValues.settings.defaultHeight, transform.position.z);
 		rb = gameObject.GetComponent<Rigidbody>();
 		col = gameObject.GetComponent<CapsuleCollider>();
+		player = GetComponent<PcPlayer>();
 		col.height = GlobalValues.settings.defaultHeight;
 		col.center = Vector3.up * (GlobalValues.settings.defaultHeight / 2);
-		previousRotation = transform.rotation;
+		resetPos = transform.GetChild(0).transform;
+
+		player.movement.StartSlerping();
+		StartCoroutine(ResetLookAxis());
 	}
 
 	/// <summary>
@@ -66,12 +81,12 @@ public class Movement : MonoBehaviour
 		else
 		{
 			return -1;
-		}	
+		}
 	}
 
 	private void FixedUpdate()
 	{
-		switch (pCCS)	
+		switch (pCCS)
 		{
 			case PCControlSet.First:
 				DirectionalMove();
@@ -83,15 +98,23 @@ public class Movement : MonoBehaviour
 				break;
 			case PCControlSet.Second:
 
-				DirectionalMoveTwo();			
-				RotationalMoveTwo();
-				
+				CheckRotationStatus();
+				DirectionalMoveTwo();
+				RotationalMoveTwo();	
+				if (!player.activeUI )
+				{
+					MouseOnEdge();
+				}
+
 				break;
 			default:
 				break;
-		}			
+		}
 	}
 
+	/// <summary>
+	/// Different Move Style
+	/// </summary>
 	#region FirstControls
 	/// <summary>
 	/// Moves player to different directions
@@ -103,7 +126,7 @@ public class Movement : MonoBehaviour
 		//Debug.Log(moveY);
 		float moveVertical = moveY * moveSpeed * Time.deltaTime;
 		float moveHorizontal = moveX * strafeSpeed * Time.deltaTime;
-		Vector3 moveDirection = new Vector3( moveHorizontal, rb.velocity.y , moveVertical);
+		Vector3 moveDirection = new Vector3(moveHorizontal, rb.velocity.y, moveVertical);
 		moveDirection = transform.TransformDirection(moveDirection);
 		rb.velocity = moveDirection;
 	}
@@ -125,7 +148,11 @@ public class Movement : MonoBehaviour
 	}
 	#endregion
 
+	/// <summary>
+	/// Different Move Style
+	/// </summary>
 	#region SecondControls
+	
 	public void DirectionalMoveTwo()
 	{
 		float moveVertical = moveY * moveSpeed * Time.deltaTime;
@@ -135,51 +162,134 @@ public class Movement : MonoBehaviour
 		rb.velocity = moveDirection;
 	}
 
+	public void ResetRotationX()
+	{
+		rotationX = 0;
+		resetedRotX = true;
+	}
+
+	/// <summary>
+	/// Checks if rotation is same as resetPosition rotation
+	/// </summary>
+	public void CheckRotationStatus()
+	{
+		if(pcCamera.transform.rotation == resetPos.rotation)
+		{
+			resetedRotX = true;
+		}
+		if (pcCamera.transform.rotation != resetPos.rotation)
+		{
+			resetedRotX = false;
+		}
+	}
+
+	/// <summary>
+	/// Slerptime
+	/// </summary>
+	public void StartSlerping()
+	{
+
+		time = slerpTime * Time.deltaTime;
+	}
+
+	/// <summary>
+	/// Checks if Mouse is positioned on screen edges and moves camera
+	/// </summary>
+	public void MouseOnEdge()
+	{
+		//if (Time.time > timer)
+		//{
+		//	timer = Time.time + 1;
+		//	Debug.Log(mousePos);
+
+		if (mousePos.x < leftBounds)
+		{
+			//Debug.Log("MOVE CAMERA LEFT");
+			transform.Rotate(Vector3.up, -mouseRotateSpeedY * Time.deltaTime);
+
+		}
+		if (mousePos.x > rightBounds)
+		{
+			//Debug.Log("MOVE CAMERA RIGHT");
+			transform.Rotate(Vector3.up, mouseRotateSpeedY * Time.deltaTime);
+		}
+		if (mousePos.y > upBounds)
+		{
+			//Debug.Log("MOVE CAMERA UP");
+			pcCamera.transform.Rotate(Vector3.left, mouseRotateSpeedX * Time.deltaTime);
+			rotating = true;
+						
+		}		
+		if (mousePos.y < downBounds)
+		{
+			//Debug.Log("MOVE CAMERA DOWN");
+			pcCamera.transform.Rotate(Vector3.right, mouseRotateSpeedX * Time.deltaTime);
+			rotating = true;
+			
+		}
+
+		if (mousePos.y < upBounds && mousePos.y > downBounds)
+		{
+			
+			if (rotating)
+			{
+				Debug.Log("Rotating Ended");	
+				rotating = false;
+				StartCoroutine(ResetLookAxis());
+				//pcCamera.transform.rotation = resetPos.rotation;
+			}
+		}
+		//}
+
+	}
+
+	/// <summary>
+	/// Rotational movement
+	/// </summary>
 	public void RotationalMoveTwo()
 	{
-		
+
 		if (lockRotation)
 		{
-		
-			Debug.Log(pcCamera.transform.rotation.x);
-			if (pcCamera.transform.rotation.x > 0.05f || pcCamera.transform.rotation.x < -0.05f)
-			{			
-				previousRotation = transform.rotation;
-				
-				resetedRotX = false;
-			}		
+
 			rotationY = mouseX * rotationSpeed * Time.deltaTime;
 			rotationX += mouseY * verticalHeadMoveSpeed * Time.deltaTime;
 			rotationX = Mathf.Clamp(rotationX, -verticalHeadAngleLimit, verticalHeadAngleLimit);
 			pcCamera.transform.rotation = Quaternion.Euler(rotationX * IsInversed(), transform.rotation.eulerAngles.y, transform.rotation.eulerAngles.z);
-			transform.Rotate(Vector3.up, rotationY);	
+			transform.Rotate(Vector3.up, rotationY);
+
 		}
 		else if (!lockRotation)
-		{		
+		{
+
 			rotationY = turnX * rotationSpeed * Time.deltaTime;
 			transform.Rotate(Vector3.up, rotationY);
 		}
 		//Debug.Log(mouseX);
 	}
 
+	/// <summary>
+	/// Resets the x axis rotation on camera slowly
+	/// </summary>
+	/// <returns></returns>
 	public IEnumerator ResetLookAxis()
 	{
-		while(!resetedRotX )
-		{
-			Debug.Log(pcCamera.transform.rotation.x);
-			pcCamera.transform.rotation = Quaternion.Slerp(pcCamera.transform.rotation, previousRotation, Time.deltaTime);
-
-			if (pcCamera.transform.rotation.x < 0.05f && pcCamera.transform.rotation.x > -0.05f)
-			{
-				resetedRotX = true;
-			}
 		
+		while ((!resetedRotX && !rotating))
+		{
+			//Debug.Log("STARTED COROUTINE");
+			//time += Time.deltaTime;
+			//Debug.Log(pcCamera.transform.rotation.x);
+
+			pcCamera.transform.rotation = Quaternion.Slerp(pcCamera.transform.rotation, resetPos.rotation, time);
+	
 			yield return null;
 		}
 
 	}
 	#endregion
 
+	#region Input values
 	public void RotationalInput(float mouseX, float mouseY)
 	{
 		this.mouseX = mouseX;
@@ -192,8 +302,14 @@ public class Movement : MonoBehaviour
 		this.moveY = moveY;
 	}
 
-	public void TurnInput ( float turnX )
+	public void TurnInput(float turnX)
 	{
 		this.turnX = turnX;
 	}
+
+	public void MousePosition(Vector3 mousePosition)
+	{
+		mousePos = mousePosition / new Vector2(Screen.width, Screen.height);
+	}
+	#endregion
 }
