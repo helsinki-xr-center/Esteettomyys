@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: testwire
+  m_Name: map_wireframe
   m_Shader: {fileID: 4800000, guid: 349737f389860b042946c40afa327524, type: 3}
   m_ShaderKeywords: 
   m_LightmapFlags: 4

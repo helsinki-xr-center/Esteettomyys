@@ -35,6 +35,7 @@ public class PcPlayer : MonoBehaviour
 	public bool senderActive;
 	public bool canTeleport;
 	public bool telePortKeyDown;
+	public bool activeUI;
 
 	[SerializeField] float teleRestrictionTime;
 
@@ -53,8 +54,8 @@ public class PcPlayer : MonoBehaviour
 		movement = gameObject.GetComponent<Movement>();
 		playerEyes = gameObject.GetComponentInChildren<PcCamera>();
 		eyeSight = playerEyes.gameObject.GetComponent<Camera>();
-		leftHand = gameObject.transform.GetChild(1);
-		rightHand = gameObject.transform.GetChild(2);
+		leftHand = gameObject.transform.GetChild(2);
+		rightHand = gameObject.transform.GetChild(3);
 		leftHand.transform.localPosition = new Vector3(-1, 1.5f, 1.5f);
 		rightHand.transform.localPosition = new Vector3(1, 1.5f, 1.5f);
 		objSnapPoint = rightHand.GetComponent<FixedJoint>();
@@ -69,11 +70,18 @@ public class PcPlayer : MonoBehaviour
 	private void OnEnable()
 	{
 		Settings.OnSettingsChanged += CheckSettings;
+		PCMenuControl.OnMenuOpenEvent += IsMenuOpen;
 	}
 
 	private void OnDisable()
 	{
 		Settings.OnSettingsChanged -= CheckSettings;
+		PCMenuControl.OnMenuOpenEvent -= IsMenuOpen;
+	}
+
+	public void IsMenuOpen( bool status )
+	{
+		activeUI = status;
 	}
 
 	//Checks if special modes are activated

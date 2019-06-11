@@ -11,6 +11,7 @@ public class PlayerInput : MonoBehaviour
 {
 
 	PcPlayer player;
+	Vector3 mousePosition;
 	float horizontalMove;
 	float verticalMove;
 	float turnX;
@@ -70,20 +71,30 @@ public class PlayerInput : MonoBehaviour
 				turnX = Input.GetAxis("Horizontal");
 				mouseX = Input.GetAxis("Mouse X");
 				mouseY = Input.GetAxis("Mouse Y");
+				mousePosition = Input.mousePosition;
 
 				player.movement.DirectionalInput(horizontalMove, verticalMove);
 				player.movement.TurnInput(turnX);
 				player.movement.RotationalInput(mouseX, mouseY);
+				player.movement.MousePosition(mousePosition);
+
+				if(Input.GetButtonDown("Fire3"))
+				{				
+					player.movement.ResetRotationX();
+					StopCoroutine(player.movement.ResetLookAxis());
+				}
 
 				if (Input.GetButton("Fire3"))
-				{
-					player.movement.lockRotation = true;
-					StopCoroutine(player.movement.ResetLookAxis());
+				{		
+					player.movement.lockRotation = true;		
+					//StopCoroutine(player.movement.ResetLookAxis());
 				}
 
 				if (Input.GetButtonUp("Fire3"))
 				{
 					player.movement.lockRotation = false;
+					//player.movement.resetedRotX = false;
+					player.movement.StartSlerping();
 					StartCoroutine(player.movement.ResetLookAxis());
 				}
 
@@ -97,7 +108,7 @@ public class PlayerInput : MonoBehaviour
 				}
 
 				if (Input.GetButtonDown("Cancel"))
-				{
+				{				
 					player.InteractionMenu();
 				}
 

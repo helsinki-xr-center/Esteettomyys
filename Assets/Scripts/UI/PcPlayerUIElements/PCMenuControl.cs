@@ -16,6 +16,9 @@ public class PCMenuControl : MonoBehaviour
 	[SerializeField] Button[] menuTabButtons;
 	[SerializeField] Transform[] contentPages;
 
+	public delegate void MenuOpenDelegate(bool status);
+	public static event MenuOpenDelegate OnMenuOpenEvent;
+
 	private void Start()
 	{
 		fullMenu = transform.GetChild(0);
@@ -117,15 +120,18 @@ public class PCMenuControl : MonoBehaviour
 				if (!partMenu.gameObject.activeSelf)
 				{
 					partMenu.gameObject.SetActive(true);
+					OnMenuOpenEvent?.Invoke(true);
 				}
 				else
 				{
 					partMenu.gameObject.SetActive(false);
+					OnMenuOpenEvent?.Invoke(false);
 				}
 			}
 			else
 			{
 				fullMenu.gameObject.SetActive(false);
+				OnMenuOpenEvent?.Invoke(false);
 			}
 		}
 		else
@@ -136,15 +142,18 @@ public class PCMenuControl : MonoBehaviour
 				if(!fullMenu.gameObject.activeSelf)
 				{
 					fullMenu.gameObject.SetActive(true);
+					OnMenuOpenEvent?.Invoke(true);
 				}
 				else
 				{
 					fullMenu.gameObject.SetActive(false);
+					OnMenuOpenEvent?.Invoke(false);
 				}
 			}
 			else
 			{
 				partMenu.gameObject.SetActive(false);
+				OnMenuOpenEvent?.Invoke(false);
 			}
 		}
 
