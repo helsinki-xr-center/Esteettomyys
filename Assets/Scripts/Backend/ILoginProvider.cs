@@ -24,5 +24,7 @@ public interface ILoginProvider
 	 * Returns a <see cref="LoginResult"/> based on the success of the login attempt.
 	 */
 	Task<LoginResult> Login(string username, string password);
+
+	Task Logout();
 }
 

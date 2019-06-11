@@ -15,9 +15,11 @@ public static class GlobalValues
 
 	public static GameMode gameMode = GameMode.Tutorial;
 	public static ControllerMode controllerMode = ControllerMode.PC;
-	public static string user = "TestUser";
-	public static bool loggedIn;
-	public static bool offlineMode;
+	public static string user { get{ return LoginManager.user; } }
+	public static bool loggedIn { get { return LoginManager.loggedIn; } }
+	public static bool offlineMode { get { return LoginManager.offlineMode; } }
+
+
 	public static Settings settings
 	{
 		get => Settings.Get();

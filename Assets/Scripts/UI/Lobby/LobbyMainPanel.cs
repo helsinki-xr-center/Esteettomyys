@@ -298,8 +298,7 @@ public class LobbyMainPanel : MonoBehaviourPunCallbacks
 			PhotonNetwork.LeaveLobby();
 		}
 
-		GlobalValues.loggedIn = false;
-		GlobalValues.offlineMode = false;
+		LoginManager.Logout();
 		XRSettings.enabled = false;
 		SceneManager.LoadScene("MainMenu");
 	}

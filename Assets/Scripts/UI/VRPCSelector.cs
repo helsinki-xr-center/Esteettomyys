@@ -18,10 +18,9 @@ public class VRPCSelector : AwaitableUIPanel
 
 	public bool selected;
 
-	private void Awake(){
+	private void OnEnable(){
 		selected = false;
 	}
-
 
 	/**
 	 * <summary>
@@ -63,8 +62,7 @@ public class VRPCSelector : AwaitableUIPanel
 	 * </summary>
 	 */
 	public void OnLogoutButtonPressed(){
-		GlobalValues.loggedIn = false;
-		GlobalValues.offlineMode = false;
+		LoginManager.Logout();
 		selected = true;
 	}
 

@@ -18,12 +18,10 @@ public class LoginPanelScript : AwaitableUIPanel
 	public Button loginButton;
 	public bool success = false;
 
-	public ILoginProvider loginProvider = new DummyLogin();
-
-
-	private void Awake()
+	private void OnEnable()
 	{
 		success = false;
+		loginButton.interactable = true;
 	}
 
 	/**
@@ -44,7 +42,7 @@ public class LoginPanelScript : AwaitableUIPanel
 			return;
 		}
 
-		LoginResult result = await loginProvider.Login(username, password);
+		LoginResult result = await LoginManager.Login(username, password);
 
 		switch (result)
 		{
@@ -54,11 +52,8 @@ public class LoginPanelScript : AwaitableUIPanel
 				break;
 			case LoginResult.Success:
 				new UIInfoMessage("Login success!", UIInfoMessage.MessageType.Success).Deliver();
-
-				GlobalValues.loggedIn = true;
-				GlobalValues.user = username;
-
 				success = true;
+				loginButton.interactable = true;
 				break;
 			case LoginResult.Error:
 				new UIInfoMessage("An unknown error occurred.", UIInfoMessage.MessageType.Error).Deliver();
@@ -70,9 +65,7 @@ public class LoginPanelScript : AwaitableUIPanel
 	}
 
 	public void OnOfflineButtonClick(){
-		GlobalValues.loggedIn = false;
-		GlobalValues.user = "offline user";
-		GlobalValues.offlineMode = true;
+		LoginManager.StartOffline();
 		success = true;
 	}
 
