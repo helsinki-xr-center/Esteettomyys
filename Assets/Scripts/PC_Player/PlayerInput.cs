@@ -26,7 +26,7 @@ public class PlayerInput : MonoBehaviour
 	void Update()
 	{
 
-		switch (player.movement.pCCS)	
+		switch (player.movement.pCCS)
 		{
 			case PCControlSet.First:
 
@@ -78,15 +78,15 @@ public class PlayerInput : MonoBehaviour
 				player.movement.RotationalInput(mouseX, mouseY);
 				player.movement.MousePosition(mousePosition);
 
-				if(Input.GetButtonDown("Fire3"))
-				{				
+				if (Input.GetButtonDown("Fire3"))
+				{
 					player.movement.ResetRotationX();
 					StopCoroutine(player.movement.ResetLookAxis());
 				}
 
 				if (Input.GetButton("Fire3"))
-				{		
-					player.movement.lockRotation = true;		
+				{
+					player.movement.lockRotation = true;
 					//StopCoroutine(player.movement.ResetLookAxis());
 				}
 
@@ -98,17 +98,24 @@ public class PlayerInput : MonoBehaviour
 					StartCoroutine(player.movement.ResetLookAxis());
 				}
 
-				if (Input.GetMouseButtonDown(1))
+
+				if (Input.GetMouseButton(1))
 				{
+
 					player.PortalIndicator();
+
 				}
 				if (Input.GetMouseButtonUp(1))
 				{
+
 					player.PCTeleport();
+					player.teleportIndicator.SetActive(false);
+
 				}
 
+
 				if (Input.GetButtonDown("Cancel"))
-				{				
+				{
 					player.InteractionMenu();
 				}
 
@@ -117,7 +124,7 @@ public class PlayerInput : MonoBehaviour
 				break;
 		}
 
-	
+
 
 	}
 }
