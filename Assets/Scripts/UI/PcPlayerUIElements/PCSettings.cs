@@ -4,6 +4,11 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
+/// <summary>
+/// @Author : Veli-Matti Vuoti
+/// 
+/// Handles the PC Menu Settings Tab
+/// </summary>
 public class PCSettings : MonoBehaviour
 {
 

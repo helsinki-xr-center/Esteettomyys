@@ -1,5 +1,10 @@
 ﻿using UnityEngine;
 
+/// <summary>
+/// @Author : Veli-Matti Vuoti
+/// 
+/// Scriptable Object for slider themes
+/// </summary>
 [CreateAssetMenu(menuName = "SliderColorTheme")]
 public class SliderColorThemes : ScriptableObject
 {

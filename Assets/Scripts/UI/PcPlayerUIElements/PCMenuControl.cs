@@ -3,6 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+/// <summary>
+/// @Author: Veli-Matti Vuoti
+/// 
+/// Handle The PC Menu Tabs
+/// </summary>
 public class PCMenuControl : MonoBehaviour
 {
 

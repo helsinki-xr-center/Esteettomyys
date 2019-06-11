@@ -3,6 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+/// <summary>
+/// @Author Veli-Matti Vuoti
+/// 
+/// This Class Handles the Hover Tablets FilterTab UI
+/// </summary>
 public class FilterTab : MonoBehaviour
 {
 
@@ -24,6 +29,9 @@ public class FilterTab : MonoBehaviour
 
 	}
 
+	/// <summary>
+	/// Opens Color filter tab
+	/// </summary>
 	void OpenColorFilters()
 	{
 		contentPages[0].gameObject.SetActive(true);
@@ -31,6 +39,9 @@ public class FilterTab : MonoBehaviour
 		contentPages[2].gameObject.SetActive(false);
 	}
 
+	/// <summary>
+	/// Opens Sight filter tab
+	/// </summary>
 	void OpenSightFilters()
 	{
 
@@ -39,6 +50,9 @@ public class FilterTab : MonoBehaviour
 		contentPages[2].gameObject.SetActive(false);
 	}
 
+	/// <summary>
+	/// Opens Other filters tab
+	/// </summary>
 	void OpenOtherFilters()
 	{
 		contentPages[2].gameObject.SetActive(true);

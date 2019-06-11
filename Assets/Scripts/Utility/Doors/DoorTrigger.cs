@@ -2,6 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// @Author : Veli-Matti Vuoti
+/// 
+/// Triggers door when player enters collider Area, Could be more Generic Class
+/// </summary>
 public class DoorTrigger : MonoBehaviour
 {
 

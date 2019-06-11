@@ -3,6 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+/// <summary>
+/// @Author: Veli-Matti Vuoti
+/// 
+/// Applies slider theme for slider element
+/// </summary>
 [RequireComponent(typeof(Slider))]
 public class ApplySliderTheme : MonoBehaviour
 {
