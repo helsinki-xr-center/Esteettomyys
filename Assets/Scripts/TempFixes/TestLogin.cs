@@ -12,8 +12,7 @@ public class TestLogin : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-		new BackendLoginProvider().Login(username, password)
-			.ContinueWith(async x => Debug.Log(await x));
+		_ = LoginManager.Login(username, password).ContinueWith(async x => Debug.Log(await x));
     }
 
 }

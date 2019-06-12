@@ -17,10 +17,7 @@ public class SaveTestingUI : MonoBehaviour
 
 	public void SaveScene()
 	{
-		SceneSaveManager.SaveSceneObjects(SceneManager.GetActiveScene());
-		saveData = SceneSaveManager.GetSaveData("test3");
-
-		BackendSaveFileManager.instance.Save(saveData);
+		SaveLoadManager.instance.Save();
 
 		/*
 		PlayerPrefsSaveFileManager.instance.Save(saveData);
@@ -35,24 +32,9 @@ public class SaveTestingUI : MonoBehaviour
 		FileSystemSaveFileManager.Default.Save(saveData);*/
 	}
 
-	public async void LoadScene()
+	public void LoadScene()
 	{
-		var spawned = FindObjectsOfType<SpawnedSaveable>();
-		foreach (var item in spawned)
-		{
-			DestroyImmediate(item.gameObject);
-		}
-
-
-		var saveFiles = await BackendSaveFileManager.instance.GetSaveFiles();
-
-		if (saveFiles.Length > 0)
-		{
-			saveData = await BackendSaveFileManager.instance.Load(saveFiles[0]);
-			SceneSaveManager.LoadSaveData(saveData);
-			SceneSaveManager.LoadSceneObjects(SceneManager.GetActiveScene());
-		}
-
+		SaveLoadManager.instance.Load();
 
 		/*
 		var saveFiles = PlayerPrefsSaveFileManager.instance.GetSaveFiles();

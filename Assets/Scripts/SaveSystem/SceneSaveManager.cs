@@ -76,8 +76,14 @@ namespace SaveSystem
 			SceneSaveData saveData = save.savedScenes.SingleOrDefault(x => x.sceneName == scene.name);
 			if (string.IsNullOrEmpty(saveData.sceneName))
 			{
-				Debug.Log($"No saved data found for {scene.name}.");
+				Debug.Log($"No saved data found for scene: {scene.name}.");
 				return;
+			}
+
+			var oldSpawned = GameObject.FindObjectsOfType<SpawnedSaveable>().Where(x => x.gameObject.scene == scene);
+			foreach (var item in oldSpawned)
+			{
+				GameObject.DestroyImmediate(item.gameObject);
 			}
 
 			var sceneSaveables = GameObject.FindObjectsOfType<SceneSaveable>().Where(x => x.gameObject.scene == scene).ToArray();
@@ -120,10 +126,10 @@ namespace SaveSystem
 		
 		public static bool HasAnythingToSave(Scene scene)
 		{
-			var sceneSaveables = GameObject.FindObjectsOfType<SceneSaveable>().Where(x => x.gameObject.scene == scene).Reverse().ToArray();
-			var spawnedSaveables = GameObject.FindObjectsOfType<SpawnedSaveable>().Where(x => x.gameObject.scene == scene).Reverse().ToArray();
+			bool sceneSaveables = GameObject.FindObjectsOfType<SceneSaveable>().Where(x => x.gameObject.scene == scene).Any();
+			bool spawnedSaveables = GameObject.FindObjectsOfType<SpawnedSaveable>().Where(x => x.gameObject.scene == scene).Any();
 
-			return sceneSaveables.Length > 0 || spawnedSaveables.Length > 0;
+			return sceneSaveables || spawnedSaveables;
 		}
 	}
 }

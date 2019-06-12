@@ -8,6 +8,7 @@ using System.Linq;
 
 public class SaveLoadManager : MonoBehaviour
 {
+	public static SaveLoadManager instance;
 
 	private PlayerPrefsSaveFileManager playerPrefsSave = PlayerPrefsSaveFileManager.instance;
 	private BackendSaveFileManager backendSave = BackendSaveFileManager.instance;
@@ -16,6 +17,7 @@ public class SaveLoadManager : MonoBehaviour
 
 	private void Awake()
 	{
+		instance = this;
 		SceneManager.sceneLoaded += SceneLoaded;
 		SceneManager.sceneUnloaded += SceneUnloaded;
 	}
@@ -30,14 +32,16 @@ public class SaveLoadManager : MonoBehaviour
 	{
 		foreach(Scene scene in SceneExtensions.GetAllLoadedScenes())
 		{
-			SceneSaveManager.SaveSceneObjects(currentData, scene);
-
+			if (SceneSaveManager.HasAnythingToSave(scene))
+			{
+				SceneSaveManager.SaveSceneObjects(currentData, scene);
+			}
 		}
 
 		currentData.saveName = "savegame";
 		currentData.timestamp = DateTime.Now;
 
-		if(GlobalValues.loggedIn)
+		if(GlobalValues.loggedIn && BackendConnector.authenticated)
 		{
 			await backendSave.Save(currentData);
 		}
@@ -52,7 +56,7 @@ public class SaveLoadManager : MonoBehaviour
 	public async void Load()
 	{
 		var prefsSaves = playerPrefsSave.GetSaveFiles();
-		var backendSaves = GlobalValues.loggedIn ? await backendSave.GetSaveFiles() : Array.Empty<SaveFile>();
+		var backendSaves = (GlobalValues.loggedIn && BackendConnector.authenticated) ? await backendSave.GetSaveFiles() : Array.Empty<SaveFile>();
 
 		SaveFile newest = prefsSaves.Concat(backendSaves).MaxBy(x => x.timestamp);
 		
@@ -70,6 +74,11 @@ public class SaveLoadManager : MonoBehaviour
 		else
 		{
 			currentData = new SaveData();
+		}
+
+		foreach (Scene scene in SceneExtensions.GetAllLoadedScenes())
+		{
+			SceneSaveManager.LoadSceneObjects(currentData, scene);
 		}
 	}
 
