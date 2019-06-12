@@ -32,6 +32,11 @@ public class BackendSaveFileManager : IAsyncSaveFileManager
 
 		BackendSaveModel model = await BackendConnector.LoadSaveData();
 
+		if(model == null)
+		{
+			return Array.Empty<SaveFile>();
+		}
+
 		cachedSave = SaveData.FromStringCompressed(model.data);
 
 		return new SaveFile[] { new SaveFile(cachedSave) };
