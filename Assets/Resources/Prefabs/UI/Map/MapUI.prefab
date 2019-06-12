@@ -702,6 +702,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8121385582198412148}
   - component: {fileID: 8121385582198412146}
+  - component: {fileID: 6993546248506825359}
   m_Layer: 5
   m_Name: MapUI
   m_TagString: Untagged
@@ -738,6 +739,22 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8121385582198412151}
   m_CullTransparentMesh: 0
+--- !u!114 &6993546248506825359
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8121385582198412151}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e400429932118d0418ccd5c78f1e6cf4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  multiplayerScene: Multiplayer
+  mapImageTransfrom: {fileID: 5661782463771981543}
+  playerMarkerPrefab: {fileID: 8871969122868115678, guid: 091ea5f5c9ae8294ba24604fea578959,
+    type: 3}
 --- !u!1001 &8465252744105036675
 PrefabInstance:
   m_ObjectHideFlags: 0
