@@ -91,14 +91,14 @@ public class HoverTabletControl : MonoBehaviour
 		//Debug.DrawRay(transform.position, GetBackPosition(), Color.red, 0.1f);
 		//Debug.DrawRay(transform.position, GetFrontPosition(), Color.blue, 0.1f);
 
-		//if (followMode != FollowMode.ControllerInstant)
-		//{
-		BringTabletToFront();
-		//}
 
 		if (!LockedOnPlace)
 		{
 			TabletTrackPlayerHead();
+		}
+		else
+		{
+			return;
 		}
 
 		if (lockedOnObject)
@@ -106,35 +106,36 @@ public class HoverTabletControl : MonoBehaviour
 			MoveToSelectedObject();
 		}
 
-		if (!lockedOnObject)
+		BringTabletToFront();
+
+
+
+		switch (followMode)
 		{
+			case FollowMode.FollowBehind:
 
-			switch (followMode)
-			{
-				case FollowMode.FollowBehind:
+				TabletModeBehind();
+				break;
+			case FollowMode.FollowLeft:
 
-					TabletModeBehind();
-					break;
-				case FollowMode.FollowLeft:
+				TabletModeLeft();
+				break;
+			case FollowMode.FollowLeftAndHide:
 
-					TabletModeLeft();
-					break;
-				case FollowMode.FollowLeftAndHide:
+				TabletModeLeftHide();
+				break;
+			case FollowMode.Instant:
 
-					TabletModeLeftHide();
-					break;
-				case FollowMode.Instant:
+				TabletModeInstant();
+				break;
+			case FollowMode.ControllerInstant:
 
-					TabletModeInstant();
-					break;
-				case FollowMode.ControllerInstant:
-
-					TabletModeInstantController();
-					break;
-				default:
-					break;
-			}
+				TabletModeInstantController();
+				break;
+			default:
+				break;
 		}
+
 
 
 	}

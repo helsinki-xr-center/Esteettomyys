@@ -273,8 +273,8 @@ public class Pointer : MonoBehaviour
 			if (clickObj && selectedObj != null)
 			{
 				
-				selectedObj.GetComponent<InteractableObject>().selected = false;
-				ExtensionMethods.MaterialColorChange(selectedObj, Color.white);			
+				//selectedObj.GetComponent<InteractableObject>()._selected = false;
+				//ExtensionMethods.MaterialColorChange(selectedObj, Color.white);			
 				DropObject();
 			}
 			if (!lockLaserOn)
