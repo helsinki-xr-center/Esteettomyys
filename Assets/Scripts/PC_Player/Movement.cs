@@ -53,12 +53,13 @@ public class Movement : MonoBehaviour
 		pcCamera.transform.position = new Vector3(transform.position.x, transform.position.y + GlobalValues.settings.defaultHeight, transform.position.z);
 		rb = gameObject.GetComponent<Rigidbody>();
 		col = gameObject.GetComponent<CapsuleCollider>();
-		player = GetComponent<PcPlayer>();
+		player = gameObject.GetComponent<PcPlayer>();
 		col.height = GlobalValues.settings.defaultHeight;
 		col.center = Vector3.up * (GlobalValues.settings.defaultHeight / 2);
 		resetPos = transform.GetChild(0).transform;
+		
 
-		player.movement.StartSlerping();
+		StartSlerping();
 		StartCoroutine(ResetLookAxis());
 	}
 
@@ -202,25 +203,25 @@ public class Movement : MonoBehaviour
 		//	timer = Time.time + 1;
 		//	Debug.Log(mousePos);
 
-		if (mousePos.x < leftBounds)
+		if (mousePos.x < leftBounds && mousePos.x >= 0)
 		{
 			//Debug.Log("MOVE CAMERA LEFT");
 			transform.Rotate(Vector3.up, -mouseRotateSpeedY * Time.deltaTime);
 
 		}
-		if (mousePos.x > rightBounds)
+		if (mousePos.x > rightBounds && mousePos.x <= 1)
 		{
 			//Debug.Log("MOVE CAMERA RIGHT");
 			transform.Rotate(Vector3.up, mouseRotateSpeedY * Time.deltaTime);
 		}
-		if (mousePos.y > upBounds)
+		if (mousePos.y > upBounds && mousePos.y <= 1)
 		{
 			//Debug.Log("MOVE CAMERA UP");
 			pcCamera.transform.Rotate(Vector3.left, mouseRotateSpeedX * Time.deltaTime);
 			rotating = true;
 						
 		}		
-		if (mousePos.y < downBounds)
+		if (mousePos.y < downBounds && mousePos.y >= 0)
 		{
 			//Debug.Log("MOVE CAMERA DOWN");
 			pcCamera.transform.Rotate(Vector3.right, mouseRotateSpeedX * Time.deltaTime);

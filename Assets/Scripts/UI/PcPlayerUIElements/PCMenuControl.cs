@@ -35,7 +35,7 @@ public class PCMenuControl : MonoBehaviour
 				continue;
 			}
 
-			contentPages[i -1] = transform.GetChild(0).transform.GetChild(i).transform;
+			contentPages[i - 1] = transform.GetChild(0).transform.GetChild(i).transform;
 
 		}
 
@@ -55,12 +55,14 @@ public class PCMenuControl : MonoBehaviour
 	{
 		PcPlayer.OpenMenuEvent += OpenMenu;
 		PcPlayer.OnDeselectObjectEvent += OnDeselectObject;
+		PcPlayer.OnSelectObjectEvent += OnSelectObject;
 	}
 
 	private void OnDisable()
 	{
 		PcPlayer.OpenMenuEvent -= OpenMenu;
 		PcPlayer.OnDeselectObjectEvent -= OnDeselectObject;
+		PcPlayer.OnSelectObjectEvent -= OnSelectObject;
 	}
 
 	void OpenFilterContent()
@@ -95,9 +97,9 @@ public class PCMenuControl : MonoBehaviour
 
 					continue;
 				}
-							
+
 				contentPages[i].transform.gameObject.SetActive(false);
-				
+
 			}
 		}
 		else
@@ -113,9 +115,9 @@ public class PCMenuControl : MonoBehaviour
 
 	public void OpenMenu(bool hasObj)
 	{
-		if(hasObj)
+		if (hasObj)
 		{
-			if(!fullMenu.gameObject.activeSelf)
+			if (!fullMenu.gameObject.activeSelf)
 			{
 				if (!partMenu.gameObject.activeSelf)
 				{
@@ -128,18 +130,13 @@ public class PCMenuControl : MonoBehaviour
 					OnMenuOpenEvent?.Invoke(false);
 				}
 			}
-			else
-			{
-				fullMenu.gameObject.SetActive(false);
-				OnMenuOpenEvent?.Invoke(false);
-			}
 		}
 		else
 		{
-			
-			if(!partMenu.gameObject.activeSelf)
+
+			if (!partMenu.gameObject.activeSelf)
 			{
-				if(!fullMenu.gameObject.activeSelf)
+				if (!fullMenu.gameObject.activeSelf)
 				{
 					fullMenu.gameObject.SetActive(true);
 					OnMenuOpenEvent?.Invoke(true);
@@ -150,13 +147,7 @@ public class PCMenuControl : MonoBehaviour
 					OnMenuOpenEvent?.Invoke(false);
 				}
 			}
-			else
-			{
-				partMenu.gameObject.SetActive(false);
-				OnMenuOpenEvent?.Invoke(false);
-			}
 		}
-
 	}
 
 	public void OnDeselectObject(GameObject obj)
@@ -164,6 +155,14 @@ public class PCMenuControl : MonoBehaviour
 		if (partMenu.gameObject.activeSelf)
 		{
 			partMenu.gameObject.SetActive(false);
+		}
+	}
+
+	public void OnSelectObject(GameObject obj)
+	{
+		if (!partMenu.gameObject.activeSelf)
+		{
+			partMenu.gameObject.SetActive(true);
 		}
 	}
 
