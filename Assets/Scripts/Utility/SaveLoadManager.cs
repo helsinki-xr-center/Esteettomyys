@@ -32,9 +32,9 @@ public class SaveLoadManager : MonoBehaviour
 	{
 		foreach(Scene scene in SceneExtensions.GetAllLoadedScenes())
 		{
-			if (SceneSaveManager.HasAnythingToSave(scene))
+			if (scene.HasAnythingToSave())
 			{
-				SceneSaveManager.SaveSceneObjects(currentData, scene);
+				currentData.SaveSceneObjects(scene);
 			}
 		}
 
@@ -78,7 +78,7 @@ public class SaveLoadManager : MonoBehaviour
 
 		foreach (Scene scene in SceneExtensions.GetAllLoadedScenes())
 		{
-			SceneSaveManager.LoadSceneObjects(currentData, scene);
+			currentData.LoadSceneObjects(scene);
 		}
 	}
 

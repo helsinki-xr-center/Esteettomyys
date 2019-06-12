@@ -7,10 +7,10 @@ using UnityEngine.Serialization;
 
 namespace SaveSystem
 {
-	public static class SceneSaveManager
+	public static class SceneSaveExtension
 	{
 
-		public static void SaveSceneObjects(SaveData save, Scene scene)
+		public static void SaveSceneObjects(this SaveData save, Scene scene)
 		{
 			if (!scene.isLoaded)
 			{
@@ -59,7 +59,7 @@ namespace SaveSystem
 
 		}
 
-		public static void LoadSceneObjects(SaveData save, Scene scene)
+		public static void LoadSceneObjects(this SaveData save, Scene scene)
 		{
 			if (!scene.isLoaded)
 			{
@@ -124,8 +124,13 @@ namespace SaveSystem
 		}
 
 		
-		public static bool HasAnythingToSave(Scene scene)
+		public static bool HasAnythingToSave(this Scene scene)
 		{
+			if(!scene.isLoaded || string.IsNullOrEmpty(scene.name))
+			{
+				return false;
+			}
+
 			bool sceneSaveables = GameObject.FindObjectsOfType<SceneSaveable>().Where(x => x.gameObject.scene == scene).Any();
 			bool spawnedSaveables = GameObject.FindObjectsOfType<SpawnedSaveable>().Where(x => x.gameObject.scene == scene).Any();
 
