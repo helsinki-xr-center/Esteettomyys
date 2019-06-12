@@ -4,6 +4,13 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnityEngine;
 
+/**
+ * Author: Nomi Lakkala
+ * 
+ * <summary>
+ * The central login manager. When logging in or logging out, this class should be used instead of the individual login providers.
+ * </summary>
+ */
 public static class LoginManager
 {
 	private static ILoginProvider loginProvider = new DummyLogin();
