@@ -17,9 +17,9 @@ public class SaveTestingUI : MonoBehaviour
 
 	public void SaveScene()
 	{
-		SaveManager.SaveSceneObjects(SceneManager.GetActiveScene());
-		saveData = SaveManager.GetSaveData("test3");
+		SaveLoadManager.instance.Save();
 
+		/*
 		PlayerPrefsSaveFileManager.instance.Save(saveData);
 
 
@@ -29,17 +29,14 @@ public class SaveTestingUI : MonoBehaviour
 		Debug.Log(saveData.AsStringCompressed().Length + " bytes");
 
 
-		FileSystemSaveFileManager.Default.Save(saveData);
+		FileSystemSaveFileManager.Default.Save(saveData);*/
 	}
 
 	public void LoadScene()
 	{
-		var spawned = FindObjectsOfType<SpawnedSaveable>();
-		foreach (var item in spawned)
-		{
-			DestroyImmediate(item.gameObject);
-		}
+		SaveLoadManager.instance.Load();
 
+		/*
 		var saveFiles = PlayerPrefsSaveFileManager.instance.GetSaveFiles();
 
 		if(saveFiles.Length > 0)
@@ -55,7 +52,7 @@ public class SaveTestingUI : MonoBehaviour
 			Debug.Log(file.saveName);
 			var thing = FileSystemSaveFileManager.Default.Load(file);
 			Debug.Log(thing.AsString());
-		}
+		}*/
 	}
 
 	public void SpawnObject()

@@ -36,10 +36,11 @@ namespace SaveSystem
 			}
 			if(value is GameObject go)
 			{
-				if(value == null)
+				if(!(value as GameObject))
 				{
 					return JsonConvert.SerializeObject(new GameObjectReference(), settings);
 				}
+
 				GameObjectID id = go.GetComponent<GameObjectID>();
 				if(id == null)
 				{
@@ -66,6 +67,12 @@ namespace SaveSystem
 			{
 				object go;
 				var reference = JsonConvert.DeserializeObject<GameObjectReference>(serialized, settings);
+
+				if(reference == null)
+				{
+					return default;
+				}
+
 				go = reference.GetGameObject();
 				return (T)go;
 			}

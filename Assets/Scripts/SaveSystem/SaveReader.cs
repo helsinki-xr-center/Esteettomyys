@@ -19,7 +19,10 @@ namespace SaveSystem
 
 		public T Read<T>(string key)
 		{
-			string s = data[key];
+			if(!data.TryGetValue(key, out string s))
+			{
+				return default;
+			}
 			return SaveSerializer.Deserialize<T>(s);
 		}
 
