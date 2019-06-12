@@ -15,6 +15,32 @@ namespace SaveSystem
 		public string saveName;
 		public DateTime timestamp;
 		public SceneSaveData[] savedScenes;
+		public Dictionary<string, object> customData = new Dictionary<string, object>();
+
+
+		public void AddCustomData(string key, object data)
+		{
+			if (data == null)
+			{
+				return;
+			}
+			customData.Add(key, data);
+		}
+
+		public T LoadCustomDataClass<T>(string key) where T : class
+		{
+			bool success = customData.TryGetValue(key, out object val);
+			var data = (T)val;
+			return data;
+		}
+
+		public T? LoadCustomDataStruct<T>(string key) where T : struct
+		{
+			bool success = customData.TryGetValue(key, out object val);
+			T? data = success ? (T?)val : null;
+			return data;
+		}
+
 
 		public string AsString()
 		{

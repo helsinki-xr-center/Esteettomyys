@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 /// <summary>
@@ -54,22 +55,60 @@ public static class ExtensionMethods
 	}
 
 
-	public static T MinBy<T>(this IEnumerable<T> enumerable, Func<T, float> predicate)
+	public static T MinBy<T, Q>(this IEnumerable<T> enumerable, Func<T, Q> predicate) where Q : IComparable<Q>
 	{
 		T closest = default;
-		float closestDistance = float.MaxValue;
-
+		Q leastDist = default;
+		bool first = true;
 		foreach (var item in enumerable)
 		{
-			float newDist = predicate.Invoke(item);
-			if(newDist < closestDistance)
+			if (first)
 			{
+				leastDist = predicate.Invoke(item);
 				closest = item;
-				closestDistance = newDist;
+				first = false;
 			}
+			else
+			{
+				Q newDist = predicate.Invoke(item);
+				if (leastDist.CompareTo(newDist) > 0)
+				{
+					closest = item;
+					leastDist = newDist;
+				}
+			}
+
 		}
 
 		return closest;
+	}
+
+	public static T MaxBy<T, Q>(this IEnumerable<T> enumerable, Func<T, Q> predicate) where Q : IComparable<Q>
+	{
+		T furthest = default;
+		Q mostDist = default;
+		bool first = true;
+		foreach (var item in enumerable)
+		{
+			if (first)
+			{
+				mostDist = predicate.Invoke(item);
+				furthest = item;
+				first = false;
+			}
+			else
+			{
+				Q newDist = predicate.Invoke(item);
+				if (newDist.CompareTo(mostDist) > 0)
+				{
+					furthest = item;
+					mostDist = newDist;
+				}
+			}
+
+		}
+
+		return furthest;
 	}
 
 	public static int FirstIndexOf<T>(this IEnumerable<T> enumerable, Func<T, bool> predicate)

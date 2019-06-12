@@ -17,10 +17,11 @@ public class SaveTestingUI : MonoBehaviour
 
 	public void SaveScene()
 	{
-		SaveManager.SaveSceneObjects(SceneManager.GetActiveScene());
-		saveData = SaveManager.GetSaveData("test3");
+		SceneSaveManager.SaveSceneObjects(SceneManager.GetActiveScene());
+		saveData = SceneSaveManager.GetSaveData("test3");
 
 		BackendSaveFileManager.instance.Save(saveData);
+
 		/*
 		PlayerPrefsSaveFileManager.instance.Save(saveData);
 
@@ -48,8 +49,8 @@ public class SaveTestingUI : MonoBehaviour
 		if (saveFiles.Length > 0)
 		{
 			saveData = await BackendSaveFileManager.instance.Load(saveFiles[0]);
-			SaveManager.LoadSaveData(saveData);
-			SaveManager.LoadSceneObjects(SceneManager.GetActiveScene());
+			SceneSaveManager.LoadSaveData(saveData);
+			SceneSaveManager.LoadSceneObjects(SceneManager.GetActiveScene());
 		}
 
 

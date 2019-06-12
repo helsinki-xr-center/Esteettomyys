@@ -7,22 +7,10 @@ using UnityEngine.Serialization;
 
 namespace SaveSystem
 {
-	public static class SaveManager
+	public static class SceneSaveManager
 	{
-		private static SaveData currentData = new SaveData();
 
-
-		public static SaveData GetSaveData(string saveName)
-		{
-			currentData.saveName = saveName;
-			currentData.timestamp = System.DateTime.Now;
-			return currentData;
-		}
-
-		public static void LoadSaveData(SaveData data) => currentData = data;
-
-
-		public static void SaveSceneObjects(Scene scene)
+		public static void SaveSceneObjects(SaveData save, Scene scene)
 		{
 			if (!scene.isLoaded)
 			{
@@ -49,29 +37,29 @@ namespace SaveSystem
 				saveData.spawnedData[i] = spawnedSaveables[i].GetSaveData();
 			}
 
-			if (currentData.savedScenes == null)
+			if (save.savedScenes == null)
 			{
-				currentData.savedScenes = new SceneSaveData[1];
-				currentData.savedScenes[0] = saveData;
+				save.savedScenes = new SceneSaveData[1];
+				save.savedScenes[0] = saveData;
 			}
 			else
 			{
-				int idx = currentData.savedScenes.FirstIndexOf(x => x.sceneName == saveData.sceneName);
+				int idx = save.savedScenes.FirstIndexOf(x => x.sceneName == saveData.sceneName);
 
 				if (idx > -1)
 				{
-					currentData.savedScenes[idx] = saveData;
+					save.savedScenes[idx] = saveData;
 				}
 				else
 				{
-					currentData.savedScenes = currentData.savedScenes.Append(saveData);
+					save.savedScenes = save.savedScenes.Append(saveData);
 				}
 			}
 
 
 		}
 
-		public static void LoadSceneObjects(Scene scene)
+		public static void LoadSceneObjects(SaveData save, Scene scene)
 		{
 			if (!scene.isLoaded)
 			{
@@ -79,13 +67,13 @@ namespace SaveSystem
 				return;
 			}
 
-			if (currentData.savedScenes == null)
+			if (save.savedScenes == null)
 			{
-				Debug.Log($"No saved scenes in current save. Have you called SaveManager.Load ?");
+				Debug.Log($"No saved scenes in current save.");
 				return;
 			}
 
-			SceneSaveData saveData = currentData.savedScenes.SingleOrDefault(x => x.sceneName == scene.name);
+			SceneSaveData saveData = save.savedScenes.SingleOrDefault(x => x.sceneName == scene.name);
 			if (string.IsNullOrEmpty(saveData.sceneName))
 			{
 				Debug.Log($"No saved data found for {scene.name}.");
@@ -129,5 +117,13 @@ namespace SaveSystem
 
 		}
 
+		
+		public static bool HasAnythingToSave(Scene scene)
+		{
+			var sceneSaveables = GameObject.FindObjectsOfType<SceneSaveable>().Where(x => x.gameObject.scene == scene).Reverse().ToArray();
+			var spawnedSaveables = GameObject.FindObjectsOfType<SpawnedSaveable>().Where(x => x.gameObject.scene == scene).Reverse().ToArray();
+
+			return sceneSaveables.Length > 0 || spawnedSaveables.Length > 0;
+		}
 	}
 }
