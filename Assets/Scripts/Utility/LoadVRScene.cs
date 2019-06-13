@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-
+using UnityEngine.Serialization;
 
 /**
  * Author: Nomi Lakkala
@@ -13,13 +13,15 @@ using UnityEngine.SceneManagement;
  */
 public class LoadVRScene : MonoBehaviour
 {
-	public string vrSceneName = "VRPlayer";
+	[FormerlySerializedAs("vrSceneName")]
+	[Scene]
+	public string vrScene = "VRPlayer";
 
     void Awake()
     {
-		Scene scene = SceneManager.GetSceneByName(vrSceneName);
+		Scene scene = SceneManager.GetSceneByName(vrScene);
 		if(scene == null){
-			Debug.LogError("No VR scene found by the name: " + vrSceneName);
+			Debug.LogError("No VR scene found by the name: " + vrScene);
 			return;
 		}
 
@@ -28,7 +30,7 @@ public class LoadVRScene : MonoBehaviour
 			return;
 		}
 
-		SceneManager.LoadScene(vrSceneName, LoadSceneMode.Additive);
+		SceneManager.LoadScene(vrScene, LoadSceneMode.Additive);
 	}
 
 }

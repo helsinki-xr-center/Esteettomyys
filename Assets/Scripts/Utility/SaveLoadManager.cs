@@ -6,6 +6,13 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using System.Linq;
 
+/**
+* Author: Nomi Lakkala
+* 
+* <summary>
+* Handles saving and loading data.
+* </summary>
+*/
 public class SaveLoadManager : MonoBehaviour
 {
 	public static SaveLoadManager instance;

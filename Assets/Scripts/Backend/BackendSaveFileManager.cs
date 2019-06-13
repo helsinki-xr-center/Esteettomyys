@@ -6,6 +6,13 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnityEngine;
 
+/**
+* Author: Nomi Lakkala
+* 
+* <summary>
+* A save file manager for saving into the backend service. Coupled closely with <see cref="BackendConnector"/>.
+* </summary>
+*/
 public class BackendSaveFileManager : IAsyncSaveFileManager
 {
 	public static BackendSaveFileManager instance = new BackendSaveFileManager();
@@ -24,6 +31,11 @@ public class BackendSaveFileManager : IAsyncSaveFileManager
 		}
 
 		BackendSaveModel model = await BackendConnector.LoadSaveData();
+
+		if(model == null)
+		{
+			return Array.Empty<SaveFile>();
+		}
 
 		cachedSave = SaveData.FromStringCompressed(model.data);
 

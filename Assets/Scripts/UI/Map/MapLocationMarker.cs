@@ -33,7 +33,6 @@ public class MapLocationMarker : MonoBehaviour, IPointerEnterHandler, IPointerEx
 		image.color = normalColor;
 	}
 
-	// Update is called once per frame
 	void FixedUpdate()
     {
         if(mapper == null || followTransform == null)

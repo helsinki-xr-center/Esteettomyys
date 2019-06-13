@@ -8,6 +8,13 @@ using System.IO;
 using System.Text;
 using System;
 
+/**
+* Author: Nomi Lakkala
+* 
+* <summary>
+* Testing UI for saving and loading.
+* </summary>
+*/
 public class SaveTestingUI : MonoBehaviour
 {
 	public GameObject spawnedObject;
@@ -15,6 +22,11 @@ public class SaveTestingUI : MonoBehaviour
 	public SaveData saveData;
 	public Transform parent;
 
+	/**
+	* <summary>
+	* Saves everything. Called from unity Button.
+	* </summary>
+	*/
 	public void SaveScene()
 	{
 		SaveLoadManager.instance.Save();
@@ -32,6 +44,11 @@ public class SaveTestingUI : MonoBehaviour
 		FileSystemSaveFileManager.Default.Save(saveData);*/
 	}
 
+	/**
+	* <summary>
+	* Loads everything. Called from unity Button.
+	* </summary>
+	*/
 	public void LoadScene()
 	{
 		SaveLoadManager.instance.Load();
@@ -55,6 +72,11 @@ public class SaveTestingUI : MonoBehaviour
 		}*/
 	}
 
+	/**
+	* <summary>
+	* Called from unity Button.
+	* </summary>
+	*/
 	public void SpawnObject()
 	{
 		Instantiate(spawnedObject, spawnLocation, Quaternion.identity, parent);
