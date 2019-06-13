@@ -2,6 +2,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/**
+ * Author: Nomi Lakkala
+ * 
+ * <summary>
+ * Spawns <see cref="AreaUiItem"/> for each area in the list. 
+ * These are used to select the starting point in the map.
+ * </summary>
+ */
 public class TrainingAreaSelectorPanel : MonoBehaviour
 {
 	public List<AreaScriptableObject> areas;

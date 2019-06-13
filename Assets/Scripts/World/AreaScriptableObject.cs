@@ -2,6 +2,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/**
+ * Author: Nomi Lakkala
+ * 
+ * <summary>
+ * A scriptable object for different areas.
+ * </summary>
+ */
 [CreateAssetMenu(fileName = "New Area", menuName = "Area")]
 public class AreaScriptableObject : ScriptableObject
 {

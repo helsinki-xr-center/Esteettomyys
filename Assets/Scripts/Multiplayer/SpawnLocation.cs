@@ -17,6 +17,11 @@ public class SpawnLocation : MonoBehaviour {
 
 	private static Collider[] collisionBuffer = new Collider[2];
 
+	/**
+	 * <summary>
+	 * Checks the surrounding area for any obstacles and returns true if none found.
+	 * </summary>
+	 */
 	public bool IsFree(){
 		return Physics.OverlapSphereNonAlloc(transform.position + Vector3.up * (collisionCheckRange + yOffset), collisionCheckRange, collisionBuffer, -1, QueryTriggerInteraction.Ignore) == 0;
 	}

@@ -18,6 +18,11 @@ public static class LoginManager
 	public static bool loggedIn;
 	public static bool offlineMode;
 
+	/**
+	 * <summary>
+	 * Logs in with the default <see cref="ILoginProvider"/>
+	 * </summary>
+	 */
 	public static async Task<LoginResult> Login(string username, string password)
 	{
 		
@@ -33,6 +38,11 @@ public static class LoginManager
 		return result;
 	}
 
+	/**
+	 * <summary>
+	 * Sets the game to offline mode.
+	 * </summary>
+	 */
 	public static void StartOffline()
 	{
 		loggedIn = false;
@@ -40,6 +50,11 @@ public static class LoginManager
 		offlineMode = true;
 	}
 
+	/**
+	 * <summary>
+	 * Logs out with the default <see cref="ILoginProvider"/>
+	 * </summary>
+	 */
 	public static void Logout()
 	{
 		loggedIn = false;
