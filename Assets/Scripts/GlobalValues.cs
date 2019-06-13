@@ -19,6 +19,8 @@ public static class GlobalValues
 	public static bool loggedIn { get { return LoginManager.loggedIn; } }
 	public static bool offlineMode { get { return LoginManager.offlineMode; } }
 
+	public static AreaScriptableObject startingArea;
+
 
 	public static Settings settings
 	{

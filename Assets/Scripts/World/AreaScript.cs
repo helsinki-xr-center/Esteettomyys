@@ -15,6 +15,7 @@ public class AreaScript : MonoBehaviour
 	public AreaScriptableObject area;
 	public bool drawDebugBounds = true;
 	public bool playerInBounds = false;
+	public SpawnLocation[] spawnLocations;
 
 	private Bounds bounds;
 	private PlayerPosition player;
@@ -28,11 +29,21 @@ public class AreaScript : MonoBehaviour
 		}
 	}
 
-	// Start is called before the first frame update
-	void Start()
+	IEnumerator Start()
     {
-		player = FindObjectOfType<PlayerPosition>();
 		CalculateBounds();
+
+		player = FindObjectOfType<PlayerPosition>();
+		yield return new WaitForSeconds(0.1f);
+
+		if (player != null && spawnLocations != null && GlobalValues.startingArea == area)
+		{
+			var spawn = spawnLocations.FirstOrDefault(x => x.IsFree());
+			if(spawn != null)
+			{
+				new TeleportMessage(spawn.transform.position).Deliver();
+			}
+		}
     }
 
 	private void Update()
@@ -91,5 +102,10 @@ public class AreaScript : MonoBehaviour
 		{
 			SceneLoaderAsync.instance.UnloadSceneAsync(area.detailsScene);
 		}
+	}
+
+	private void OnValidate()
+	{
+		spawnLocations = FindObjectsOfType<SpawnLocation>().Where(x => x.gameObject.scene == gameObject.scene).ToArray();
 	}
 }

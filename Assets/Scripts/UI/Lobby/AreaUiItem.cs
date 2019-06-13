@@ -34,6 +34,8 @@ public class AreaUiItem : MonoBehaviour
 
 		selected = true;
 		selectedImage.gameObject.SetActive(true);
+
+		GlobalValues.startingArea = area;
 	}
 
 	public void Deselect()
