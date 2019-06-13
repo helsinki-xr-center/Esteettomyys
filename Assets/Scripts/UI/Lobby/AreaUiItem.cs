@@ -4,6 +4,14 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
+
+/**
+ * Author: Nomi Lakkala
+ * 
+ * <summary>
+ * Attached to the AreaUIItems spawned by <see cref="TrainingAreaSelectorPanel"/>.
+ * </summary>
+*/
 public class AreaUiItem : MonoBehaviour
 {
 	public Image image;
@@ -25,6 +33,11 @@ public class AreaUiItem : MonoBehaviour
 		selectedImage.gameObject.SetActive(false);
 	}
 
+	/**
+	 * <summary>
+	 * Selects this area as the starting area. Deselects all other AreaUIItems.
+	 * </summary>
+	 */
 	public void Select()
 	{
 		foreach(var uiItem in FindObjectsOfType<AreaUiItem>())
@@ -38,12 +51,22 @@ public class AreaUiItem : MonoBehaviour
 		GlobalValues.startingArea = area;
 	}
 
+	/**
+	 * <summary>
+	 * Deselects this area.
+	 * </summary>
+	 */
 	public void Deselect()
 	{
 		selected = false;
 		selectedImage.gameObject.SetActive(false);
 	}
 
+	/**
+	 * <summary>
+	 * Called from unity Button.
+	 * </summary>
+	 */
 	public void OnButtonPressed()
 	{
 		Select();

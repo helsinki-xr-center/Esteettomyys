@@ -77,6 +77,11 @@ public class AreaScript : MonoBehaviour
 		}
 	}
 
+	/**
+	 * <summary>
+	 * Calculates the bounds of this Area by aggregating all the Renderer bounds in this scene.
+	 * </summary>
+	 */
 	private void CalculateBounds()
 	{
 		// linq query to find all Renderer bounds in all objects in this scene
@@ -107,5 +112,25 @@ public class AreaScript : MonoBehaviour
 	private void OnValidate()
 	{
 		spawnLocations = FindObjectsOfType<SpawnLocation>().Where(x => x.gameObject.scene == gameObject.scene).ToArray();
+	}
+
+	/**
+	 * <summary>
+	 * Returns whether the player is inside the bounds of this area
+	 * </summary>
+	 */
+	public bool IsPlayerInBounds()
+	{
+		return playerInBounds;
+	}
+
+	/**
+	 * <summary>
+	 * Gets the bounds of this area.
+	 * </summary>
+	 */
+	public Bounds GetBounds()
+	{
+		return bounds;
 	}
 }
