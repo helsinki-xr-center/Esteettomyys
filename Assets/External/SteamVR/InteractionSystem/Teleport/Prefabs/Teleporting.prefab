@@ -1083,11 +1083,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   teleportAction:
-    actionPath: /actions/default/in/TeleportLeftHand
+    actionPath: /actions/default/in/Teleport
     needsReinit: 0
   traceLayerMask:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 1048371
   floorFixupTraceLayerMask:
     serializedVersion: 2
     m_Bits: 0

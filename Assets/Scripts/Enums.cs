@@ -23,6 +23,12 @@ public enum GameMode
 	Exam,
 }
 
+public enum PCControlSet
+{
+	First,
+	Second,
+}
+
 
 public enum ColorblindMode
 {
@@ -50,4 +56,12 @@ public enum FollowMode
 	FollowLeft,
 	FollowLeftAndHide,
 	Instant,
+	ControllerInstant,
+}
+
+public enum MeshShape
+{
+	Stairs,
+	Fence,
+	Slope,
 }

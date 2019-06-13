@@ -3,6 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+/// <summary>
+/// @Author: Veli-Matti Vuoti
+/// 
+/// Handles PC Volume Settings
+/// </summary>
 public class PCVolumeSettings : MonoBehaviour
 {
 

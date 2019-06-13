@@ -85,9 +85,9 @@ public class Pointer : MonoBehaviour
 			
 			if ( SelectedObjectEvent != null && !changedObj)
 			{
-				Debug.Log(hasTarget);
-				changedObj = true;
-				SelectedObjectEvent(hasTarget, selectedObj.transform);
+				//Debug.Log(hasTarget);
+				SelectedObjectEvent?.Invoke(hasTarget, selectedObj.transform);
+				changedObj = true;			
 			}
 		}
 		else
@@ -96,9 +96,9 @@ public class Pointer : MonoBehaviour
 			
 			if (SelectedObjectEvent != null && changedObj && selectedObj != null)
 			{
-				Debug.Log(hasTarget);
-				changedObj = false;
-				SelectedObjectEvent(hasTarget, selectedObj.transform);
+				//Debug.Log(hasTarget);
+				SelectedObjectEvent?.Invoke(hasTarget, selectedObj.transform);
+				changedObj = false;		
 			}
 		}
 	}
@@ -216,11 +216,11 @@ public class Pointer : MonoBehaviour
 				{			
 					OnPointerClick(hit);
 					selectedObj = hit.transform.gameObject;
-
+					
 				}
 				else if (clickObj && selectedObj == targetObj && selectedObj != null && hasTarget)
-				{			
-				
+				{
+					
 					DropObject();
 				}
 				
@@ -274,8 +274,7 @@ public class Pointer : MonoBehaviour
 			{
 				
 				selectedObj.GetComponent<InteractableObject>().selected = false;
-				ExtensionMethods.MaterialColorChange(selectedObj, Color.white);
-			
+				ExtensionMethods.MaterialColorChange(selectedObj, Color.white);			
 				DropObject();
 			}
 			if (!lockLaserOn)

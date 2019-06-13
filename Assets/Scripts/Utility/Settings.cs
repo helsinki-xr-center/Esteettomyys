@@ -24,6 +24,7 @@ public class Settings
 	public bool voiceChatEnabled = true;
 	public bool leftHandMode = false;
 	public bool wheelChairMode = false;
+	public bool PCteleportAvailable = true;
 
 	public float defaultHeight = 1.8f;
 	public float wheelChairHeight = 0.8f;

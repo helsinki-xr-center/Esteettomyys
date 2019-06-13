@@ -23,6 +23,10 @@ public class LobbyMainPanel : MonoBehaviourPunCallbacks
 {
 	public const int maxRoomPlayers = 16;
 
+	public string multiplayerRootScene = "Multiplayer";
+	public string tutorialRootScene = "Tutorial";
+	public string examRootScene = "Exam";
+
 	[Header("Mode selection panel")]
 	public GameObject modeSelectionPanel;
 
@@ -294,8 +298,7 @@ public class LobbyMainPanel : MonoBehaviourPunCallbacks
 			PhotonNetwork.LeaveLobby();
 		}
 
-		GlobalValues.loggedIn = false;
-		GlobalValues.offlineMode = false;
+		LoginManager.Logout();
 		XRSettings.enabled = false;
 		SceneManager.LoadScene("MainMenu");
 	}
@@ -343,7 +346,11 @@ public class LobbyMainPanel : MonoBehaviourPunCallbacks
 	 */
 	public void OnTutorialButtonClicked()
 	{
-		new UIInfoMessage("Not implemented yet.", UIInfoMessage.MessageType.Error).Deliver();
+		if(PhotonNetwork.IsConnected)
+		{
+			PhotonNetwork.Disconnect();
+		}
+		SceneLoaderAsync.instance.LoadSceneAndUnloadCurrent(tutorialRootScene);
 	}
 
 
@@ -380,7 +387,11 @@ public class LobbyMainPanel : MonoBehaviourPunCallbacks
 	 */
 	public void OnExamButtonClicked()
 	{
-		new UIInfoMessage("Not implemented yet.", UIInfoMessage.MessageType.Error).Deliver();
+		if (PhotonNetwork.IsConnected)
+		{
+			PhotonNetwork.Disconnect();
+		}
+		SceneLoaderAsync.instance.LoadSceneAndUnloadCurrent(examRootScene);
 	}
 
 	/**

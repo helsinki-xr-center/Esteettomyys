@@ -5,8 +5,10 @@ using UnityEngine.EventSystems;
 
 /// <summary>
 /// @Author = Veli-Matti Vuoti
+/// 
+/// Controls PC player skills and stuff
 /// </summary>
-[RequireComponent(typeof(Movement),typeof(PlayerInput))]
+[RequireComponent(typeof(Movement), typeof(PlayerInput))]
 public class PcPlayer : MonoBehaviour
 {
 	[HideInInspector] public Movement movement;
@@ -15,19 +17,27 @@ public class PcPlayer : MonoBehaviour
 	Transform leftHand;
 	FixedJoint objSnapPoint;
 
+	//public PCControlSet pCCS;
+
 	[Range(0, 15)] public float rayCastDistance;
 	public LayerMask hitMask;
 	public LayerMask teleportMask;
 	Camera eyeSight;
 	RayCastData newHitData;
 
+	public GameObject teleportIndicator;
+
 	public GameObject selectedObject;
 	public GameObject hoveredGameObject;
+
 	public bool hovering;
 	public bool hasObjSelected;
 	public bool senderActive;
 	public bool canTeleport;
-	public GameObject teleportIndicator;
+	public bool telePortKeyDown;
+	public bool activeUI;
+
+	[SerializeField] float teleRestrictionTime;
 
 	public delegate void MouseDelegate(object sender, RayCastData hitData);
 	public static event MouseDelegate mouseHoverIn;
@@ -38,17 +48,19 @@ public class PcPlayer : MonoBehaviour
 	public static event OpenMenuDelegate OpenMenuEvent;
 	public delegate void OnDeselectObjectDelegate(GameObject obj);
 	public static event OnDeselectObjectDelegate OnDeselectObjectEvent;
+	public static event OnDeselectObjectDelegate OnSelectObjectEvent;
 
 	private void Start()
 	{
 		movement = gameObject.GetComponent<Movement>();
 		playerEyes = gameObject.GetComponentInChildren<PcCamera>();
 		eyeSight = playerEyes.gameObject.GetComponent<Camera>();
-		leftHand = gameObject.transform.GetChild(1);
-		rightHand = gameObject.transform.GetChild(2);
-		leftHand.transform.localPosition = new Vector3(-1,1.5f,1.5f);
-		rightHand.transform.localPosition = new Vector3(1,1.5f,1.5f);
+		leftHand = gameObject.transform.GetChild(2);
+		rightHand = gameObject.transform.GetChild(3);
+		leftHand.transform.localPosition = new Vector3(-1, 1.5f, 1.5f);
+		rightHand.transform.localPosition = new Vector3(1, 1.5f, 1.5f);
 		objSnapPoint = rightHand.GetComponent<FixedJoint>();
+		canTeleport = GlobalValues.settings.PCteleportAvailable;
 
 		RayCastData newHitData = new RayCastData();
 		newHitData.distance = 0;
@@ -59,50 +71,92 @@ public class PcPlayer : MonoBehaviour
 	private void OnEnable()
 	{
 		Settings.OnSettingsChanged += CheckSettings;
+		PCMenuControl.OnMenuOpenEvent += IsMenuOpen;
 	}
 
 	private void OnDisable()
 	{
 		Settings.OnSettingsChanged -= CheckSettings;
+		PCMenuControl.OnMenuOpenEvent -= IsMenuOpen;
 	}
 
+	public void IsMenuOpen(bool status)
+	{
+		activeUI = status;
+	}
+
+	//Checks if special modes are activated
 	public void CheckSettings(Settings settings)
 	{
 
 		OnWheelChairModeEnabled();
-
+		OnTeleportEnabled();
 	}
 
-	private void FixedUpdate()
+	public void OnTeleportEnabled()
 	{
-
-		HasObjectSelected();
-
-		if (!EventSystem.current.IsPointerOverGameObject())
+		if(GlobalValues.settings.PCteleportAvailable )
 		{
-			RayCastToPointer();
+			canTeleport = true;
+		}
+		else
+		{
+			canTeleport = false;	
 		}
 	}
 
+	private void Update()
+	{
+		FallToDeath();
+		HasObjectSelected();
+		
+		if (!EventSystem.current.IsPointerOverGameObject())
+		{
+			
+			RayCastToPointer();
+
+		}
+	}
+
+	/// <summary>
+	/// If the player manages to fall off from map, this function will reset the position back to start
+	/// </summary>
+	void FallToDeath()
+	{
+		if (transform.position.y < -5f)
+		{
+			transform.position = Vector3.zero;
+		}
+	}
+
+	/// <summary>
+	/// If player has object selected
+	/// </summary>
 	private void HasObjectSelected()
 	{
 		if (selectedObject != null)
 		{
-			canTeleport = false;
 			hasObjSelected = true;
+			
 		}
 		else
 		{
-			canTeleport = true;
 			hasObjSelected = false;
+			
 		}
 	}
 
+	/// <summary>
+	/// Opens menu interaction menu if player has object selected
+	/// </summary>
 	public void InteractionMenu()
 	{
 		OpenMenuEvent?.Invoke(hasObjSelected);
 	}
 
+	/// <summary>
+	/// Physical raycasts at pointers position and allows selecting/deselecting objects
+	/// </summary>
 	public void RayCastToPointer()
 	{
 
@@ -113,11 +167,14 @@ public class PcPlayer : MonoBehaviour
 
 		if (rayHit)
 		{
+			teleportIndicator.SetActive(false);
 			if (hit.collider.transform.gameObject.GetComponent<InteractableObject>())
 			{
 				senderActive = true;
 				hovering = true;
-				if(hoveredGameObject != hit.transform.gameObject && hoveredGameObject != null)
+				canTeleport = false;
+			
+				if (hoveredGameObject != hit.transform.gameObject && hoveredGameObject != null)
 				{
 					if (mouseHoverOut != null && senderActive)
 					{
@@ -132,23 +189,30 @@ public class PcPlayer : MonoBehaviour
 
 				//Debug.Log("HOVERING ON OBJECT ELEMENT");
 
-				if (Input.GetMouseButtonDown(0) && hoveredGameObject == hit.transform.gameObject && !hasObjSelected)
+				if (Input.GetMouseButtonDown(0) && hoveredGameObject == hit.transform.gameObject)
 				{
-					//Debug.Log("SELECTED OBJECT");
-					MouseClicked(hit);
-					selectedObject = hit.transform.gameObject;
+					if (!hasObjSelected)
+					{
+						//Debug.Log("SELECTED OBJECT");
+						MouseClicked(hit);
+						selectedObject = hit.transform.gameObject;
+						OnSelectObjectEvent?.Invoke(selectedObject);
+					}
 					if (hit.distance <= 2f)
 					{
 						//Debug.Log("PICKED UP THE OBJECT");
+						canTeleport = false;
+						
 						hit.transform.position = rightHand.position;
 						objSnapPoint.connectedBody = hit.rigidbody;
 						objSnapPoint.connectedBody.useGravity = false;
 					}
 				}
-				else if (Input.GetMouseButtonDown(1) && selectedObject == hoveredGameObject && selectedObject != null && hasObjSelected)
-				{			
+				else if (Input.GetMouseButtonDown(1) && selectedObject != null && hasObjSelected)
+				{
 					OnDeselectObjectEvent?.Invoke(selectedObject);
 					selectedObject = null;
+					StartCoroutine(ActivateTeleport(true, teleRestrictionTime));
 					DropObject();
 				}
 			}
@@ -158,6 +222,8 @@ public class PcPlayer : MonoBehaviour
 				//Debug.Log("HOVERING ON UI ELEMENT");
 				senderActive = true;
 				hovering = true;
+				canTeleport = false;
+			
 				hoveredGameObject = hit.transform.gameObject;
 				MouseHover(hit);
 
@@ -173,18 +239,24 @@ public class PcPlayer : MonoBehaviour
 			MouseExited(hit);
 
 			if (Input.GetMouseButtonDown(1) && selectedObject != null)
-			{			
-				OnDeselectObjectEvent?.Invoke(selectedObject);				
+			{
+				OnDeselectObjectEvent?.Invoke(selectedObject);
 				selectedObject = null;
+				StartCoroutine(ActivateTeleport(true, teleRestrictionTime));
 				DropObject();
 			}
 
 			senderActive = false;
 			hovering = false;
+			canTeleport = GlobalValues.settings.PCteleportAvailable;
 		}
 
 	}
 
+	/// <summary>
+	/// Launches event if mouse is on interactable object
+	/// </summary>
+	/// <param name="hit"></param>
 	public void MouseHover(RaycastHit hit)
 	{
 		if (mouseHoverIn != null && senderActive)
@@ -196,6 +268,10 @@ public class PcPlayer : MonoBehaviour
 		}
 	}
 
+	/// <summary>
+	/// Launches event if clicks mouse on interactable object
+	/// </summary>
+	/// <param name="hit"></param>
 	public void MouseClicked(RaycastHit hit)
 	{
 		if (mouseClick != null && senderActive)
@@ -207,6 +283,10 @@ public class PcPlayer : MonoBehaviour
 		}
 	}
 
+	/// <summary>
+	/// Launches event if mouse exits interactable object
+	/// </summary>
+	/// <param name="hit"></param>
 	public void MouseExited(RaycastHit hit)
 	{
 		if (mouseHoverOut != null && senderActive)
@@ -218,6 +298,9 @@ public class PcPlayer : MonoBehaviour
 		}
 	}
 
+	/// <summary>
+	/// Drops the object if holding it
+	/// </summary>
 	public void DropObject()
 	{
 		if (objSnapPoint.connectedBody != null)
@@ -229,41 +312,63 @@ public class PcPlayer : MonoBehaviour
 		}
 	}
 
+	/// <summary>
+	/// Will activate position marker for teleport when holding right mouse button down
+	/// </summary>
 	public void PortalIndicator()
 	{
-		RaycastHit hit;
-
-		Ray ray = eyeSight.ScreenPointToRay(Input.mousePosition);
-		bool rayHit = Physics.Raycast(ray, out hit, rayCastDistance, teleportMask);
-
-		if (rayHit)
+		if (canTeleport)
 		{
-			if ( teleportIndicator != null && !teleportIndicator.activeSelf)
+			telePortKeyDown = true;
+			RaycastHit hit;
+
+			Ray ray = eyeSight.ScreenPointToRay(Input.mousePosition);
+			bool rayHit = Physics.Raycast(ray, out hit, rayCastDistance, teleportMask);
+
+			if (rayHit)
 			{
-				teleportIndicator.SetActive(true);
+				if (teleportIndicator != null )
+				{
+					teleportIndicator.SetActive(true);
+					teleportIndicator.transform.position = hit.point;
+				}
 			}
-		}
-	}
-
-	public void PCTeleport()
-	{
-		RaycastHit hit;
-
-		Ray ray = eyeSight.ScreenPointToRay(Input.mousePosition);
-		bool rayHit = Physics.Raycast(ray, out hit, rayCastDistance, teleportMask);
-
-		if (rayHit && canTeleport)
-		{
-			if (teleportIndicator != null && !teleportIndicator.activeSelf)
+			else
 			{
 				teleportIndicator.SetActive(false);
 			}
-
-			transform.position = hit.point + Vector3.up*0.01f;
 		}
-
 	}
 
+	/// <summary>
+	/// when release right mouse key teleports the player to pointers location
+	/// </summary>
+	public void PCTeleport()
+	{
+		if (canTeleport)
+		{
+			RaycastHit hit;
+
+			Ray ray = eyeSight.ScreenPointToRay(Input.mousePosition);
+			bool rayHit = Physics.Raycast(ray, out hit, rayCastDistance, teleportMask);
+			telePortKeyDown = false;
+
+			if (rayHit)
+			{
+				if (teleportIndicator != null && teleportIndicator.activeSelf)
+				{
+					teleportIndicator.SetActive(false);
+				}
+
+				transform.position = hit.point + Vector3.up * 0.01f;
+			}
+		}
+		
+	}
+
+	/// <summary>
+	/// Adjusts player height when activate wheelchair mode
+	/// </summary>
 	public void OnWheelChairModeEnabled()
 	{
 
@@ -277,8 +382,23 @@ public class PcPlayer : MonoBehaviour
 		}
 
 	}
+
+	/// <summary>
+	/// Delay to enable or disable teleporting again
+	/// </summary>
+	/// <param name="status"></param>
+	/// <param name="time"></param>
+	/// <returns></returns>
+	public IEnumerator ActivateTeleport(bool status, float time)
+	{
+		yield return new WaitForSeconds(time);
+		canTeleport = status;
+	}
 }
 
+/// <summary>
+/// struct for pointer events
+/// </summary>
 public struct RayCastData
 {
 	public float distance;

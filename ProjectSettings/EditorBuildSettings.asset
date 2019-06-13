@@ -18,18 +18,27 @@ EditorBuildSettings:
     path: Assets/Scenes/VR/Lobby_VR.unity
     guid: c258935c043feec4fb5646d8ae29c2f4
   - enabled: 1
-    path: Assets/Scenes/VRPlayer.unity
+    path: Assets/Scenes/VR/VRPlayer.unity
     guid: cc3d79514a7ea0745b216891f77ff499
   - enabled: 1
-    path: Assets/Scenes/PCPlayer.unity
+    path: Assets/Scenes/PC/PCPlayer.unity
     guid: 81622478d02250041a82e1e4b2a85969
   - enabled: 1
     path: Assets/Scenes/RootGameScenes/Multiplayer.unity
     guid: ac7d9bbc88ba6aa4c950cee3550ffa51
+  - enabled: 1
+    path: Assets/Scenes/RootGameScenes/Exam.unity
+    guid: dc7e375e7ff80c942bdf7a6b78bbd82e
+  - enabled: 1
+    path: Assets/Scenes/RootGameScenes/Tutorial.unity
+    guid: d592cec5e2e9bd64589a0273fcf692c0
   - enabled: 1
     path: Assets/Scenes/Extra/Postprocess.unity
     guid: 36b3360460efd0f4691ba6edd9a5fd62
   - enabled: 1
     path: Assets/Scenes/Extra/MappingSystem.unity
     guid: 6f194cb576a490d45a7d708351a9c56b
+  - enabled: 1
+    path: Assets/Scenes/Extra/Saving.unity
+    guid: 63247e2b7311b5349bbae921404111e5
   m_configObjects: {}

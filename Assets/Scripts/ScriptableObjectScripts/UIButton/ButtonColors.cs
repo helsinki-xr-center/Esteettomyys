@@ -2,6 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// @Author : Veli-Matti Vuoti
+/// 
+/// Scriptable Object for button theme
+/// </summary>
 [CreateAssetMenu(menuName = "ButtonColorTheme")]
 public class ButtonColors : ScriptableObject
 {

@@ -1,5 +1,10 @@
 ﻿using UnityEngine;
 
+/// <summary>
+/// @Author : Veli-Matti Vuoti
+/// 
+/// This Class Handles the Door Opening
+/// </summary>
 public class DoorOpen : MonoBehaviour
 {
 

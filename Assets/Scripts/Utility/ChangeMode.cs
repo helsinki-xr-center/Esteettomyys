@@ -2,6 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// @Author : Veli-Matti Vuoti
+/// 
+/// For Interactable object Testing Purposes
+/// </summary>
 public class ChangeMode : MonoBehaviour
 {
 

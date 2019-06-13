@@ -2,9 +2,19 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Valve.VR;
+using Valve.VR.InteractionSystem;
 
 /// <summary>
+/// 
+/// @Author: Veli-Matti Vuoti
+/// 
 /// This Class controls the hovertablet movement
+/// currently holds 5 different movement styles:
+/// 1.Follow and bring front on click
+/// 2.Follow Left and bring front on click
+/// 3. Follow Left and click to deactivate
+/// 4. Instant appear front of hmd on click
+/// 5. Instant appear front of controller on click
 /// </summary>
 public class HoverTabletControl : MonoBehaviour
 {
@@ -21,14 +31,18 @@ public class HoverTabletControl : MonoBehaviour
 	public float speed;
 	public float timeToActivate;
 	float height;
+
 	public bool following;
 	public bool grabbed;
 	public bool changedToFollow;
 	public bool LockedOnPlace;
+	public bool moveToSelectedObjectMode;
+	public bool lockedOnObject;
 
 	public FollowMode followMode;
 
 	public SteamVR_Action_Boolean tabletToFront;
+	public Transform targetObj;
 	private Vector3 leftPosition;
 
 	private void Start()
@@ -43,39 +57,102 @@ public class HoverTabletControl : MonoBehaviour
 
 	}
 
-	private void Update()
+	private void OnEnable()
+	{
+		Pointer.SelectedObjectEvent += OnSelectedObject;
+	}
+
+	private void OnDisable()
+	{
+		Pointer.SelectedObjectEvent -= OnSelectedObject;
+	}
+
+	public void OnSelectedObject(bool status, Transform obj)
+	{
+		if (obj.gameObject.GetComponent<InteractableObject>() && status)
+		{
+			lockedOnObject = status;
+			LockedOnPlace = false;
+			targetObj = obj;
+
+		}
+		else if (!status)
+		{
+
+			lockedOnObject = status;
+			LockedOnPlace = true;
+			targetObj = null;
+
+		}
+	}
+
+	private void FixedUpdate()
 	{
 		//Debug.DrawRay(transform.position, GetBackPosition(), Color.red, 0.1f);
 		//Debug.DrawRay(transform.position, GetFrontPosition(), Color.blue, 0.1f);
-		
 
+		//if (followMode != FollowMode.ControllerInstant)
+		//{
 		BringTabletToFront();
+		//}
 
 		if (!LockedOnPlace)
 		{
 			TabletTrackPlayerHead();
 		}
 
-		switch (followMode)
+		if (lockedOnObject)
 		{
-			case FollowMode.FollowBehind:
-				TabletModeBehind();
-				break;
-			case FollowMode.FollowLeft:
-				TabletModeLeft();
-				break;
-			case FollowMode.FollowLeftAndHide:
-				TabletModeLeftHide();
-				break;
-			case FollowMode.Instant:
-				TabletModeInstant();
-				break;
-			default:
-				break;
+			MoveToSelectedObject();
+		}
+
+		if (!lockedOnObject)
+		{
+
+			switch (followMode)
+			{
+				case FollowMode.FollowBehind:
+
+					TabletModeBehind();
+					break;
+				case FollowMode.FollowLeft:
+
+					TabletModeLeft();
+					break;
+				case FollowMode.FollowLeftAndHide:
+
+					TabletModeLeftHide();
+					break;
+				case FollowMode.Instant:
+
+					TabletModeInstant();
+					break;
+				case FollowMode.ControllerInstant:
+
+					TabletModeInstantController();
+					break;
+				default:
+					break;
+			}
+		}
+
+
+	}
+
+	public void MoveToSelectedObject()
+	{
+		if (targetObj != null)
+		{
+
+			Vector3.Lerp(transform.position, targetObj.position, Time.fixedDeltaTime * speed);
+
 		}
 
 	}
 
+	/// <summary>
+	/// If Moving Mode This tracks player head position
+	/// </summary>
 	void TabletTrackPlayerHead()
 	{
 
@@ -106,7 +183,7 @@ public class HoverTabletControl : MonoBehaviour
 
 		if (following)
 		{
-			transform.position = Vector3.Lerp(transform.position, GetBackPosition(), Time.deltaTime * speed);
+			transform.position = Vector3.Lerp(transform.position, GetBackPosition(), Time.fixedDeltaTime * speed);
 
 			if (tablet[0].gameObject.activeSelf && !changedToFollow)
 			{
@@ -131,29 +208,35 @@ public class HoverTabletControl : MonoBehaviour
 				}
 			}
 
-			transform.position = Vector3.Lerp(transform.position, GetFrontPosition(), Time.deltaTime * speed);
+			transform.position = Vector3.Lerp(transform.position, GetFrontPosition(), Time.fixedDeltaTime * speed);
 		}
 
 	}
 
+	/// <summary>
+	/// Makes Tablet follow left and press brings it front
+	/// </summary>
 	void TabletModeLeft()
 	{
 		if (following)
 		{
-			transform.position = Vector3.Lerp(transform.position, GetLeftPosition(), Time.deltaTime * speed);
+			transform.position = Vector3.Lerp(transform.position, GetLeftPosition(), Time.fixedDeltaTime * speed);
 		}
 		else
 		{
-			transform.position = Vector3.Lerp(transform.position, GetFrontPosition(), Time.deltaTime * speed);
+			transform.position = Vector3.Lerp(transform.position, GetFrontPosition(), Time.fixedDeltaTime * speed);
 		}
 	}
 
+	/// <summary>
+	/// Makes Tables follow left and press makes it disappear
+	/// </summary>
 	void TabletModeLeftHide()
 	{
 
 		if (following)
 		{
-			
+
 			tabletCol.enabled = false;
 			for (int i = 0; i < transform.childCount; i++)
 			{
@@ -163,7 +246,7 @@ public class HoverTabletControl : MonoBehaviour
 		}
 		else
 		{
-		
+
 			tabletCol.enabled = true;
 			for (int i = 0; i < transform.childCount; i++)
 			{
@@ -171,8 +254,60 @@ public class HoverTabletControl : MonoBehaviour
 			}
 
 
-			transform.position = Vector3.Lerp(transform.position, GetLeftPosition(), Time.deltaTime * speed);
+			transform.position = Vector3.Lerp(transform.position, GetLeftPosition(), Time.fixedDeltaTime * speed);
 
+		}
+	}
+
+	/// <summary>
+	/// Instantly spawns tablet front of controller
+	/// </summary>
+	void TabletModeInstantController()
+	{
+		if (GlobalValues.controllerMode == ControllerMode.VR)
+		{
+
+			if (tabletToFront.GetLastStateDown(SteamVR_Input_Sources.LeftHand))
+			{
+				//following = !following;
+
+				PositionFrontOfController(false);
+
+			}
+			else if (tabletToFront.GetLastStateDown(SteamVR_Input_Sources.RightHand))
+			{
+				//following = !following;
+
+				PositionFrontOfController(true);
+
+			}
+
+			if (following)
+			{
+
+				ActivateTablet(false);
+
+			}
+			else
+			{
+
+				ActivateTablet(true);
+
+			}
+		}
+	}
+
+	/// <summary>
+	/// Activates or deactivates the tablet
+	/// </summary>
+	/// <param name="status">activate or not</param>
+	void ActivateTablet(bool status)
+	{
+		LockedOnPlace = status;
+		tabletCol.enabled = status;
+		for (int i = 0; i < transform.childCount; i++)
+		{
+			tablet[i].gameObject.SetActive(status);
 		}
 	}
 
@@ -181,26 +316,14 @@ public class HoverTabletControl : MonoBehaviour
 
 		if (following)
 		{
-			LockedOnPlace = false;
-			tabletCol.enabled = false;
-			for (int i = 0; i < transform.childCount; i++)
-			{
-				tablet[i].gameObject.SetActive(false);
-			}
+			ActivateTablet(false);
 		}
 		else
 		{
 			if (!LockedOnPlace)
 			{
-				LockedOnPlace = true;
 				TabletTrackPlayerHead();
-
-				for (int i = 0; i < transform.childCount; i++)
-				{
-					tablet[i].gameObject.SetActive(true);
-				}
-
-				tabletCol.enabled = true;		
+				ActivateTablet(true);
 				transform.position = GetFrontPosition();
 			}
 		}
@@ -287,6 +410,33 @@ public class HoverTabletControl : MonoBehaviour
 		return leftPosition;
 	}
 
+	/// <summary>
+	/// Sets Tablet Poisition to front of tracked controller
+	/// </summary>
+	/// <param name="right"></param>
+	public void PositionFrontOfController(bool right)
+	{
+
+		if (right)
+		{
+			Vector3 direction = playerPosition.GetRightHandRotation() * Vector3.forward;
+			transform.position = playerPosition.rightHand.GetComponent<Hand>().trackedObject.transform.position + new Vector3(direction.x, direction.y, direction.z);
+
+		}
+		else
+		{
+			Vector3 direction = playerPosition.GetLeftHandRotation() * Vector3.forward;
+			transform.position = playerPosition.leftHand.GetComponent<Hand>().trackedObject.transform.position + new Vector3(direction.x, direction.y, direction.z);
+
+		}
+	}
+
+	/// <summary>
+	/// Activate or Deactivate Tablet with Delay
+	/// </summary>
+	/// <param name="time"></param>
+	/// <param name="status"></param>
+	/// <returns></returns>
 	IEnumerator ActivateAfterTime(float time, bool status)
 	{
 

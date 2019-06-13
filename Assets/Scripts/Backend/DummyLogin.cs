@@ -26,4 +26,9 @@ public class DummyLogin : ILoginProvider
 			return LoginResult.IncorrectCredentials;
 		}
 	}
+
+	public Task Logout()
+	{
+		return Task.CompletedTask;
+	}
 }

@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 3978333}
   - component: {fileID: 3978332}
   - component: {fileID: 3978336}
-  m_Layer: 0
+  m_Layer: 16
   m_Name: TeleArea
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -132,9 +132,10 @@ GameObject:
   - component: {fileID: 1658197417}
   - component: {fileID: 1658197416}
   - component: {fileID: 1658197415}
-  - component: {fileID: 1658197414}
   - component: {fileID: 1658197418}
-  m_Layer: 0
+  - component: {fileID: 1201339348}
+  - component: {fileID: 1201339347}
+  m_Layer: 16
   m_Name: TeleArea
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -211,21 +212,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 24.749153, y: 0.3054587, z: 27.857792}
-  m_Center: {x: 0, y: 0.14784591, z: -5.0019383}
---- !u!114 &1658197414
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1658197412}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e76bd72361cdf95438f5ff39eb6baf61, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  updateInEditor: 0
+  m_Size: {x: 8.196657, y: 0.30545872, z: 27.274178}
+  m_Center: {x: -8.068233, y: 0.14784591, z: -5.1766624}
 --- !u!114 &1658197418
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -240,6 +228,32 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   locked: 0
   markerActive: 1
+--- !u!65 &1201339348
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1658197412}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 8.156033, y: 0.30545872, z: 27.320913}
+  m_Center: {x: 8.073862, y: 0.14784591, z: -5.0510054}
+--- !u!65 &1201339347
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1658197412}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 7.877822, y: 0.30545872, z: 2.8118553}
+  m_Center: {x: 0.009966373, y: 0.14784591, z: -1.437933}
 --- !u!1 &14702085168519327
 GameObject:
   m_ObjectHideFlags: 0
@@ -4730,8 +4744,9 @@ GameObject:
   - component: {fileID: 7397473012106989613}
   - component: {fileID: 5399075465719892286}
   - component: {fileID: 5200130827466503667}
-  - component: {fileID: 5200130827466503666}
-  m_Layer: 0
+  - component: {fileID: 480833615}
+  - component: {fileID: 480833616}
+  m_Layer: 16
   m_Name: Floor2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4809,21 +4824,34 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 24.749153, y: 0.3054587, z: 27.857792}
-  m_Center: {x: 0, y: 0.14784591, z: -5.0019383}
---- !u!114 &5200130827466503666
-MonoBehaviour:
+  m_Size: {x: 8.201054, y: 0.3054587, z: 27.857792}
+  m_Center: {x: -8.27405, y: 0.14784591, z: -5.001938}
+--- !u!65 &480833615
+BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1282923299305228725}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
   m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e76bd72361cdf95438f5ff39eb6baf61, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  updateInEditor: 0
+  serializedVersion: 2
+  m_Size: {x: 7.6793613, y: 0.3054587, z: 3.0241184}
+  m_Center: {x: -0.1533041, y: 0.14784591, z: -1.3733072}
+--- !u!65 &480833616
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1282923299305228725}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 8.684387, y: 0.3054587, z: 27.857792}
+  m_Center: {x: 8.032383, y: 0.14784591, z: -5.001938}
 --- !u!1 &1300615040984181506
 GameObject:
   m_ObjectHideFlags: 0
@@ -21950,7 +21978,7 @@ GameObject:
   - component: {fileID: 6451025166438768057}
   - component: {fileID: 284505481727791683}
   - component: {fileID: 284505481727791682}
-  m_Layer: 0
+  m_Layer: 16
   m_Name: Floor
   m_TagString: Untagged
   m_Icon: {fileID: 0}

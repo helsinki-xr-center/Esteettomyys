@@ -3,6 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using Valve.VR;
 
+/// <summary>
+/// @Author : Veli-Matti Vuoti
+/// 
+/// Checks if player head go inside walls or objects
+/// </summary>
 public class WallCollision : MonoBehaviour
 {
 
@@ -17,7 +22,7 @@ public class WallCollision : MonoBehaviour
 		pos = FindObjectOfType<PlayerPosition>();
 	}
 
-	private void Update()
+	private void FixedUpdate()
 	{
 		Collider[] wallColliders = Physics.OverlapSphere(pos.vrCamera.position, radius, hitMask);
 		
@@ -42,6 +47,11 @@ public class WallCollision : MonoBehaviour
 		}			
 	}
 
+	/// <summary>
+	/// Teleport player to begin and clear vision
+	/// </summary>
+	/// <param name="time">After this time</param>
+	/// <returns></returns>
 	IEnumerator TeleportToBegin(float time)
 	{
 		SteamVR_Fade.Start(Color.black, timeToBlack);
