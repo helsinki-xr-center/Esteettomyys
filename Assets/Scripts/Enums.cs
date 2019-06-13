@@ -59,6 +59,15 @@ public enum FollowMode
 	ControllerInstant,
 }
 
+public enum TabletStateID
+{
+	Hold,
+	Follow,
+	FollowSide,
+	FrontHMD,
+	FrontController,
+}
+
 public enum MeshShape
 {
 	Stairs,

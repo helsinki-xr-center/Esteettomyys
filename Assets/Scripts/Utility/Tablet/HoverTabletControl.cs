@@ -32,16 +32,17 @@ public class HoverTabletControl : MonoBehaviour
 	public float timeToActivate;
 	float height;
 
-	public bool following;
+	public bool visible;
 	public bool grabbed;
 	public bool changedToFollow;
-	public bool LockedOnPlace;
+	public bool lockedOnPlace;
 	public bool moveToSelectedObjectMode;
 	public bool lockedOnObject;
+	bool hand;
 
 	public FollowMode followMode;
 
-	public SteamVR_Action_Boolean tabletToFront;
+	public SteamVR_Action_Boolean grabClick;
 	public Transform targetObj;
 	private Vector3 leftPosition;
 
@@ -71,18 +72,13 @@ public class HoverTabletControl : MonoBehaviour
 	{
 		if (obj.gameObject.GetComponent<InteractableObject>() && status)
 		{
-			lockedOnObject = status;
-			LockedOnPlace = false;
+			lockedOnObject = true;
 			targetObj = obj;
-
 		}
 		else if (!status)
 		{
-
-			lockedOnObject = status;
-			LockedOnPlace = true;
+			lockedOnObject = false;
 			targetObj = null;
-
 		}
 	}
 
@@ -91,64 +87,46 @@ public class HoverTabletControl : MonoBehaviour
 		//Debug.DrawRay(transform.position, GetBackPosition(), Color.red, 0.1f);
 		//Debug.DrawRay(transform.position, GetFrontPosition(), Color.blue, 0.1f);
 
-
-		if (!LockedOnPlace)
-		{
-			TabletTrackPlayerHead();
-		}
-		else
-		{
-			return;
-		}
+		ChangeTabletPosition();
+		TabletTrackPlayerHead();
 
 		if (lockedOnObject)
-		{
+		{	
+			lockedOnPlace = false;		
 			MoveToSelectedObject();
 		}
 
-		BringTabletToFront();
-
-
-
-		switch (followMode)
+		if(!lockedOnObject)
 		{
-			case FollowMode.FollowBehind:
-
-				TabletModeBehind();
-				break;
-			case FollowMode.FollowLeft:
-
-				TabletModeLeft();
-				break;
-			case FollowMode.FollowLeftAndHide:
-
-				TabletModeLeftHide();
-				break;
-			case FollowMode.Instant:
-
-				TabletModeInstant();
-				break;
-			case FollowMode.ControllerInstant:
-
-				TabletModeInstantController();
-				break;
-			default:
-				break;
+			switch (followMode)
+			{
+				case FollowMode.FollowBehind:
+					TabletModeBehind();
+					break;
+				case FollowMode.FollowLeft:
+					TabletModeLeft();
+					break;
+				case FollowMode.FollowLeftAndHide:
+					TabletModeLeftHide();
+					break;
+				case FollowMode.Instant:
+					TabletModeInstant();
+					break;
+				case FollowMode.ControllerInstant:
+					TabletModeInstantController();
+					break;
+				default:
+					break;
+			}
 		}
-
-
-
 	}
 
 	public void MoveToSelectedObject()
 	{
 		if (targetObj != null)
 		{
-
 			Vector3.Lerp(transform.position, targetObj.position, Time.fixedDeltaTime * speed);
-
 		}
-
 	}
 
 	/// <summary>
@@ -182,7 +160,7 @@ public class HoverTabletControl : MonoBehaviour
 	private void TabletModeBehind()
 	{
 
-		if (following)
+		if (visible)
 		{
 			transform.position = Vector3.Lerp(transform.position, GetBackPosition(), Time.fixedDeltaTime * speed);
 
@@ -219,7 +197,7 @@ public class HoverTabletControl : MonoBehaviour
 	/// </summary>
 	void TabletModeLeft()
 	{
-		if (following)
+		if (visible)
 		{
 			transform.position = Vector3.Lerp(transform.position, GetLeftPosition(), Time.fixedDeltaTime * speed);
 		}
@@ -235,7 +213,7 @@ public class HoverTabletControl : MonoBehaviour
 	void TabletModeLeftHide()
 	{
 
-		if (following)
+		if (visible)
 		{
 
 			tabletCol.enabled = false;
@@ -254,7 +232,6 @@ public class HoverTabletControl : MonoBehaviour
 				tablet[i].gameObject.SetActive(true);
 			}
 
-
 			transform.position = Vector3.Lerp(transform.position, GetLeftPosition(), Time.fixedDeltaTime * speed);
 
 		}
@@ -267,33 +244,33 @@ public class HoverTabletControl : MonoBehaviour
 	{
 		if (GlobalValues.controllerMode == ControllerMode.VR)
 		{
-
-			if (tabletToFront.GetLastStateDown(SteamVR_Input_Sources.LeftHand))
+			if (visible)
 			{
-				//following = !following;
-
-				PositionFrontOfController(false);
-
-			}
-			else if (tabletToFront.GetLastStateDown(SteamVR_Input_Sources.RightHand))
-			{
-				//following = !following;
-
-				PositionFrontOfController(true);
-
-			}
-
-			if (following)
-			{
-
-				ActivateTablet(false);
-
+				ActivateTablet(true);
+				PositionFrontOfController(hand);
 			}
 			else
 			{
+				ActivateTablet(false);
+			}
+		}
+	}
 
+	/// <summary>
+	/// Instantly spawn tablet front of vision
+	/// </summary>
+	void TabletModeInstant()
+	{
+		if (GlobalValues.controllerMode == ControllerMode.VR)
+		{
+			if (visible)
+			{
 				ActivateTablet(true);
-
+				transform.position = GetFrontPosition();
+			}
+			else
+			{
+				ActivateTablet(false);
 			}
 		}
 	}
@@ -304,7 +281,7 @@ public class HoverTabletControl : MonoBehaviour
 	/// <param name="status">activate or not</param>
 	void ActivateTablet(bool status)
 	{
-		LockedOnPlace = status;
+		//LockedOnPlace = status;
 		tabletCol.enabled = status;
 		for (int i = 0; i < transform.childCount; i++)
 		{
@@ -312,54 +289,33 @@ public class HoverTabletControl : MonoBehaviour
 		}
 	}
 
-	void TabletModeInstant()
-	{
-
-		if (following)
-		{
-			ActivateTablet(false);
-		}
-		else
-		{
-			if (!LockedOnPlace)
-			{
-				TabletTrackPlayerHead();
-				ActivateTablet(true);
-				transform.position = GetFrontPosition();
-			}
-		}
-	}
-
 	/// <summary>
 	/// Brings tablet front or back of player from GribButton
 	/// </summary>
-	private void BringTabletToFront()
+	private void ChangeTabletPosition()
 	{
 		if (GlobalValues.controllerMode == ControllerMode.VR)
 		{
-			if (tabletToFront.GetLastStateDown(SteamVR_Input_Sources.Any))
+			if (grabClick.GetStateDown(SteamVR_Input_Sources.RightHand))
 			{
-				if (following)
-				{
-					following = false;
-				}
-				else
-				{
-					following = true;
-				}
+				Debug.Log("PRESSED grab " + hand);
+				visible = visible ? false : true;
+				
+				hand = true;				
+				
 			}
 		}
-		else
+		else //If PC MODE
 		{
 			if (Input.GetButtonDown("Jump"))
 			{
-				if (following)
+				if (visible)
 				{
-					following = false;
+					visible = false;
 				}
 				else
 				{
-					following = true;
+					visible = true;
 				}
 			}
 		}
@@ -415,20 +371,17 @@ public class HoverTabletControl : MonoBehaviour
 	/// Sets Tablet Poisition to front of tracked controller
 	/// </summary>
 	/// <param name="right"></param>
-	public void PositionFrontOfController(bool right)
+	public void PositionFrontOfController(bool isRightHand)
 	{
-
-		if (right)
+		if (isRightHand)
 		{
 			Vector3 direction = playerPosition.GetRightHandRotation() * Vector3.forward;
-			transform.position = playerPosition.rightHand.GetComponent<Hand>().trackedObject.transform.position + new Vector3(direction.x, direction.y, direction.z);
-
+			transform.position = /*playerPosition.rightHand.GetComponent<Hand>().trackedObject.transform.position*/playerPosition.GetRightHandPosition() + new Vector3(direction.x, direction.y, direction.z);
 		}
 		else
 		{
 			Vector3 direction = playerPosition.GetLeftHandRotation() * Vector3.forward;
-			transform.position = playerPosition.leftHand.GetComponent<Hand>().trackedObject.transform.position + new Vector3(direction.x, direction.y, direction.z);
-
+			transform.position =/* playerPosition.leftHand.GetComponent<Hand>().trackedObject.transform.position*/ playerPosition.GetLeftHandPosition() + new Vector3(direction.x, direction.y, direction.z);
 		}
 	}
 
