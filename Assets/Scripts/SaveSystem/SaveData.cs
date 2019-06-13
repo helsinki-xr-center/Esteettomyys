@@ -41,37 +41,71 @@ namespace SaveSystem
 			return data;
 		}
 
-
+		/**
+		 * <summary>
+		 * Serializes this save data to a string. Also see <seealso cref="FromString"/>
+		 * </summary>
+		 */
 		public string AsString()
 		{
 			return SaveSerializer.Serialize(this);
 		}
 
+		/**
+		 * <summary>
+		 * Serializes this save data to a compressed string. Also see <seealso cref="FromStringCompressed"/>
+		 * </summary>
+		 */
 		public string AsStringCompressed()
 		{
 			return StringCompress.Compress(AsString());
 		}
 
+		/**
+		 * <summary>
+		 * Deserializes a string as SaveData. Also see <seealso cref="AsString"/>
+		 * </summary>
+		 */
 		public static SaveData FromString(string saveData)
 		{
 			return SaveSerializer.Deserialize<SaveData>(saveData);
 		}
 
+		/**
+		 * <summary>
+		 * Deserializes a compressed string as SaveData. Also see <seealso cref="AsStringCompressed"/>
+		 * </summary>
+		 */
 		public static SaveData FromStringCompressed(string compressedData)
 		{
 			return FromString(StringCompress.Decompress(compressedData));
 		}
 
+		/**
+		 * <summary>
+		 * Serializes this save data to a stream. Also see <seealso cref="FromStream"/>
+		 * </summary>
+		 */
 		public void WriteToStream(Stream stream)
 		{
 			SaveSerializer.SerializeToStream(this, stream);
 		}
 
+		/**
+		 * <summary>
+		 * Deserializes a stream as SaveData. Also see <seealso cref="WriteToStream"/>
+		 * </summary>
+		 */
 		public static SaveData FromStream(Stream source)
 		{
 			return SaveSerializer.DeserializeFromStream<SaveData>(source);
 		}
 
+		/**
+		 * <summary>
+		 * Serializes this save data to a stream as compressed binary data. Also see <seealso cref="FromStreamCompressed"/>
+		 * </summary>
+		 */
 		public void WriteToStreamCompressed(Stream stream)
 		{
 			using (var gs = StringCompress.GetCompressionStream(stream))
@@ -80,6 +114,11 @@ namespace SaveSystem
 			}
 		}
 
+		/**
+		 * <summary>
+		 * Deserializes a compressed binary stream as SaveData. Also see <seealso cref="WriteToStreamCompressed"/>
+		 * </summary>
+		 */
 		public static SaveData FromStreamCompressed(Stream source)
 		{
 			using (var gs = StringCompress.GetDecompressionStream(source))
