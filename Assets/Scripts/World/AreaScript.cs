@@ -12,8 +12,7 @@ using UnityEngine;
  */
 public class AreaScript : MonoBehaviour
 {
-	[Scene]
-	public string detailsScene;
+	public AreaScriptableObject area;
 	public bool drawDebugBounds = true;
 	public bool playerInBounds = false;
 
@@ -21,8 +20,16 @@ public class AreaScript : MonoBehaviour
 	private PlayerPosition player;
 	private bool detailsLoaded = false;
 
-    // Start is called before the first frame update
-    void Start()
+	private void Awake()
+	{
+		if(area == null)
+		{
+			Debug.LogError($"{nameof(area)} should not be null!", this);
+		}
+	}
+
+	// Start is called before the first frame update
+	void Start()
     {
 		player = FindObjectOfType<PlayerPosition>();
 		CalculateBounds();
@@ -43,17 +50,17 @@ public class AreaScript : MonoBehaviour
 
 		playerInBounds = bounds.Contains(player.transform.position);
 
-		if (!string.IsNullOrEmpty(detailsScene))
+		if (!string.IsNullOrEmpty(area.detailsScene))
 		{
 
 			if (playerInBounds && !detailsLoaded)
 			{
-				SceneLoaderAsync.instance.LoadSceneAsync(detailsScene);
+				SceneLoaderAsync.instance.LoadSceneAsync(area.detailsScene);
 				detailsLoaded = true;
 			}
 			else if(!playerInBounds && detailsLoaded)
 			{
-				SceneLoaderAsync.instance.UnloadSceneAsync(detailsScene);
+				SceneLoaderAsync.instance.UnloadSceneAsync(area.detailsScene);
 				detailsLoaded = false;
 			}
 		}
@@ -82,7 +89,7 @@ public class AreaScript : MonoBehaviour
 	{
 		if(detailsLoaded)
 		{
-			SceneLoaderAsync.instance.UnloadSceneAsync(detailsScene);
+			SceneLoaderAsync.instance.UnloadSceneAsync(area.detailsScene);
 		}
 	}
 }

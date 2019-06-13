@@ -47,6 +47,9 @@ public class LobbyMainPanel : MonoBehaviourPunCallbacks
 	public Button startGameButton;
 	public GameObject playerListObjectPrefab;
 
+	[Header("Area selectors")]
+	public GameObject trainingAreaSelector;
+
 	private Dictionary<int, GameObject> playerListObjects;
 	private Dictionary<string, RoomInfo> cachedRoomList;
 	private List<GameObject> roomListObjects;
@@ -140,6 +143,7 @@ public class LobbyMainPanel : MonoBehaviourPunCallbacks
 		Debug.Log("Joined room!");
 
 		SetActivePanel(roomPanel);
+		trainingAreaSelector.SetActive(true);
 
 		if (playerListObjects == null)
 		{
@@ -174,6 +178,7 @@ public class LobbyMainPanel : MonoBehaviourPunCallbacks
 	public override void OnLeftRoom()
 	{
 		SetActivePanel(trainingSelectionPanel);
+		trainingAreaSelector.SetActive(false);
 
 		if (playerListObjects != null)
 		{
@@ -494,6 +499,7 @@ public class LobbyMainPanel : MonoBehaviourPunCallbacks
 	 */
 	private void SetActivePanel(GameObject panel)
 	{
+		trainingAreaSelector.SetActive(false);
 		modeSelectionPanel.SetActive(false);
 		trainingSelectionPanel.SetActive(false);
 		createRoomPanel.SetActive(false);
