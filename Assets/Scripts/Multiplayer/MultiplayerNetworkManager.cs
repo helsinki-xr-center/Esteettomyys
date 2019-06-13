@@ -17,7 +17,9 @@ public class MultiplayerNetworkManager : MonoBehaviour
 {
 
 	public string avatarPrefabName;
+	[Scene]
 	public string vrLobby;
+	[Scene]
 	public string pcLobby;
 
 	IEnumerator Start()
