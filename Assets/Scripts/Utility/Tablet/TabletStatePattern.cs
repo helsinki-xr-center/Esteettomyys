@@ -7,20 +7,22 @@ using System.Linq;
 
 /// <summary>
 /// This class controls the states for tablet, uses list of empty gameobjects for positioning. 
-/// Also need reference to player and vrcamera.
+/// Also need reference to player and vrcamera. Choose state to start from inspector tabletState.
 /// </summary>
 public class TabletStatePattern : MonoBehaviour
 {
 
-	public TabletStateID tabletState;
-	public bool manuallySetPositions;
+	[Tooltip("Current State ID as Enum for menus, change with event")] public TabletStateID tabletState;
+	[Tooltip("Set if you want to drag and drop positions , will ignore scripted positions")] public bool manuallyDragAndDropPositions;
 
 	public float speed;
 	public float deactivateTime;
 
-	public LayerMask hitMask;
-	public Transform playerT;
-	public Transform vrCamera;
+	[Tooltip("Player Position, drag if manually set is toggled on")] public Transform playerT;
+	[Tooltip("VRCamera Position, drag if manually set is toggled on")] public Transform vrCamera;
+	public Transform rightController;
+
+	//Only for grabgrib state change coroutines
 	bool pressed;
 	bool changedMode;
 
@@ -31,29 +33,32 @@ public class TabletStatePattern : MonoBehaviour
 	public float stopLerpDistance;
 	float tick;
 
-	public TabletStateID previousState;
-	public ITabletState currentState;
+	[Tooltip("Previous state id if changed")]public TabletStateID previousState;
+	[Tooltip("Currently executing state")]public ITabletState currentState;
 	public HoldState holdState;
 	public FollowState followState;
 	public FrontOfControllerState frontOfControllerState;
 	public FrontOfHMDState frontOfHMDState;
 	public FollowSideState followSideState;
 
+	// Binds Enums with state classes
 	public Dictionary<TabletStateID, ITabletState> states = new Dictionary<TabletStateID, ITabletState>();
 
 	[Header("0 : Front, 1 : Back, 2 : Left, 3 : LeftController, 4 : RightController")]
+
 	/// <summary>
-	/// 0 = Front,
-	/// 1 = Back,
-	/// 2 = Left,
-	/// 3 = LeftController,
-	/// 4 = RightController,
+	/// 0 = Front
+	/// 1 = Back
+	/// 2 = Left
+	/// 3 = LeftController
+	/// 4 = RightController
 	/// </summary>
 	public Transform[] positions;
 
-	public SteamVR_Action_Boolean grabPinch;
-	public SteamVR_Action_Boolean grabGrib;
-	public SteamVR_Action_Vector2 touch;
+	[Header("Inputs for different tablet state changes")]
+	[Tooltip("Used in stopping tablet movement")]public SteamVR_Action_Boolean touchPadPress;
+	[Tooltip("Used in Activating/Deactivating tablet")] public SteamVR_Action_Boolean grabGrib;
+	[Tooltip("Used in changing tablet distance")] public SteamVR_Action_Vector2 touch;
 
 	private void Awake()
 	{
@@ -64,18 +69,23 @@ public class TabletStatePattern : MonoBehaviour
 		followSideState = new FollowSideState(this);
 	}
 
+	/// <summary>
+	/// Add new positions to array and states to dictionary
+	/// </summary>
 	private void Start()
 	{
-		playerT = GameObject.FindGameObjectWithTag("Player").transform;
-		vrCamera = playerT.GetChild(0).GetChild(3).transform;
-
-		if (!manuallySetPositions)
+		if (!manuallyDragAndDropPositions)
 		{
+			playerT = GameObject.FindGameObjectWithTag("Player").transform;
+			vrCamera = playerT.GetChild(0).GetChild(3).transform;
+			rightController = playerT.GetChild(0).GetChild(2).transform;
+
 			positions[0] = vrCamera.GetChild(0).transform;
 			positions[1] = vrCamera.GetChild(1).transform;
 			positions[2] = vrCamera.GetChild(2).transform;
 			positions[3] = playerT.GetChild(0).GetChild(1).GetChild(4).transform;
 			positions[4] = playerT.GetChild(0).GetChild(2).GetChild(4).transform;
+			
 		}
 
 		states.Add(TabletStateID.Follow, followState);
@@ -83,7 +93,7 @@ public class TabletStatePattern : MonoBehaviour
 		states.Add(TabletStateID.FrontController, frontOfControllerState);
 		states.Add(TabletStateID.FrontHMD, frontOfHMDState);
 		states.Add(TabletStateID.Hold, holdState);
-		
+
 		currentState = states[tabletState];
 	}
 
@@ -109,7 +119,7 @@ public class TabletStatePattern : MonoBehaviour
 
 			//var thekey = 
 			currentState = states[state];
-			
+
 			currentState.StartState();
 		}
 	}
@@ -185,25 +195,33 @@ public class TabletStatePattern : MonoBehaviour
 	/// </summary>
 	/// <param name="target">target to move</param>
 	/// <param name="direction">direction to move at</param>
-	public void ChangeTabletDistance(Transform target, Vector3 direction)
+	public void ChangeTabletDistance(Transform target, Vector3 direction, Transform source)
 	{
 		//if (Time.time > tick) {
 		//	tick = Time.time + 1;
 		//	Debug.Log(touch.axis);
-		//}		
+		//}	
+
 		if (touch.axis.y != 0)
 		{
-			if (touch.axis.y > 0.5f)
+			Debug.Log(Vector3.Distance(target.position, source.position));
+
+			if (touch.axis.y > 0.4f && Vector3.Distance(target.position, source.position) < 5.0f)
 			{
 				target.position += direction * Time.deltaTime;
 			}
-			else if (touch.axis.y < 0.5f)
+			else if (touch.axis.y < 0.4f && Vector3.Distance(target.position, source.position) > 0.5f)
 			{
 				target.position -= direction * Time.deltaTime;
 			}
 		}
+		
 	}
 
+	/// <summary>
+	/// Tablet Activation with GrabGrib
+	/// </summary>
+	/// <returns></returns>
 	public IEnumerator TabletActivationGrabGribPress()
 	{
 		///Magic effects

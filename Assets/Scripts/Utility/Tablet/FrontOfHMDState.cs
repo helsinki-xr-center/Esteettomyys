@@ -9,7 +9,6 @@ public class FrontOfHMDState : ITabletState
 
 	float sec;
 	
-
 	public FrontOfHMDState(TabletStatePattern tabletStatePattern)
 	{
 		tablet = tabletStatePattern;
@@ -69,9 +68,10 @@ public class FrontOfHMDState : ITabletState
 
 		tablet.StartLerp(tablet.positions[0].position);
 		tablet.WatchTarget(tablet.vrCamera.position);
-		tablet.ChangeTabletDistance(tablet.positions[0], tablet.positions[0].forward);
+		tablet.ChangeTabletDistance(tablet.positions[0], tablet.positions[0].forward, tablet.vrCamera);
 		tablet.OnGrabGribActivate();
-		if (tablet.grabPinch.GetStateDown(Valve.VR.SteamVR_Input_Sources.Any))
+
+		if (tablet.touchPadPress.GetStateDown(Valve.VR.SteamVR_Input_Sources.Any))
 		{
 			ToFollowState();
 		}

@@ -57,7 +57,7 @@ public class FollowSideState : ITabletState
 		
 		//tablet.transform.position = new Vector3(tablet.playerT.position.x - 2, tablet.vrCamera.position.y, tablet.playerT.position.z);
 		tablet.StartLerp(new Vector3(tablet.positions[2].position.x , tablet.positions[2].position.y, tablet.positions[2].position.z));
-		tablet.ChangeTabletDistance(tablet.positions[2], tablet.positions[2].forward);
+		tablet.ChangeTabletDistance(tablet.positions[2], tablet.positions[2].forward, tablet.vrCamera);
 		tablet.WatchTarget(tablet.vrCamera.position);
 		tablet.OnGrabGribActivate();
 	}
