@@ -122,6 +122,30 @@ public class Mapper : MonoBehaviour
 		var roots = scenes.SelectMany(x => x.GetRootGameObjects()).Select(x => x.transform);
 		var visible = roots.SelectMany(x => x.EnumerateChildrenRecursive()).Where(x => ((1 << x.gameObject.layer) & includeLayers) != 0);
 		var renderers = visible.Select(x => x.GetComponent<Renderer>()).Where(x => x != null);
+
+
+		var missingRenderers = renderers.Where(x => x.GetComponent<ReplaceMaterialOnCameraRender>() == null);
+		foreach (var r in missingRenderers)
+		{
+			var replacer = r.gameObject.AddComponent<ReplaceMaterialOnCameraRender>();
+			replacer.targetCamera = camera;
+			replacer.mapper = this;
+		}
+
+		replaceMaterials = renderers.Select(x => x.GetComponent<ReplaceMaterialOnCameraRender>()).ToArray();
+
+		RecalculateBounds();
+	}
+
+	public void RecalculateBounds()
+	{
+		int includeLayers = camera.cullingMask;
+
+		// linq query to find all Renderer bounds in all visible objects for the camera
+		var scenes = SceneExtensions.GetAllLoadedScenes();
+		var roots = scenes.SelectMany(x => x.GetRootGameObjects()).Select(x => x.transform);
+		var visible = roots.SelectMany(x => x.EnumerateChildrenRecursive()).Where(x => ((1 << x.gameObject.layer) & includeLayers) != 0);
+		var renderers = visible.Select(x => x.GetComponent<Renderer>()).Where(x => x != null);
 		var allBounds = renderers.Select(x => x.bounds);
 
 		if (allBounds.Count() == 0)
@@ -133,16 +157,6 @@ public class Mapper : MonoBehaviour
 			// encapsulate all bounds into a single bounds
 			bounds = allBounds.Aggregate((combined, next) => { combined.Encapsulate(next); return combined; });
 		}
-
-		var missingRenderers = renderers.Where(x => x.GetComponent<ReplaceMaterialOnCameraRender>() == null);
-		foreach (var r in missingRenderers)
-		{
-			var replacer = r.gameObject.AddComponent<ReplaceMaterialOnCameraRender>();
-			replacer.targetCamera = camera;
-			replacer.mapper = this;
-		}
-
-		replaceMaterials = renderers.Select(x => x.GetComponent<ReplaceMaterialOnCameraRender>()).ToArray();
 
 		float centerX = (bounds.min.x + bounds.max.x) / 2;
 		float centerZ = (bounds.min.z + bounds.max.z) / 2;
@@ -156,6 +170,22 @@ public class Mapper : MonoBehaviour
 		camera.farClipPlane = lengthY * 2;
 	}
 
+
+	public void SetCustomBounds(Bounds bounds)
+	{
+		this.bounds = bounds;
+
+		float centerX = (bounds.min.x + bounds.max.x) / 2;
+		float centerZ = (bounds.min.z + bounds.max.z) / 2;
+		float maxY = bounds.max.y;
+		float lengthY = (bounds.max.y - bounds.min.y);
+		float yAdd = 2;
+
+		float maxWidth = Mathf.Max((bounds.max.x - bounds.min.x), (bounds.max.z - bounds.min.z));
+		camera.transform.position = new Vector3(centerX, maxY + yAdd, centerZ);
+		camera.orthographicSize = maxWidth / 2;
+		camera.farClipPlane = lengthY * 2;
+	}
 
 
 	/**
