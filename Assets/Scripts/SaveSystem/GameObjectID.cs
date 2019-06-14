@@ -12,6 +12,15 @@ using UnityEditor.SceneManagement;
 
 namespace SaveSystem
 {
+
+	/**
+	 * Author: Nomi Lakkala
+	 * 
+	 * <summary>
+	 * A unique ID for a GameObject. Primarily used with the SaveSystem classes but can be attached to any GameObject to make it referencable in saves.
+	 * Only works for GameObjects in a scene.
+	 * </summary>
+	 */
 	[ExecuteInEditMode]
 	[AddComponentMenu("Saving/GameObjectID")]
 	public class GameObjectID : MonoBehaviour
@@ -49,6 +58,11 @@ namespace SaveSystem
 			}
 		}
 
+		/**
+		 * <summary>
+		 * Checks the ID of this GameObject and changes it if necessary.
+		 * </summary>
+		 */
 		private void CheckID()
 		{
 			if (gameObject.scene == null)
@@ -80,6 +94,11 @@ namespace SaveSystem
 			}	
 		}
 
+		/**
+		 * <summary>
+		 * Generates a new unique ID.
+		 * </summary>
+		 */
 		private string GenerateNewId()
 		{
 			return gameObject.scene.name + "-" + HumanIds.Generate(r);
@@ -87,11 +106,16 @@ namespace SaveSystem
 		}
 #endif
 
+		/**
+		 * <summary>
+		 * Finds a GameObject that has the provided id. If not found, returns null.
+		 * </summary>
+		 */
 		public static GameObject GetObjectByID(string id)
 		{
 			if(!allIds.ContainsKey(id))
 			{
-				Debug.LogWarning($"No GameObject with key {id} found!");
+				Debug.Log($"No GameObject with key {id} found!");
 				return null;
 			}
 

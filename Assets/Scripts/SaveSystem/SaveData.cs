@@ -9,6 +9,14 @@ using UnityEngine.SceneManagement;
 
 namespace SaveSystem
 {
+
+	/**
+	 * Author: Nomi Lakkala
+	 * 
+	 * <summary>
+	 * The primary container for all save data.
+	 * </summary>
+	 */
 	[System.Serializable]
 	public class SaveData
 	{
@@ -17,7 +25,11 @@ namespace SaveSystem
 		public List<SceneSaveData> savedScenes;
 		public Dictionary<string, object> customData = new Dictionary<string, object>();
 
-
+		/**
+		 * <summary>
+		 * Write custom data to the save.
+		 * </summary>
+		 */
 		public void AddCustomData(string key, object data)
 		{
 			if (data == null)
@@ -27,13 +39,23 @@ namespace SaveSystem
 			customData.Add(key, data);
 		}
 
+		/**
+		 * <summary>
+		 * Read previously written data from the save. This method should be used when loading class types. Returns null if not found.
+		 * </summary>
+		 */
 		public T LoadCustomDataClass<T>(string key) where T : class
 		{
 			bool success = customData.TryGetValue(key, out object val);
-			var data = (T)val;
+			T data = success ? (T)val : null;
 			return data;
 		}
 
+		/**
+		 * <summary>
+		 * Read previously written data from the save. This method should be used when loading struct types. Returns null if not found.
+		 * </summary>
+		 */
 		public T? LoadCustomDataStruct<T>(string key) where T : struct
 		{
 			bool success = customData.TryGetValue(key, out object val);

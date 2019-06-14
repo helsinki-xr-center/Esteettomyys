@@ -7,7 +7,7 @@ using UnityEngine;
 namespace SaveSystem
 {
 
-	public class NoPropertiesContractResolver : DefaultContractResolver
+	internal class NoPropertiesContractResolver : DefaultContractResolver
 	{
 		public new static readonly NoPropertiesContractResolver Instance = new NoPropertiesContractResolver();
 

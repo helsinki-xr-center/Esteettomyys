@@ -4,6 +4,13 @@ using UnityEngine;
 
 namespace SaveSystem
 {
+	/**
+	 * Author: Nomi Lakkala
+	 * 
+	 * <summary>
+	 * Reads data from the save.
+	 * </summary>
+	 */
 	public class SaveReader
 	{
 		private Dictionary<string, string> data;
@@ -17,6 +24,11 @@ namespace SaveSystem
 			}
 		}
 
+		/**
+		 * <summary>
+		 * Reads a value from the save file.
+		 * </summary>
+		 */
 		public T Read<T>(string key)
 		{
 			if(!data.TryGetValue(key, out string s))
@@ -26,6 +38,11 @@ namespace SaveSystem
 			return SaveSerializer.Deserialize<T>(s);
 		}
 
+		/**
+		 * <summary>
+		 * Reads a string from the save file. More efficient than using <see cref="Read{string}"/>
+		 * </summary>
+		 */
 		public string ReadString(string key)
 		{
 			string s = data[key];

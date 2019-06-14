@@ -15,7 +15,18 @@ namespace SaveSystem
 	 */
 	public interface ISaveable
 	{
+		/**
+		 * <summary>
+		 * Called when the GameObject is being saved. You can write your custom save data to the <see cref="SaveWriter"/>.
+		 * </summary>
+		 */
 		void Save(SaveWriter save);
+
+		/**
+		 * <summary>
+		 * Called when the GameObject is being loaded. You can read any of your custom data from the <see cref="SaveReader"/>.
+		 * </summary>
+		 */
 		void Load(SaveReader save);
 	}
 

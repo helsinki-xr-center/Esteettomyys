@@ -6,6 +6,13 @@ using UnityEngine;
 
 namespace SaveSystem
 {
+	/**
+	 * Author: Nomi Lakkala
+	 * 
+	 * <summary>
+	 * Represents saves without the actual save data.
+	 * </summary>
+	 */
 	public class SaveFile
 	{
 		public string saveName;
