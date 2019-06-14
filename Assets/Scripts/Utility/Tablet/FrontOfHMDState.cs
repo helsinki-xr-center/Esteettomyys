@@ -15,12 +15,15 @@ public class FrontOfHMDState : ITabletState
 		tablet = tabletStatePattern;
 	}
 
-	public void StartedState(ITabletState state)
+	public void ExitState()
 	{
-		if (state == this)
-		{
-			Debug.Log("HEY " + state.ToString() + " Started ");
-		}
+		Debug.Log("EXIT STATE " + this.ToString());
+	}
+
+	public void StartState()
+	{
+		Debug.Log("START STATE " + this.ToString());
+		tablet.StartCoroutine(tablet.TabletActivationStateChange());
 	}
 
 	public void ToFollowSideState()
@@ -30,7 +33,7 @@ public class FrontOfHMDState : ITabletState
 
 	public void ToFollowState()
 	{
-		
+		tablet.ChangeState(TabletStateID.Follow);
 	}
 
 	public void ToFrontOfControllerState()
@@ -48,6 +51,11 @@ public class FrontOfHMDState : ITabletState
 		
 	}
 
+	public void ToPreviousState()
+	{
+		
+	}
+
 	public void UpdateState()
 	{
 		if (Time.time > sec)
@@ -61,6 +69,11 @@ public class FrontOfHMDState : ITabletState
 
 		tablet.StartLerp(tablet.positions[0].position);
 		tablet.WatchTarget(tablet.vrCamera.position);
-		tablet.ChangeTabletDistance(tablet.positions[0], tablet.transform.forward);
+		tablet.ChangeTabletDistance(tablet.positions[0], tablet.positions[0].forward);
+		tablet.OnGrabGribActivate();
+		if (tablet.grabPinch.GetStateDown(Valve.VR.SteamVR_Input_Sources.Any))
+		{
+			ToFollowState();
+		}
 	}
 }

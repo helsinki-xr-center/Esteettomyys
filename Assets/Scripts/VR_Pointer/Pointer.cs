@@ -219,8 +219,7 @@ public class Pointer : MonoBehaviour
 					
 				}
 				else if (clickObj && selectedObj == targetObj && selectedObj != null && hasTarget)
-				{
-					
+				{					
 					DropObject();
 				}
 				
