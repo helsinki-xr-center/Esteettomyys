@@ -51,8 +51,8 @@ namespace SaveSystem
 
 			if (save.savedScenes == null)
 			{
-				save.savedScenes = new SceneSaveData[1];
-				save.savedScenes[0] = saveData;
+				save.savedScenes = new List<SceneSaveData>();
+				save.savedScenes.Add(saveData);
 			}
 			else
 			{
@@ -64,7 +64,7 @@ namespace SaveSystem
 				}
 				else
 				{
-					save.savedScenes = save.savedScenes.Append(saveData);
+					save.savedScenes.Add(saveData);
 				}
 			}
 
@@ -138,6 +138,21 @@ namespace SaveSystem
 				saveable.LoadSaveData(spawnedData);
 			}
 
+		}
+
+		/**
+		 * <summary>
+		 * Resets the savedata for a scene.
+		 * </summary>
+		 */
+		public static void ResetSceneData(this SaveData save, Scene scene)
+		{
+			int idx = save.savedScenes.FirstIndexOf(x => x.sceneName == scene.name);
+
+			if (idx > -1)
+			{
+				save.savedScenes.RemoveAt(idx);
+			}
 		}
 
 		/**

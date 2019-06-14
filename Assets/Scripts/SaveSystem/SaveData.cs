@@ -14,7 +14,7 @@ namespace SaveSystem
 	{
 		public string saveName;
 		public DateTime timestamp;
-		public SceneSaveData[] savedScenes;
+		public List<SceneSaveData> savedScenes;
 		public Dictionary<string, object> customData = new Dictionary<string, object>();
 
 

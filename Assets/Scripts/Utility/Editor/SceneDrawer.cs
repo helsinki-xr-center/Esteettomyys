@@ -14,7 +14,9 @@ public class SceneDrawer : PropertyDrawer {
 			} else if (scene.name != property.stringValue) {
 				var sceneObj = GetSceneObject(scene.name);
 				if (sceneObj == null) {
-					Debug.LogWarning("The scene " + scene.name + " cannot be used. To use this scene add it to the build settings for the project");
+					Debug.Log("The scene " + scene.name + " is not in build settings. Adding it now.");
+					AddSceneToEditorBuildSettings(scene as SceneAsset);
+					property.stringValue = scene.name;
 				} else {
 					property.stringValue = scene.name;
 				}
@@ -32,7 +34,20 @@ public class SceneDrawer : PropertyDrawer {
 				return AssetDatabase.LoadAssetAtPath(editorScene.path, typeof(SceneAsset)) as SceneAsset;
 			}
 		}
-		Debug.LogWarning("Scene [" + sceneObjectName + "] cannot be used. Add this scene to the 'Scenes in the Build' in build settings.");
+
 		return null;
+	}
+
+	protected void AddSceneToEditorBuildSettings(SceneAsset scene)
+	{
+		string scenePath = AssetDatabase.GetAssetPath(scene);
+		if (!string.IsNullOrEmpty(scenePath))
+		{
+			EditorBuildSettings.scenes = EditorBuildSettings.scenes.Append(new EditorBuildSettingsScene(scenePath, true));
+		}
+		else
+		{
+			Debug.LogWarning($"Scene {scene} does not exist in assets.");
+		}
 	}
 }
