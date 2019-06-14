@@ -15,8 +15,10 @@ public class TabletStatePattern : MonoBehaviour
 	[Tooltip("Current State ID as Enum for menus, change with event")] public TabletStateID tabletState;
 	[Tooltip("Set if you want to drag and drop positions , will ignore scripted positions")] public bool manuallyDragAndDropPositions;
 
-	public float speed;
-	public float deactivateTime;
+	[Tooltip("Tablet Move Speed")] public float speed;
+	[Tooltip("How Long it takes to activate tablet")] public float activationTime;
+	[Tooltip("Min distance to source on z axis")] public float minDistance;
+	[Tooltip("Max distance to source on z axis")]public float maxDistance;
 
 	[Tooltip("Player Position, drag if manually set is toggled on")] public Transform playerT;
 	[Tooltip("VRCamera Position, drag if manually set is toggled on")] public Transform vrCamera;
@@ -30,7 +32,7 @@ public class TabletStatePattern : MonoBehaviour
 	float lerpStartTime;
 	bool lerping;
 	float lerpDistance;
-	public float stopLerpDistance;
+	[Tooltip("Distance to reset lerp start position")]public float stopLerpDistance;
 	float tick;
 
 	[Tooltip("Previous state id if changed")]public TabletStateID previousState;
@@ -162,7 +164,7 @@ public class TabletStatePattern : MonoBehaviour
 	}
 
 	/// <summary>
-	/// Activates and Deactivates Tablet
+	/// Activates and Deactivates Tablet with Grab Grib button
 	/// </summary>
 	public void OnGrabGribActivate()
 	{
@@ -202,15 +204,15 @@ public class TabletStatePattern : MonoBehaviour
 		//	Debug.Log(touch.axis);
 		//}	
 
-		if (touch.axis.y != 0)
+		if (touch.axis.y != 0 && touch.activeDevice == CheckHandMode())
 		{
 			Debug.Log(Vector3.Distance(target.position, source.position));
 
-			if (touch.axis.y > 0.4f && Vector3.Distance(target.position, source.position) < 5.0f)
+			if (touch.axis.y > 0.4f && Vector3.Distance(target.position, source.position) < maxDistance)
 			{
 				target.position += direction * Time.deltaTime;
 			}
-			else if (touch.axis.y < 0.4f && Vector3.Distance(target.position, source.position) > 0.5f)
+			else if (touch.axis.y < 0.4f && Vector3.Distance(target.position, source.position) > minDistance)
 			{
 				target.position -= direction * Time.deltaTime;
 			}
@@ -225,7 +227,7 @@ public class TabletStatePattern : MonoBehaviour
 	public IEnumerator TabletActivationGrabGribPress()
 	{
 		///Magic effects
-		yield return new WaitForSeconds(deactivateTime);
+		yield return new WaitForSeconds(activationTime);
 		Debug.Log("TABLET ACTIVATED/UNACTIVATED");
 		if (transform.GetChild(0).gameObject.activeSelf)
 		{
@@ -247,7 +249,7 @@ public class TabletStatePattern : MonoBehaviour
 	public IEnumerator TabletActivationChangeState()
 	{
 		///Magic effects
-		yield return new WaitForSeconds(deactivateTime);
+		yield return new WaitForSeconds(activationTime);
 		Debug.Log("TABLET ACTIVATED/UNACTIVATED");
 		if (transform.GetChild(0).gameObject.activeSelf)
 		{
@@ -269,7 +271,7 @@ public class TabletStatePattern : MonoBehaviour
 	public IEnumerator TabletActivationStateChange()
 	{
 		///Magic effects
-		yield return new WaitForSeconds(deactivateTime);
+		yield return new WaitForSeconds(activationTime);
 		Debug.Log("TABLET ACTIVATED/UNACTIVATED");
 		if (transform.GetChild(0).gameObject.activeSelf)
 		{
@@ -287,6 +289,17 @@ public class TabletStatePattern : MonoBehaviour
 		}
 	}
 
+	public SteamVR_Input_Sources CheckHandMode()
+	{
+		if (GlobalValues.settings.leftHandMode)
+		{
+			return SteamVR_Input_Sources.LeftHand;
+		}
+		else
+		{
+			return SteamVR_Input_Sources.RightHand;
+		}
+	}
 
 	/// <summary>
 	/// MUST ACTIVATE FROM EVENT OR NO NEED AT ALL WE CHOOSE ONLY ONE MODE IN GAME

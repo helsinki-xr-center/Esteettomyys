@@ -60,7 +60,7 @@ public class HoldState : ITabletState
 		}
 		tablet.OnGrabGribActivate();
 
-		if (tablet.touchPadPress.GetStateDown(Valve.VR.SteamVR_Input_Sources.Any))
+		if (tablet.touchPadPress.GetStateDown(tablet.CheckHandMode()))
 		{
 			Debug.Log("grabPINCH");
 			ToPreviousState();

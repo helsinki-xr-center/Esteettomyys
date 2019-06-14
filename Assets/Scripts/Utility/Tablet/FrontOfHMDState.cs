@@ -71,7 +71,9 @@ public class FrontOfHMDState : ITabletState
 		tablet.ChangeTabletDistance(tablet.positions[0], tablet.positions[0].forward, tablet.vrCamera);
 		tablet.OnGrabGribActivate();
 
-		if (tablet.touchPadPress.GetStateDown(Valve.VR.SteamVR_Input_Sources.Any))
+
+
+		if (tablet.touchPadPress.GetStateDown(tablet.CheckHandMode())) 
 		{
 			ToFollowState();
 		}

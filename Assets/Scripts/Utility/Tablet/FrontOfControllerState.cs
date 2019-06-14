@@ -64,7 +64,7 @@ public class FrontOfControllerState : ITabletState
 		tablet.ChangeTabletDistance(tablet.positions[4], tablet.positions[4].forward, tablet.rightController);
 		tablet.OnGrabGribActivate();
 
-		if (tablet.touchPadPress.GetStateDown(Valve.VR.SteamVR_Input_Sources.Any))
+		if (tablet.touchPadPress.GetStateDown(tablet.CheckHandMode()))
 		{
 			Debug.Log("grabPINCH");
 			ToHoldState();

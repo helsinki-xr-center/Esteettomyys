@@ -58,7 +58,7 @@ public class FollowState : ITabletState
 	{
 		tablet.StartLerp(tablet.positions[1].position);
 		tablet.WatchTarget(tablet.vrCamera.position);
-		if (tablet.touchPadPress.GetStateDown(Valve.VR.SteamVR_Input_Sources.Any))
+		if (tablet.touchPadPress.GetStateDown(tablet.CheckHandMode()))
 		{
 			ToPreviousState();
 		}

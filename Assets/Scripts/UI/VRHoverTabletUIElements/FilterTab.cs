@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -13,6 +14,11 @@ public class FilterTab : MonoBehaviour
 
 	[SerializeField]Button[] buttons;
 	[SerializeField] Transform[] contentPages;
+	[SerializeField] TextMeshProUGUI[] texts;
+	[SerializeField] Button[] otherSettingButtons;
+
+	public delegate void ChangeHeightDelegate();
+	public static event ChangeHeightDelegate ChangeHeightEvent;
 
 	private void Start()
 	{
@@ -27,6 +33,7 @@ public class FilterTab : MonoBehaviour
 			contentPages[i - 1] = transform.GetChild(i);
 		}
 
+		otherSettingButtons[0].onClick.AddListener(() => OnButtonClickWheelChairMode());
 	}
 
 	/// <summary>
@@ -60,5 +67,22 @@ public class FilterTab : MonoBehaviour
 		contentPages[1].gameObject.SetActive(false);
 	}
 
-	
+	public void OnButtonClickWheelChairMode()
+	{
+		Debug.Log("CLICKED");
+		if (GlobalValues.settings.wheelChairMode)
+		{
+			GlobalValues.settings.wheelChairMode = false;
+		}
+		else
+		{
+			GlobalValues.settings.wheelChairMode = true;
+		}
+		texts[0].text = GlobalValues.settings.wheelChairMode.ToString();
+		Settings.Save();
+
+
+		ChangeHeightEvent?.Invoke();
+
+	}
 }
