@@ -13,39 +13,54 @@ public class FollowState : ITabletState
 		tablet = tabletStatePattern;
 	}
 
-	public void StartedState(ITabletState state)
+	public void ExitState()
 	{
-		if ( state == this)
-		{
-			Debug.Log("HEY " + state.ToString() + " Started ");
-		}
+		Debug.Log("EXIT STATE " + this.ToString());
+	}
+
+	public void StartState()
+	{
+		Debug.Log("START STATE " + this.ToString());
+		tablet.StartCoroutine(tablet.TabletActivationStateChange());
 	}
 
 	public void ToFollowSideState()
 	{
+
 	}
 
 	public void ToFollowState()
 	{
+
 	}
 
 	public void ToFrontOfControllerState()
 	{
+
 	}
 
 	public void ToFrontOfHMDState()
 	{
+
 	}
 
 	public void ToHoldState()
 	{
+
+	}
+
+	public void ToPreviousState()
+	{
+		tablet.ChangeState(tablet.previousState);
 	}
 
 	public void UpdateState()
 	{
-
 		tablet.StartLerp(tablet.positions[1].position);
-		tablet.WatchTarget(tablet.vrCamera.position);	
-
+		tablet.WatchTarget(tablet.vrCamera.position);
+		if (tablet.grabPinch.GetStateDown(Valve.VR.SteamVR_Input_Sources.Any))
+		{
+			ToPreviousState();
+		}
 	}
 }

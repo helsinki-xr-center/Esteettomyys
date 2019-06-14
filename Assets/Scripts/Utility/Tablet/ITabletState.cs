@@ -7,7 +7,11 @@ public interface ITabletState
 
 	void UpdateState();
 
-	void StartedState(ITabletState state);
+	void StartState();
+
+	void ExitState();
+
+	void ToPreviousState();
 
 	void ToHoldState();
 
@@ -18,5 +22,6 @@ public interface ITabletState
 	void ToFrontOfHMDState();
 
 	void ToFollowSideState();
+
 
 }

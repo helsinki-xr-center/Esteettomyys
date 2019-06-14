@@ -358,7 +358,7 @@ PrefabInstance:
     - target: {fileID: 4581738950674792926, guid: aa97b5de60414724eb350131c029fed1,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: -0.76
       objectReference: {fileID: 0}
     - target: {fileID: 4581738950674792926, guid: aa97b5de60414724eb350131c029fed1,
         type: 3}
@@ -368,7 +368,7 @@ PrefabInstance:
     - target: {fileID: 4581738950674792926, guid: aa97b5de60414724eb350131c029fed1,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 1
+      value: 2.2
       objectReference: {fileID: 0}
     - target: {fileID: 4581738950674792926, guid: aa97b5de60414724eb350131c029fed1,
         type: 3}
@@ -585,5 +585,15 @@ PrefabInstance:
       propertyPath: positions.Array.data[4]
       value: 
       objectReference: {fileID: 1778556320096315262}
+    - target: {fileID: 4581738950915997505, guid: aa97b5de60414724eb350131c029fed1,
+        type: 3}
+      propertyPath: deactivateTime
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4581738950915997505, guid: aa97b5de60414724eb350131c029fed1,
+        type: 3}
+      propertyPath: tabletState
+      value: 4
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: aa97b5de60414724eb350131c029fed1, type: 3}

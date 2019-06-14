@@ -32,47 +32,35 @@ public class VRUIInput : MonoBehaviour
 	public void HandlePointerHit(object sender, RayCastData hitInfo)
 	{
 
-		//if (hitInfo.target.GetComponent<Button>() != null)
-		//{
 		Button button = hitInfo.target.GetComponent<Button>();
+
+		Slider slider = hitInfo.target.GetComponent<Slider>();
+
+		Dropdown dropdown = hitInfo.target.GetComponent<Dropdown>();
+
+		ScrollRect scrollRect = hitInfo.target.GetComponent<ScrollRect>();
+
 		if (button != null)
 		{
 			button.Select();
 		}
-		//}
-		//if (hitInfo.target.GetComponent<Slider>() != null)
-		//{
-		Slider slider = hitInfo.target.GetComponent<Slider>();
-		if (slider != null)
+		else if (slider != null)
 		{
 			slider.Select();
 		}
-		//}
-
-		/*if(hitInfo.target.GetComponent<Dropdown>() != null)
-		{*/
-		Dropdown dropdown = hitInfo.target.GetComponent<Dropdown>();
-		if (dropdown != null)
+		else if (dropdown != null)
 		{
 			dropdown.Select();
 		}
-
-		ScrollRect scrollRect = hitInfo.target.GetComponent<ScrollRect>();
-		if (scrollRect != null)
+		else if (scrollRect != null)
 		{
 			EventSystem.current.SetSelectedGameObject(hitInfo.target.gameObject);
 		}
+		else
+		{
+			EventSystem.current.SetSelectedGameObject(null);
+		}
 
-		//ScrollRect scrollrect = hitInfo.target.GetComponent<ScrollRect>();
-		//if (scrollrect != null)
-		//{
-		//	PointerEventData pointerEvent = new PointerEventData(EventSystem.current);
-		//	pointerEvent.position = hitInfo.hitPoint;
-		//	scrollrect.OnScroll(pointerEvent);
-		//}
-
-		//}
-		//Debug.Log("POINTER HITS");
 	}
 
 	/// <summary>
@@ -84,33 +72,33 @@ public class VRUIInput : MonoBehaviour
 	{
 
 		Button button = hitInfo.target.GetComponent<Button>();
+
+		Slider slider = hitInfo.target.GetComponent<Slider>();
+
+		Dropdown dropdown = hitInfo.target.GetComponent<Dropdown>();
+
+		ScrollRect scrollRect = hitInfo.target.GetComponent<ScrollRect>();
+
 		if (button != null)
 		{
 			EventSystem.current.SetSelectedGameObject(null);
-		}
-
-
-		Slider slider = hitInfo.target.GetComponent<Slider>();
-		if (slider != null)
+		}	
+		else if (slider != null)
+		{
+			EventSystem.current.SetSelectedGameObject(null);
+		}	
+		else if (dropdown != null)
 		{
 			EventSystem.current.SetSelectedGameObject(null);
 		}
-
-
-
-		Dropdown dropdown = hitInfo.target.GetComponent<Dropdown>();
-		if (dropdown != null)
+		else if (scrollRect != null)
 		{
 			EventSystem.current.SetSelectedGameObject(null);
 		}
-
-		ScrollRect scrollRect = hitInfo.target.GetComponent<ScrollRect>();
-		if(scrollRect != null)
+		else
 		{
 			EventSystem.current.SetSelectedGameObject(null);
 		}
-
-		//Debug.Log("POINTER LEFT");
 	}
 
 	/// <summary>
@@ -177,7 +165,7 @@ public class VRUIInput : MonoBehaviour
 			eventData.position = hitInfo.hitPoint;
 			ScrollRect scrollRect = hitInfo.target.GetComponent<ScrollRect>();
 			scrollRect.OnBeginDrag(eventData);
-			scrollRect.OnDrag(eventData); 
+			scrollRect.OnDrag(eventData);
 			//ExecuteEvents.Execute(hitInfo.target.gameObject, eventData, ExecuteEvents.submitHandler);
 			ExecuteEvents.Execute(EventSystem.current.currentSelectedGameObject, eventData, ExecuteEvents.dragHandler);
 

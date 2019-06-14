@@ -6,7 +6,6 @@ public class HoldState : ITabletState
 {
 
 	private readonly TabletStatePattern tablet;
-
 	float sec = 0;
 
 	public HoldState(TabletStatePattern tabletStatePattern)
@@ -14,12 +13,14 @@ public class HoldState : ITabletState
 		tablet = tabletStatePattern;
 	}
 
-	public void StartedState(ITabletState state)
+	public void ExitState()
 	{
-		if (state == this)
-		{
-			Debug.Log("HEY " + state.ToString() + " Started ");
-		}
+		Debug.Log("EXIT STATE " + this.ToString());
+	}
+
+	public void StartState()
+	{
+		Debug.Log("START STATE " + this.ToString());
 	}
 
 	public void ToFollowSideState()
@@ -32,15 +33,21 @@ public class HoldState : ITabletState
 
 	public void ToFrontOfControllerState()
 	{
+		
 	}
 
 	public void ToFrontOfHMDState()
 	{	
-		tablet.tabletState = TabletStateID.FrontHMD;
+	
 	}
 
 	public void ToHoldState()
 	{
+	}
+
+	public void ToPreviousState()
+	{
+		tablet.ChangeState(tablet.previousState);
 	}
 
 	public void UpdateState()
@@ -51,5 +58,13 @@ public class HoldState : ITabletState
 			Debug.Log("IM IN HOLD STATE");			
 			//Debug.Log("tablet Position " + tablet.transform.position);
 		}
+		tablet.OnGrabGribActivate();
+
+		if (tablet.grabPinch.GetStateDown(Valve.VR.SteamVR_Input_Sources.Any))
+		{
+			Debug.Log("grabPINCH");
+			ToPreviousState();
+		}
 	}
+
 }
