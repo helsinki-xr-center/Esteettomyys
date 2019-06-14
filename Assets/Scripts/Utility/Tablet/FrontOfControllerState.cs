@@ -60,7 +60,6 @@ public class FrontOfControllerState : ITabletState
 			tablet.DebugStateStatus();
 		}
 
-		
 		tablet.WatchTarget(tablet.vrCamera.position);
 		tablet.OnGrabGribActivate();
 
@@ -81,6 +80,5 @@ public class FrontOfControllerState : ITabletState
 			Debug.Log("grabPINCH");
 			ToHoldState();
 		}
-
 	}
 }

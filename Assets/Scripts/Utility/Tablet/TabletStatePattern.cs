@@ -176,7 +176,10 @@ public class TabletStatePattern : MonoBehaviour
 		if (grabGrib.GetStateDown(SteamVR_Input_Sources.Any) && !pressed)
 		{
 			pressed = true;
-			Debug.Log("GRABGRIBED");
+
+			if (debugMode)
+				Debug.Log("GRABGRIBED");
+
 			StartCoroutine(TabletActivationGrabGribPress());
 		}
 	}
@@ -190,8 +193,7 @@ public class TabletStatePattern : MonoBehaviour
 		if (grabGrib.GetStateDown(SteamVR_Input_Sources.Any) && !changedMode)
 		{
 			positions[0].position = vrCamera.position + vrCamera.forward;
-			changedMode = true;
-			Debug.Log("CHANGED STATE TO " + state.ToString());
+			changedMode = true;		
 			ChangeState(state);
 			StartCoroutine(TabletActivationChangeState());
 		}
@@ -204,14 +206,16 @@ public class TabletStatePattern : MonoBehaviour
 	/// <param name="direction">direction to move at</param>
 	public void ChangeTabletDistance(Transform target, Vector3 direction, Transform source)
 	{
-		//if (Time.time > tick) {
-		//	tick = Time.time + 1;
-		//	Debug.Log(touch.axis);
-		//}	
+		if (Time.time > tick && debugMode) {
+		tick = Time.time + interval;
+		Debug.Log(touch.axis);
+		Debug.Log(Vector3.Distance(target.position, source.position));
+		}	
 
 		if (touch.axis.y != 0 && touch.activeDevice == CheckHandMode())
 		{
-			Debug.Log(Vector3.Distance(target.position, source.position));
+			
+				
 
 			if (touch.axis.y > 0.4f && Vector3.Distance(target.position, source.position) < maxDistance)
 			{
@@ -233,7 +237,10 @@ public class TabletStatePattern : MonoBehaviour
 	{
 		///Magic effects
 		yield return new WaitForSeconds(activationTime);
-		Debug.Log("TABLET ACTIVATED/UNACTIVATED");
+
+		if(debugMode)
+			Debug.Log("TABLET ACTIVATED/UNACTIVATED");
+
 		if (transform.GetChild(0).gameObject.activeSelf)
 		{
 			for (int i = 0; i < transform.childCount; i++)
@@ -248,6 +255,7 @@ public class TabletStatePattern : MonoBehaviour
 				transform.GetChild(i).gameObject.SetActive(true);
 			}
 		}
+
 		pressed = false;
 	}
 
@@ -255,7 +263,10 @@ public class TabletStatePattern : MonoBehaviour
 	{
 		///Magic effects
 		yield return new WaitForSeconds(activationTime);
-		Debug.Log("TABLET ACTIVATED/UNACTIVATED");
+
+		if (debugMode)
+			Debug.Log("TABLET ACTIVATED/UNACTIVATED");
+
 		if (transform.GetChild(0).gameObject.activeSelf)
 		{
 			for (int i = 0; i < transform.childCount; i++)
@@ -270,14 +281,19 @@ public class TabletStatePattern : MonoBehaviour
 				transform.GetChild(i).gameObject.SetActive(true);
 			}
 		}
+
 		changedMode = false;
+
 	}
 
 	public IEnumerator TabletActivationStateChange()
 	{
 		///Magic effects
 		yield return new WaitForSeconds(activationTime);
-		Debug.Log("TABLET ACTIVATED/UNACTIVATED");
+
+		if (debugMode)
+			Debug.Log("TABLET ACTIVATED/UNACTIVATED");
+
 		if (transform.GetChild(0).gameObject.activeSelf)
 		{
 			for (int i = 0; i < transform.childCount; i++)
