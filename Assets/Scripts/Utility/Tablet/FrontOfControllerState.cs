@@ -5,7 +5,6 @@ using UnityEngine;
 public class FrontOfControllerState : ITabletState
 {
 	private readonly TabletStatePattern tablet;
-	float sec;
 
 	public FrontOfControllerState(TabletStatePattern tabletStatePattern)
 	{
@@ -14,12 +13,18 @@ public class FrontOfControllerState : ITabletState
 
 	public void ExitState()
 	{
-		Debug.Log("EXIT STATE " + this.ToString());
+		if (tablet.debugMode)
+		{
+			Debug.Log("EXIT STATE " + this.ToString());
+		}
 	}
 
 	public void StartState()
 	{
-		Debug.Log("START STATE " + this.ToString());
+		if (tablet.debugMode)
+		{
+			Debug.Log("START STATE " + this.ToString());
+		}
 	}
 
 	public void ToFollowSideState()
@@ -50,19 +55,26 @@ public class FrontOfControllerState : ITabletState
 
 	public void UpdateState()
 	{
-		if (Time.time > sec)
+		if (tablet.debugMode)
 		{
-			sec = Time.time + 3;
-			Debug.Log("IM IN FRONT OF CONTROLLER STATE");
-			//Debug.Log(tablet.transform.position);
-			//Debug.Log(tablet.positions[0].position);
-			//Debug.Log(tablet.speed);
+			tablet.DebugStateStatus();
 		}
 
-		tablet.StartLerp(tablet.positions[4].position);
+		
 		tablet.WatchTarget(tablet.vrCamera.position);
-		tablet.ChangeTabletDistance(tablet.positions[4], tablet.positions[4].forward, tablet.rightController);
 		tablet.OnGrabGribActivate();
+
+		if (tablet.CheckHandMode() == Valve.VR.SteamVR_Input_Sources.RightHand)
+		{
+			tablet.StartLerp(tablet.positions[4].position);
+			tablet.ChangeTabletDistance(tablet.positions[4], tablet.positions[4].forward, tablet.rightController);
+		}
+		else
+		{
+			tablet.StartLerp(tablet.positions[3].position);
+			tablet.ChangeTabletDistance(tablet.positions[3], tablet.positions[3].forward, tablet.leftController);
+		}
+		
 
 		if (tablet.touchPadPress.GetStateDown(tablet.CheckHandMode()))
 		{

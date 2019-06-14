@@ -12,6 +12,9 @@ using System.Linq;
 public class TabletStatePattern : MonoBehaviour
 {
 
+	public bool debugMode;
+	public float interval;
+
 	[Tooltip("Current State ID as Enum for menus, change with event")] public TabletStateID tabletState;
 	[Tooltip("Set if you want to drag and drop positions , will ignore scripted positions")] public bool manuallyDragAndDropPositions;
 
@@ -23,6 +26,7 @@ public class TabletStatePattern : MonoBehaviour
 	[Tooltip("Player Position, drag if manually set is toggled on")] public Transform playerT;
 	[Tooltip("VRCamera Position, drag if manually set is toggled on")] public Transform vrCamera;
 	public Transform rightController;
+	public Transform leftController;
 
 	//Only for grabgrib state change coroutines
 	bool pressed;
@@ -34,7 +38,7 @@ public class TabletStatePattern : MonoBehaviour
 	float lerpDistance;
 	[Tooltip("Distance to reset lerp start position")]public float stopLerpDistance;
 	float tick;
-
+	
 	[Tooltip("Previous state id if changed")]public TabletStateID previousState;
 	[Tooltip("Currently executing state")]public ITabletState currentState;
 	public HoldState holdState;
@@ -81,6 +85,7 @@ public class TabletStatePattern : MonoBehaviour
 			playerT = GameObject.FindGameObjectWithTag("Player").transform;
 			vrCamera = playerT.GetChild(0).GetChild(3).transform;
 			rightController = playerT.GetChild(0).GetChild(2).transform;
+			leftController = playerT.GetChild(0).GetChild(1).transform;
 
 			positions[0] = vrCamera.GetChild(0).transform;
 			positions[1] = vrCamera.GetChild(1).transform;
@@ -329,5 +334,17 @@ public class TabletStatePattern : MonoBehaviour
 		//	default:
 		//		break;
 		//}
+	}
+
+	public void DebugStateStatus()
+	{
+		if (Time.time > tick)
+		{
+			tick = Time.time + interval;
+			Debug.Log("Currently in " + currentState.ToString());
+			//Debug.Log(tablet.transform.position);
+			//Debug.Log(tablet.positions[0].position);
+			//Debug.Log(tablet.speed);
+		}
 	}
 }

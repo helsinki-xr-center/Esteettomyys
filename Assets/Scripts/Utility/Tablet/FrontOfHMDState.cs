@@ -16,12 +16,18 @@ public class FrontOfHMDState : ITabletState
 
 	public void ExitState()
 	{
-		Debug.Log("EXIT STATE " + this.ToString());
+		if (tablet.debugMode)
+		{
+			Debug.Log("EXIT STATE " + this.ToString());
+		}
 	}
 
 	public void StartState()
 	{
-		Debug.Log("START STATE " + this.ToString());
+		if (tablet.debugMode)
+		{
+			Debug.Log("START STATE " + this.ToString());
+		}
 		tablet.StartCoroutine(tablet.TabletActivationStateChange());
 	}
 
@@ -57,21 +63,15 @@ public class FrontOfHMDState : ITabletState
 
 	public void UpdateState()
 	{
-		if (Time.time > sec)
+		if (tablet.debugMode)
 		{
-			sec = Time.time + 3;
-			Debug.Log("IM IN FRONT OF HMD STATE");
-			//Debug.Log(tablet.transform.position);
-			//Debug.Log(tablet.positions[0].position);
-			//Debug.Log(tablet.speed);
+			tablet.DebugStateStatus();
 		}
 
 		tablet.StartLerp(tablet.positions[0].position);
 		tablet.WatchTarget(tablet.vrCamera.position);
 		tablet.ChangeTabletDistance(tablet.positions[0], tablet.positions[0].forward, tablet.vrCamera);
 		tablet.OnGrabGribActivate();
-
-
 
 		if (tablet.touchPadPress.GetStateDown(tablet.CheckHandMode())) 
 		{

@@ -12631,6 +12631,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 73195349521f6c6469bea9788a900bc9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  debugMode: 0
+  interval: 3
   tabletState: 4
   manuallyDragAndDropPositions: 0
   speed: 0.5
@@ -12640,6 +12642,7 @@ MonoBehaviour:
   playerT: {fileID: 0}
   vrCamera: {fileID: 0}
   rightController: {fileID: 0}
+  leftController: {fileID: 0}
   stopLerpDistance: 0.1
   previousState: 0
   positions:
