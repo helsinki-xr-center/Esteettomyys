@@ -13,6 +13,7 @@ public class TabletStatePattern : MonoBehaviour
 {
 
 	public TabletStateID tabletState;
+	public bool manuallySetPositions;
 
 	public float speed;
 	public float deactivateTime;
@@ -68,11 +69,14 @@ public class TabletStatePattern : MonoBehaviour
 		playerT = GameObject.FindGameObjectWithTag("Player").transform;
 		vrCamera = playerT.GetChild(0).GetChild(3).transform;
 
-		positions[0] = vrCamera.GetChild(0).transform;
-		positions[1] = vrCamera.GetChild(1).transform;
-		positions[2] = vrCamera.GetChild(2).transform;
-		positions[3] = playerT.GetChild(0).GetChild(1).GetChild(4).transform;
-		positions[4] = playerT.GetChild(0).GetChild(2).GetChild(4).transform;
+		if (!manuallySetPositions)
+		{
+			positions[0] = vrCamera.GetChild(0).transform;
+			positions[1] = vrCamera.GetChild(1).transform;
+			positions[2] = vrCamera.GetChild(2).transform;
+			positions[3] = playerT.GetChild(0).GetChild(1).GetChild(4).transform;
+			positions[4] = playerT.GetChild(0).GetChild(2).GetChild(4).transform;
+		}
 
 		states.Add(TabletStateID.Follow, followState);
 		states.Add(TabletStateID.FollowSide, followSideState);
