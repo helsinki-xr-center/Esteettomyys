@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using UnityEngine.Serialization;
 
 /**
  * Author: Nomi Lakkala
@@ -12,20 +12,21 @@ using UnityEngine;
  */
 public class LoadUnloadGameScene : MonoBehaviour
 {
-
-	public string sceneName;
+	[FormerlySerializedAs("sceneName")]
+	[Scene]
+	public string scene;
 
 	void Start()
 	{
-		if (!string.IsNullOrEmpty(sceneName))
+		if (!string.IsNullOrEmpty(scene))
 		{
-			SceneLoaderAsync.instance.LoadSceneAsync(sceneName);
+			SceneLoaderAsync.instance.LoadSceneAsync(scene);
 		}
 	}
 
 	private void OnDestroy()
 	{
-		SceneLoaderAsync.instance.UnloadSceneAsync(sceneName);
+		SceneLoaderAsync.instance.UnloadSceneAsync(scene);
 	}
 
 

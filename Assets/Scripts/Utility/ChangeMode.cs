@@ -12,7 +12,7 @@ public class ChangeMode : MonoBehaviour
 
 	public GameMode mode;
 
-	private void Start()
+	private void Awake()
 	{
 		switch (mode)
 		{

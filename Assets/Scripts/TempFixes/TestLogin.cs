@@ -2,6 +2,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/**
+ * Author: Nomi Lakkala
+ * 
+ * <summary>
+ * Just logs in with the provided username and password. (Only for testing!)
+ * </summary>
+ */
 public class TestLogin : MonoBehaviour
 {
 

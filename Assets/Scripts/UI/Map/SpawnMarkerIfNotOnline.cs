@@ -3,6 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
+/**
+ * Author: Nomi Lakkala
+ * 
+ * <summary>
+ * Spawns a player marker if the player is not in multiplayer mode.
+ * </summary>
+ */
 public class SpawnMarkerIfNotOnline : MonoBehaviour
 {
 	public string multiplayerScene = "Multiplayer";
@@ -32,6 +39,11 @@ public class SpawnMarkerIfNotOnline : MonoBehaviour
 		}
 	}
 
+	/**
+	 * <summary>
+	 * Checks wheter or not any of the loaded scenes match <see cref="multiplayerScene"/>.
+	 * </summary>
+	 */
 	private bool CheckIfInMultiplayer()
 	{
 		return SceneExtensions.GetAllLoadedScenes().Any(x => x.name == multiplayerScene);

@@ -20,9 +20,6 @@ public class OptionsTab : MonoBehaviour
 	[SerializeField] private float wheelChairHeight = 0.8f;
 	[SerializeField] private float wheelChairWidth = 1f;
 
-	public delegate void ChangeHeightDelegate();
-	public static event ChangeHeightDelegate ChangeHeightEvent;
-
 	private void Start()
 	{
 		buttons[0].onClick.AddListener(() => OpenVolumeSettings());
@@ -30,7 +27,6 @@ public class OptionsTab : MonoBehaviour
 		buttons[2].onClick.AddListener(() => OpenSettings());
 		buttons[3].onClick.AddListener(() => LeftHandMode());
 		buttons[4].onClick.AddListener(() => SomethingElse());
-		buttons[5].onClick.AddListener(() => WheelChairMode());
 	
 	}
 
@@ -86,31 +82,6 @@ public class OptionsTab : MonoBehaviour
 	{
 		// DO something
 		Debug.Log("DO SOMETHING");
-	}
-
-	/// <summary>
-	/// Makes player go wheelchairmode
-	/// </summary>
-	void WheelChairMode()
-	{
-		if (GlobalValues.settings.wheelChairMode)
-		{
-			GlobalValues.settings.wheelChairMode = false;
-		
-		}
-		else
-		{
-			GlobalValues.settings.wheelChairMode = true;
-		}
-
-		Settings.Save();
-
-		if ( ChangeHeightEvent != null)
-		{
-			
-			ChangeHeightEvent();
-			texts[0].text = GlobalValues.settings.wheelChairMode.ToString();
-		}
 	}
 
 	/// <summary>

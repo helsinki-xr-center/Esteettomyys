@@ -6,6 +6,13 @@ using System.Linq;
 
 namespace SaveSystem
 {
+	/**
+	 * Author: Nomi Lakkala
+	 * 
+	 * <summary>
+	 * Handles saving and loading <see cref="SaveData"/> to and from the FileSystem.
+	 * </summary>
+	 */
 	public class FileSystemSaveFileManager : ISaveFileManager
 	{
 		public static FileSystemSaveFileManager Default { get; set; } = new FileSystemSaveFileManager(Application.persistentDataPath + "/Saves/", true);

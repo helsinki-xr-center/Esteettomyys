@@ -17,13 +17,15 @@ public class MultiplayerNetworkManager : MonoBehaviour
 {
 
 	public string avatarPrefabName;
+	[Scene]
 	public string vrLobby;
+	[Scene]
 	public string pcLobby;
 
 	IEnumerator Start()
 	{
 		yield return new WaitForSeconds(0.5f);
-		MoveLocalPlayerToSpawnLocation();
+		//MoveLocalPlayerToSpawnLocation(); //Commented because AreaScript does this now.
 		yield return new WaitForSeconds(1);
 		PhotonNetwork.Instantiate(avatarPrefabName, Vector3.zero, Quaternion.identity, 0);
 	}

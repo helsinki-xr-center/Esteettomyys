@@ -7,9 +7,21 @@ using UnityEngine.Serialization;
 
 namespace SaveSystem
 {
+	/**
+	 * Author: Nomi Lakkala
+	 * 
+	 * <summary>
+	 * Extension methods for <see cref="SaveData"/> and <see cref="Scene"/> related to saving scenes.
+	 * </summary>
+	 */
 	public static class SceneSaveExtension
 	{
 
+		/**
+		 * <summary>
+		 * Saves the scene to this SaveData, if previous save data exists for this scene, it is overwritten.
+		 * </summary>
+		 */
 		public static void SaveSceneObjects(this SaveData save, Scene scene)
 		{
 			if (!scene.isLoaded)
@@ -39,8 +51,8 @@ namespace SaveSystem
 
 			if (save.savedScenes == null)
 			{
-				save.savedScenes = new SceneSaveData[1];
-				save.savedScenes[0] = saveData;
+				save.savedScenes = new List<SceneSaveData>();
+				save.savedScenes.Add(saveData);
 			}
 			else
 			{
@@ -52,19 +64,30 @@ namespace SaveSystem
 				}
 				else
 				{
-					save.savedScenes = save.savedScenes.Append(saveData);
+					save.savedScenes.Add(saveData);
 				}
 			}
 
 
 		}
 
+		/**
+		 * <summary>
+		 * Restores the scene to the state stored in this SaveData. If the save doesn't contain any data for this scene, this does nothing. Also destroys all old <see cref="SpawnedSaveable"/> objects.
+		 * </summary>
+		 */
 		public static void LoadSceneObjects(this SaveData save, Scene scene)
 		{
 			if (!scene.isLoaded)
 			{
 				Debug.LogWarning($"Scene {scene.name} is not loaded!");
 				return;
+			}
+
+			var oldSpawned = GameObject.FindObjectsOfType<SpawnedSaveable>().Where(x => x.gameObject.scene == scene);
+			foreach (var item in oldSpawned)
+			{
+				GameObject.DestroyImmediate(item.gameObject);
 			}
 
 			if (save.savedScenes == null)
@@ -78,12 +101,6 @@ namespace SaveSystem
 			{
 				Debug.Log($"No saved data found for scene: {scene.name}.");
 				return;
-			}
-
-			var oldSpawned = GameObject.FindObjectsOfType<SpawnedSaveable>().Where(x => x.gameObject.scene == scene);
-			foreach (var item in oldSpawned)
-			{
-				GameObject.DestroyImmediate(item.gameObject);
 			}
 
 			var sceneSaveables = GameObject.FindObjectsOfType<SceneSaveable>().Where(x => x.gameObject.scene == scene).ToArray();
@@ -123,7 +140,26 @@ namespace SaveSystem
 
 		}
 
-		
+		/**
+		 * <summary>
+		 * Resets the savedata for a scene.
+		 * </summary>
+		 */
+		public static void ResetSceneData(this SaveData save, Scene scene)
+		{
+			int idx = save.savedScenes.FirstIndexOf(x => x.sceneName == scene.name);
+
+			if (idx > -1)
+			{
+				save.savedScenes.RemoveAt(idx);
+			}
+		}
+
+		/**
+		 * <summary>
+		 * Returns whether this scene has any <see cref="SceneSaveable"/> or <see cref="SpawnedSaveable"/> objects.
+		 * </summary>
+		 */
 		public static bool HasAnythingToSave(this Scene scene)
 		{
 			if(!scene.isLoaded || string.IsNullOrEmpty(scene.name))

@@ -219,8 +219,7 @@ public class Pointer : MonoBehaviour
 					
 				}
 				else if (clickObj && selectedObj == targetObj && selectedObj != null && hasTarget)
-				{
-					
+				{					
 					DropObject();
 				}
 				
@@ -273,8 +272,8 @@ public class Pointer : MonoBehaviour
 			if (clickObj && selectedObj != null)
 			{
 				
-				selectedObj.GetComponent<InteractableObject>().selected = false;
-				ExtensionMethods.MaterialColorChange(selectedObj, Color.white);			
+				//selectedObj.GetComponent<InteractableObject>()._selected = false;
+				//ExtensionMethods.MaterialColorChange(selectedObj, Color.white);			
 				DropObject();
 			}
 			if (!lockLaserOn)

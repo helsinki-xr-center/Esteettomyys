@@ -16,9 +16,11 @@ using UnityEditor;
  */
 public class ExitHandler : MonoBehaviour
 {
-	[Header("Lobby scene names")]
-	public string pcLobby;
-	public string vrLobby;
+	[Header("Lobby scenes")]
+	[Scene]
+	public string pcLobby = "Lobby_PC";
+	[Scene]
+	public string vrLobby = "Lobby_VR";
 
 	private void OnEnable()
 	{

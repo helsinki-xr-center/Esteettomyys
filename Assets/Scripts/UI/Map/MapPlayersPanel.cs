@@ -67,10 +67,11 @@ public class MapPlayersPanel : MonoBehaviour
 	 */
 	private void CheckIfInMultiplayer()
 	{
-		if(SceneExtensions.GetAllLoadedScenes().Any(x => x.name == multiplayerScene))
+		if (SceneExtensions.GetAllLoadedScenes().Any(x => x.name == multiplayerScene))
 		{
 			gameObject.SetActive(true);
-		}else
+		}
+		else
 		{
 			gameObject.SetActive(false);
 		}
@@ -83,12 +84,12 @@ public class MapPlayersPanel : MonoBehaviour
 	 */
 	private void PopulateList()
 	{
-		if(mapper == null)
+		if (mapper == null)
 		{
 			return;
 		}
 
-		foreach(var player in FindObjectsOfType<AvatarFollowPlayer>())
+		foreach (var player in FindObjectsOfType<AvatarFollowPlayer>())
 		{
 			GameObject listItem = Instantiate(playerListPrefab, listParent);
 			listItem.GetComponent<MapPlayerListItem>().SetValues(player, mapImage);
@@ -102,7 +103,7 @@ public class MapPlayersPanel : MonoBehaviour
 	 */
 	private void ClearList()
 	{
-		foreach(Transform child in listParent)
+		foreach (Transform child in listParent)
 		{
 			Destroy(child.gameObject);
 		}

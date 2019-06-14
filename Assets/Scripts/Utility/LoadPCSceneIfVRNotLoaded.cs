@@ -13,7 +13,9 @@ using UnityEngine.SceneManagement;
  */
 public class LoadPCSceneIfVRNotLoaded : MonoBehaviour
 {
+	[Scene]
 	public string vrScene = "VRPlayer";
+	[Scene]
 	public string pcScene = "PCPlayer";
 
 	void Awake()

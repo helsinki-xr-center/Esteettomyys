@@ -9,15 +9,27 @@ using UnityEngine.SceneManagement;
 
 namespace SaveSystem
 {
+
+	/**
+	 * Author: Nomi Lakkala
+	 * 
+	 * <summary>
+	 * The primary container for all save data.
+	 * </summary>
+	 */
 	[System.Serializable]
 	public class SaveData
 	{
 		public string saveName;
 		public DateTime timestamp;
-		public SceneSaveData[] savedScenes;
+		public List<SceneSaveData> savedScenes;
 		public Dictionary<string, object> customData = new Dictionary<string, object>();
 
-
+		/**
+		 * <summary>
+		 * Write custom data to the save.
+		 * </summary>
+		 */
 		public void AddCustomData(string key, object data)
 		{
 			if (data == null)
@@ -27,13 +39,23 @@ namespace SaveSystem
 			customData.Add(key, data);
 		}
 
+		/**
+		 * <summary>
+		 * Read previously written data from the save. This method should be used when loading class types. Returns null if not found.
+		 * </summary>
+		 */
 		public T LoadCustomDataClass<T>(string key) where T : class
 		{
 			bool success = customData.TryGetValue(key, out object val);
-			var data = (T)val;
+			T data = success ? (T)val : null;
 			return data;
 		}
 
+		/**
+		 * <summary>
+		 * Read previously written data from the save. This method should be used when loading struct types. Returns null if not found.
+		 * </summary>
+		 */
 		public T? LoadCustomDataStruct<T>(string key) where T : struct
 		{
 			bool success = customData.TryGetValue(key, out object val);
@@ -41,37 +63,71 @@ namespace SaveSystem
 			return data;
 		}
 
-
+		/**
+		 * <summary>
+		 * Serializes this save data to a string. Also see <seealso cref="FromString"/>
+		 * </summary>
+		 */
 		public string AsString()
 		{
 			return SaveSerializer.Serialize(this);
 		}
 
+		/**
+		 * <summary>
+		 * Serializes this save data to a compressed string. Also see <seealso cref="FromStringCompressed"/>
+		 * </summary>
+		 */
 		public string AsStringCompressed()
 		{
 			return StringCompress.Compress(AsString());
 		}
 
+		/**
+		 * <summary>
+		 * Deserializes a string as SaveData. Also see <seealso cref="AsString"/>
+		 * </summary>
+		 */
 		public static SaveData FromString(string saveData)
 		{
 			return SaveSerializer.Deserialize<SaveData>(saveData);
 		}
 
+		/**
+		 * <summary>
+		 * Deserializes a compressed string as SaveData. Also see <seealso cref="AsStringCompressed"/>
+		 * </summary>
+		 */
 		public static SaveData FromStringCompressed(string compressedData)
 		{
 			return FromString(StringCompress.Decompress(compressedData));
 		}
 
+		/**
+		 * <summary>
+		 * Serializes this save data to a stream. Also see <seealso cref="FromStream"/>
+		 * </summary>
+		 */
 		public void WriteToStream(Stream stream)
 		{
 			SaveSerializer.SerializeToStream(this, stream);
 		}
 
+		/**
+		 * <summary>
+		 * Deserializes a stream as SaveData. Also see <seealso cref="WriteToStream"/>
+		 * </summary>
+		 */
 		public static SaveData FromStream(Stream source)
 		{
 			return SaveSerializer.DeserializeFromStream<SaveData>(source);
 		}
 
+		/**
+		 * <summary>
+		 * Serializes this save data to a stream as compressed binary data. Also see <seealso cref="FromStreamCompressed"/>
+		 * </summary>
+		 */
 		public void WriteToStreamCompressed(Stream stream)
 		{
 			using (var gs = StringCompress.GetCompressionStream(stream))
@@ -80,6 +136,11 @@ namespace SaveSystem
 			}
 		}
 
+		/**
+		 * <summary>
+		 * Deserializes a compressed binary stream as SaveData. Also see <seealso cref="WriteToStreamCompressed"/>
+		 * </summary>
+		 */
 		public static SaveData FromStreamCompressed(Stream source)
 		{
 			using (var gs = StringCompress.GetDecompressionStream(source))
@@ -173,7 +234,7 @@ namespace SaveSystem
 			if (rootName != name) //the parent is a child of one of the root objects
 			{
 				var matchingRoots = roots.Select(x => x.transform).Where(x => x.name == data.rootName);
-				if(matchingRoots.Count() > 1) //more than one matching root, find by sibling index
+				if (matchingRoots.Count() > 1) //more than one matching root, find by sibling index
 				{
 					matchingRoots = matchingRoots.Where(x => x.GetSiblingIndex() == data.rootSiblingIndex);
 				}
@@ -221,7 +282,7 @@ namespace SaveSystem
 
 		public GameObject GetGameObject()
 		{
-			if(string.IsNullOrEmpty(id))
+			if (string.IsNullOrEmpty(id))
 			{
 				return null;
 			}

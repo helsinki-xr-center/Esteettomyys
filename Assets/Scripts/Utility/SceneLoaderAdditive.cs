@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.Serialization;
 
 /**
  * Author: Nomi Lakkala
@@ -10,13 +11,15 @@ using UnityEngine.SceneManagement;
  */
 public class SceneLoaderAdditive : MonoBehaviour
 {
-	public string sceneName;
+	[FormerlySerializedAs("sceneName")]
+	[Scene]
+	public string scene;
 
 	void Start()
 	{
-		if (!string.IsNullOrEmpty(sceneName) && !SceneManager.GetSceneByName(sceneName).isLoaded)
+		if (!string.IsNullOrEmpty(scene) && !SceneManager.GetSceneByName(scene).isLoaded)
 		{
-			SceneManager.LoadScene(sceneName, LoadSceneMode.Additive);
+			SceneManager.LoadScene(scene, LoadSceneMode.Additive);
 		}
 	}
 }

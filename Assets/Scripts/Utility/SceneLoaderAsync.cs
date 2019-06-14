@@ -111,7 +111,11 @@ public class SceneLoaderAsync : MonoBehaviour
 		Debug.Log("Scene loading done!");
 	}
 
-
+	 /**
+	 * <summary>
+	 * Coroutine that handles loading a scene additively.
+	 * </summary>
+	 */
 	private IEnumerator LoadSceneAdditiveAsyncCoroutine(string scene)
 	{
 		var loadOperation = SceneManager.LoadSceneAsync(scene, LoadSceneMode.Additive);
@@ -124,6 +128,11 @@ public class SceneLoaderAsync : MonoBehaviour
 		Debug.Log("Scene loading done!");
 	}
 
+	 /**
+	 * <summary>
+	 * Coroutine that handles unloading a scene.
+	 * </summary>
+	 */
 	private IEnumerator UnloadSceneAsyncCoroutine(string scene)
 	{
 		var unloadOperation = SceneManager.UnloadSceneAsync(scene);

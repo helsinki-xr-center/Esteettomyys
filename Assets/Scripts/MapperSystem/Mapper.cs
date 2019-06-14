@@ -90,7 +90,7 @@ public class Mapper : MonoBehaviour
 
 	private void Update()
 	{
-		DebugDrawBounds(bounds);
+		bounds.DrawDebug();
 	}
 
 	/**
@@ -122,6 +122,30 @@ public class Mapper : MonoBehaviour
 		var roots = scenes.SelectMany(x => x.GetRootGameObjects()).Select(x => x.transform);
 		var visible = roots.SelectMany(x => x.EnumerateChildrenRecursive()).Where(x => ((1 << x.gameObject.layer) & includeLayers) != 0);
 		var renderers = visible.Select(x => x.GetComponent<Renderer>()).Where(x => x != null);
+
+
+		var missingRenderers = renderers.Where(x => x.GetComponent<ReplaceMaterialOnCameraRender>() == null);
+		foreach (var r in missingRenderers)
+		{
+			var replacer = r.gameObject.AddComponent<ReplaceMaterialOnCameraRender>();
+			replacer.targetCamera = camera;
+			replacer.mapper = this;
+		}
+
+		replaceMaterials = renderers.Select(x => x.GetComponent<ReplaceMaterialOnCameraRender>()).ToArray();
+
+		RecalculateBounds();
+	}
+
+	public void RecalculateBounds()
+	{
+		int includeLayers = camera.cullingMask;
+
+		// linq query to find all Renderer bounds in all visible objects for the camera
+		var scenes = SceneExtensions.GetAllLoadedScenes();
+		var roots = scenes.SelectMany(x => x.GetRootGameObjects()).Select(x => x.transform);
+		var visible = roots.SelectMany(x => x.EnumerateChildrenRecursive()).Where(x => ((1 << x.gameObject.layer) & includeLayers) != 0);
+		var renderers = visible.Select(x => x.GetComponent<Renderer>()).Where(x => x != null);
 		var allBounds = renderers.Select(x => x.bounds);
 
 		if (allBounds.Count() == 0)
@@ -133,16 +157,6 @@ public class Mapper : MonoBehaviour
 			// encapsulate all bounds into a single bounds
 			bounds = allBounds.Aggregate((combined, next) => { combined.Encapsulate(next); return combined; });
 		}
-
-		var missingRenderers = renderers.Where(x => x.GetComponent<ReplaceMaterialOnCameraRender>() == null);
-		foreach (var r in missingRenderers)
-		{
-			var replacer = r.gameObject.AddComponent<ReplaceMaterialOnCameraRender>();
-			replacer.targetCamera = camera;
-			replacer.mapper = this;
-		}
-
-		replaceMaterials = renderers.Select(x => x.GetComponent<ReplaceMaterialOnCameraRender>()).ToArray();
 
 		float centerX = (bounds.min.x + bounds.max.x) / 2;
 		float centerZ = (bounds.min.z + bounds.max.z) / 2;
@@ -156,41 +170,23 @@ public class Mapper : MonoBehaviour
 		camera.farClipPlane = lengthY * 2;
 	}
 
-	/**
-	 * <summary>
-	 * Draws bounds Editor window with lines.
-	 * </summary>
-	 */
-	private void DebugDrawBounds(Bounds b, float delay = 0)
+
+	public void SetCustomBounds(Bounds bounds)
 	{
-		// bottom
-		var p1 = new Vector3(b.min.x, b.min.y, b.min.z);
-		var p2 = new Vector3(b.max.x, b.min.y, b.min.z);
-		var p3 = new Vector3(b.max.x, b.min.y, b.max.z);
-		var p4 = new Vector3(b.min.x, b.min.y, b.max.z);
+		this.bounds = bounds;
 
-		Debug.DrawLine(p1, p2, Color.blue, delay);
-		Debug.DrawLine(p2, p3, Color.red, delay);
-		Debug.DrawLine(p3, p4, Color.yellow, delay);
-		Debug.DrawLine(p4, p1, Color.magenta, delay);
+		float centerX = (bounds.min.x + bounds.max.x) / 2;
+		float centerZ = (bounds.min.z + bounds.max.z) / 2;
+		float maxY = bounds.max.y;
+		float lengthY = (bounds.max.y - bounds.min.y);
+		float yAdd = 2;
 
-		// top
-		var p5 = new Vector3(b.min.x, b.max.y, b.min.z);
-		var p6 = new Vector3(b.max.x, b.max.y, b.min.z);
-		var p7 = new Vector3(b.max.x, b.max.y, b.max.z);
-		var p8 = new Vector3(b.min.x, b.max.y, b.max.z);
-
-		Debug.DrawLine(p5, p6, Color.blue, delay);
-		Debug.DrawLine(p6, p7, Color.red, delay);
-		Debug.DrawLine(p7, p8, Color.yellow, delay);
-		Debug.DrawLine(p8, p5, Color.magenta, delay);
-
-		// sides
-		Debug.DrawLine(p1, p5, Color.white, delay);
-		Debug.DrawLine(p2, p6, Color.gray, delay);
-		Debug.DrawLine(p3, p7, Color.green, delay);
-		Debug.DrawLine(p4, p8, Color.cyan, delay);
+		float maxWidth = Mathf.Max((bounds.max.x - bounds.min.x), (bounds.max.z - bounds.min.z));
+		camera.transform.position = new Vector3(centerX, maxY + yAdd, centerZ);
+		camera.orthographicSize = maxWidth / 2;
+		camera.farClipPlane = lengthY * 2;
 	}
+
 
 	/**
 	 * <summary>
