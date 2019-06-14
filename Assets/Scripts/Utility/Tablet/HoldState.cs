@@ -15,12 +15,18 @@ public class HoldState : ITabletState
 
 	public void ExitState()
 	{
-		Debug.Log("EXIT STATE " + this.ToString());
+		if (tablet.debugMode)
+		{
+			Debug.Log("EXIT STATE " + this.ToString());
+		}
 	}
 
 	public void StartState()
 	{
-		Debug.Log("START STATE " + this.ToString());
+		if (tablet.debugMode)
+		{
+			Debug.Log("START STATE " + this.ToString());
+		}
 	}
 
 	public void ToFollowSideState()
@@ -52,15 +58,13 @@ public class HoldState : ITabletState
 
 	public void UpdateState()
 	{
-		if( Time.time > sec)
+		if (tablet.debugMode)
 		{
-			sec = Time.time + 3;
-			Debug.Log("IM IN HOLD STATE");			
-			//Debug.Log("tablet Position " + tablet.transform.position);
+			tablet.DebugStateStatus();
 		}
 		tablet.OnGrabGribActivate();
 
-		if (tablet.grabPinch.GetStateDown(Valve.VR.SteamVR_Input_Sources.Any))
+		if (tablet.touchPadPress.GetStateDown(tablet.CheckHandMode()))
 		{
 			Debug.Log("grabPINCH");
 			ToPreviousState();

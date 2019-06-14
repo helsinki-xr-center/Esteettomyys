@@ -13,12 +13,18 @@ public class FollowSideState : ITabletState
 
 	public void ExitState()
 	{
-		Debug.Log("EXIT STATE " + this.ToString());
+		if (tablet.debugMode)
+		{
+			Debug.Log("EXIT STATE " + this.ToString());
+		}
 	}
 
 	public void StartState()
 	{
-		Debug.Log("START STATE " + this.ToString());
+		if (tablet.debugMode)
+		{
+			Debug.Log("START STATE " + this.ToString());
+		}
 	}
 
 	public void ToFollowSideState()
@@ -53,11 +59,12 @@ public class FollowSideState : ITabletState
 
 	public void UpdateState()
 	{
-		//tablet.StartLerp(tablet.positions[2].position);
-		
-		//tablet.transform.position = new Vector3(tablet.playerT.position.x - 2, tablet.vrCamera.position.y, tablet.playerT.position.z);
+		if (tablet.debugMode)
+		{
+			tablet.DebugStateStatus();
+		}
 		tablet.StartLerp(new Vector3(tablet.positions[2].position.x , tablet.positions[2].position.y, tablet.positions[2].position.z));
-		tablet.ChangeTabletDistance(tablet.positions[2], tablet.positions[2].forward);
+		tablet.ChangeTabletDistance(tablet.positions[2], tablet.positions[2].forward, tablet.vrCamera);
 		tablet.WatchTarget(tablet.vrCamera.position);
 		tablet.OnGrabGribActivate();
 	}

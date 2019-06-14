@@ -15,12 +15,18 @@ public class FollowState : ITabletState
 
 	public void ExitState()
 	{
-		Debug.Log("EXIT STATE " + this.ToString());
+		if (tablet.debugMode)
+		{
+			Debug.Log("EXIT STATE " + this.ToString());
+		}
 	}
 
 	public void StartState()
 	{
-		Debug.Log("START STATE " + this.ToString());
+		if (tablet.debugMode)
+		{
+			Debug.Log("START STATE " + this.ToString());
+		}
 		tablet.StartCoroutine(tablet.TabletActivationStateChange());
 	}
 
@@ -56,9 +62,13 @@ public class FollowState : ITabletState
 
 	public void UpdateState()
 	{
+		if (tablet.debugMode)
+		{
+			tablet.DebugStateStatus();
+		}
 		tablet.StartLerp(tablet.positions[1].position);
 		tablet.WatchTarget(tablet.vrCamera.position);
-		if (tablet.grabPinch.GetStateDown(Valve.VR.SteamVR_Input_Sources.Any))
+		if (tablet.touchPadPress.GetStateDown(tablet.CheckHandMode()))
 		{
 			ToPreviousState();
 		}
