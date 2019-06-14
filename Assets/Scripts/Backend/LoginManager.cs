@@ -25,10 +25,10 @@ public static class LoginManager
 	 */
 	public static async Task<LoginResult> Login(string username, string password)
 	{
-		
+
 		var result = await loginProvider.Login(username, password);
 
-		if(result == LoginResult.Success)
+		if (result == LoginResult.Success)
 		{
 			user = username;
 			loggedIn = true;

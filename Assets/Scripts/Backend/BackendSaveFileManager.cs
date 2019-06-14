@@ -32,7 +32,7 @@ public class BackendSaveFileManager : IAsyncSaveFileManager
 
 		BackendSaveModel model = await BackendConnector.LoadSaveData();
 
-		if(model == null)
+		if (model == null)
 		{
 			return Array.Empty<SaveFile>();
 		}

@@ -51,7 +51,7 @@ public class SaveLoadManager : MonoBehaviour
 
 		currentData.saveName = "savegame";
 		currentData.timestamp = DateTime.Now;
-		
+
 		await backendSave.Save(currentData);
 	}
 
@@ -67,8 +67,8 @@ public class SaveLoadManager : MonoBehaviour
 		var backendSaves = await backendSave.GetSaveFiles();
 
 		SaveFile newest = backendSaves.MaxBy(x => x.timestamp);
-		
-		if(newest != null)
+
+		if (newest != null)
 		{
 			currentData = await backendSave.Load(newest);
 		}
@@ -91,11 +91,11 @@ public class SaveLoadManager : MonoBehaviour
 
 	private void SceneUnloaded(Scene s)
 	{
-		
+
 	}
 
 	private void SceneLoaded(Scene s, LoadSceneMode mode)
 	{
-		
+
 	}
 }

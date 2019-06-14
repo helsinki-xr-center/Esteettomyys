@@ -212,7 +212,7 @@ namespace SaveSystem
 			if (rootName != name) //the parent is a child of one of the root objects
 			{
 				var matchingRoots = roots.Select(x => x.transform).Where(x => x.name == data.rootName);
-				if(matchingRoots.Count() > 1) //more than one matching root, find by sibling index
+				if (matchingRoots.Count() > 1) //more than one matching root, find by sibling index
 				{
 					matchingRoots = matchingRoots.Where(x => x.GetSiblingIndex() == data.rootSiblingIndex);
 				}
@@ -260,7 +260,7 @@ namespace SaveSystem
 
 		public GameObject GetGameObject()
 		{
-			if(string.IsNullOrEmpty(id))
+			if (string.IsNullOrEmpty(id))
 			{
 				return null;
 			}

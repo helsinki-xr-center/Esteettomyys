@@ -22,7 +22,7 @@ public class MapObjectivesPanel : MonoBehaviour
 		{
 			return;
 		}
-		
+
 		//TODO: spawn objectives when is posible
 	}
 
