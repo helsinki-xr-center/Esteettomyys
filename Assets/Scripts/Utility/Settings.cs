@@ -21,6 +21,8 @@ public class Settings
 	private static Settings currentSettings;
 
 	//Settings here
+	public int qualityLevelIndex = 5;
+
 	public bool voiceChatEnabled = true;
 	public bool leftHandMode = false;
 	public bool wheelChairMode = false;

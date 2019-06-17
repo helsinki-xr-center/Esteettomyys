@@ -4,17 +4,10 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-/// <summary>
-/// @Author : Veli-Matti Vuoti
-/// 
-/// Handles the PC Menu Settings Tab
-/// </summary>
-public class PCSettings : MonoBehaviour
+public class QualitySettingsUI : MonoBehaviour
 {
-
-	[SerializeField] Transform[] settingSlots;
-	[SerializeField] Button[] buttons;
-	//Mikäli haluaa instansioida settingsit
+	public List<Transform> settingElements = new List<Transform>();
+	public Button[] buttons;
 
 	public void MoveRight()
 	{
@@ -32,7 +25,7 @@ public class PCSettings : MonoBehaviour
 		if (GlobalValues.settings.qualityLevelIndex >= 0)
 		{
 			GlobalValues.settings.qualityLevelIndex--;
-			QualitySettings.SetQualityLevel(GlobalValues.settings.qualityLevelIndex);
+			QualitySettings.SetQualityLevel(GlobalValues.settings.qualityLevelIndex);			
 			buttons[1].GetComponentInChildren<TextMeshProUGUI>().text = QualitySettings.names[QualitySettings.GetQualityLevel()];
 			Settings.Save();
 		}
