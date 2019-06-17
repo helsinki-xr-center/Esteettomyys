@@ -175,9 +175,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7828a4a926bf4404aae61fb8dae3faa6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  objectType: 1
+  objectType: 0
   objData: {fileID: 11400000, guid: 4ba76f527357aed4ea154d1641f18675, type: 2}
-  selected: 0
+  hoverColor: {fileID: 2100000, guid: 8e6bfeb0e29bc054080f9d358c5421d9, type: 2}
+  highlightObject: 1
+  pointerHighlightHolder: {fileID: 0}
+  highlightedMesh: {fileID: 0}
+  _isHovering: 0
+  _wasHovering: 0
+  _selected: 0
 --- !u!114 &2633175896884231781
 MonoBehaviour:
   m_ObjectHideFlags: 0
