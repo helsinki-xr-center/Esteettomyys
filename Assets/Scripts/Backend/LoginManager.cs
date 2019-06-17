@@ -13,7 +13,7 @@ using UnityEngine;
  */
 public static class LoginManager
 {
-	private static ILoginProvider loginProvider = new DummyLogin();
+	private static ILoginProvider loginProvider = new BackendLoginProvider();
 	public static string user = "TestUser";
 	public static bool loggedIn;
 	public static bool offlineMode;
