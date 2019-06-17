@@ -27,14 +27,14 @@ public class MapPlayerListItem : MonoBehaviour, IPointerEnterHandler, IPointerEx
 	private AvatarFollowPlayer player;
 	private MapLocationMarker marker;
 
-    void FixedUpdate()
-    {
-		if(player == null)
+	void FixedUpdate()
+	{
+		if (player == null)
 		{
 			Destroy(gameObject);
 		}
 
-		if(marker.hovered || marker.selected)
+		if (marker.hovered || marker.selected)
 		{
 			colorTarget.color = highlightColor;
 		}
@@ -42,16 +42,23 @@ public class MapPlayerListItem : MonoBehaviour, IPointerEnterHandler, IPointerEx
 		{
 			colorTarget.color = normalColor;
 		}
+		if (GlobalValues.controllerMode == ControllerMode.PC)
+		{
+			if (marker.selected && !teleportButton.gameObject.activeSelf)
+			{
+				teleportButton.gameObject.SetActive(true);
+			}
+			else if (!marker.selected && teleportButton.gameObject.activeSelf)
+			{
+				teleportButton.gameObject.SetActive(false);
+			}
 
-		if(marker.selected && !teleportButton.gameObject.activeSelf)
+		}else if(!teleportButton.gameObject.activeSelf) //if VR, teleport button is always active
 		{
 			teleportButton.gameObject.SetActive(true);
 		}
-		else if (!marker.selected && teleportButton.gameObject.activeSelf)
-		{
-			teleportButton.gameObject.SetActive(false);
-		}
-    }
+
+	}
 
 	/**
 	 * <summary>
@@ -88,7 +95,7 @@ public class MapPlayerListItem : MonoBehaviour, IPointerEnterHandler, IPointerEx
 	}
 	private void OnDestroy()
 	{
-		if(marker != null)
+		if (marker != null)
 		{
 			Destroy(marker.gameObject);
 		}
@@ -111,7 +118,7 @@ public class MapPlayerListItem : MonoBehaviour, IPointerEnterHandler, IPointerEx
 	 */
 	public void OnPointerClick(PointerEventData eventData)
 	{
-		foreach(var mark in FindObjectsOfType<MapLocationMarker>())
+		foreach (var mark in FindObjectsOfType<MapLocationMarker>())
 		{
 			mark.selected = false;
 		}

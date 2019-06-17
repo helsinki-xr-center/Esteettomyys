@@ -731,6 +731,8 @@ GameObject:
   - component: {fileID: 8006941281192942792}
   - component: {fileID: 5551830616556303760}
   - component: {fileID: 5876308093210650057}
+  - component: {fileID: 6626242048596662788}
+  - component: {fileID: 8545975469779845671}
   m_Layer: 5
   m_Name: Button
   m_TagString: Untagged
@@ -864,6 +866,31 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   colorTheme: {fileID: 11400000, guid: 788626c8df0d1fa4c8beae631339c096, type: 2}
+--- !u!114 &6626242048596662788
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8013819211913440574}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6416a2132f609ca4cb5b8e4b6f96b66d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!65 &8545975469779845671
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8013819211913440574}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 160, y: 30, z: 0}
+  m_Center: {x: -80, y: -15, z: 0}
 --- !u!1 &8121385582198412151
 GameObject:
   m_ObjectHideFlags: 0
@@ -1107,6 +1134,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 5653502388487447961}
     m_Modifications:
+    - target: {fileID: 1846939324249767739, guid: 8d60addac71274646a211e8052e9eef5,
+        type: 3}
+      propertyPath: m_Name
+      value: MapObjectiveListItem
+      objectReference: {fileID: 0}
     - target: {fileID: 5921690998728184862, guid: 8d60addac71274646a211e8052e9eef5,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -1212,11 +1244,6 @@ PrefabInstance:
       propertyPath: m_Pivot.y
       value: 0.5
       objectReference: {fileID: 0}
-    - target: {fileID: 1846939324249767739, guid: 8d60addac71274646a211e8052e9eef5,
-        type: 3}
-      propertyPath: m_Name
-      value: MapObjectiveListItem
-      objectReference: {fileID: 0}
     - target: {fileID: 6671386546694184129, guid: 8d60addac71274646a211e8052e9eef5,
         type: 3}
       propertyPath: m_fontColor32.rgba
@@ -1262,12 +1289,6 @@ PrefabInstance:
 --- !u!224 &2834044082422701981 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 5921690998728184862, guid: 8d60addac71274646a211e8052e9eef5,
-    type: 3}
-  m_PrefabInstance: {fileID: 8465252744105036675}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &8860431619374504436 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1120284812213277303, guid: 8d60addac71274646a211e8052e9eef5,
     type: 3}
   m_PrefabInstance: {fileID: 8465252744105036675}
   m_PrefabAsset: {fileID: 0}
@@ -1405,15 +1426,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: df7777f8a81167142826e510e0af2109, type: 3}
---- !u!1 &721811196704891387 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 8460237078791084591, guid: df7777f8a81167142826e510e0af2109,
-    type: 3}
-  m_PrefabInstance: {fileID: 9181906949448465364}
-  m_PrefabAsset: {fileID: 0}
 --- !u!224 &4329047283261777390 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 4863731640253341242, guid: df7777f8a81167142826e510e0af2109,
+    type: 3}
+  m_PrefabInstance: {fileID: 9181906949448465364}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &721811196704891387 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8460237078791084591, guid: df7777f8a81167142826e510e0af2109,
     type: 3}
   m_PrefabInstance: {fileID: 9181906949448465364}
   m_PrefabAsset: {fileID: 0}
