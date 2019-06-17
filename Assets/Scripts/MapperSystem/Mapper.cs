@@ -144,7 +144,7 @@ public class Mapper : MonoBehaviour
 		// linq query to find all Renderer bounds in all visible objects for the camera
 		var scenes = SceneExtensions.GetAllLoadedScenes();
 		var roots = scenes.SelectMany(x => x.GetRootGameObjects()).Select(x => x.transform);
-		var visible = roots.SelectMany(x => x.EnumerateChildrenRecursive()).Where(x => ((1 << x.gameObject.layer) & includeLayers) != 0);
+		var visible = roots.SelectMany(x => x.EnumerateChildrenRecursive()).Concat(roots).Where(x => ((1 << x.gameObject.layer) & includeLayers) != 0);
 		var renderers = visible.Select(x => x.GetComponent<Renderer>()).Where(x => x != null);
 		var allBounds = renderers.Select(x => x.bounds);
 

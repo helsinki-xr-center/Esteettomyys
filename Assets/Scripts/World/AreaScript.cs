@@ -86,7 +86,7 @@ public class AreaScript : MonoBehaviour
 	{
 		// linq query to find all Renderer bounds in all objects in this scene
 		var roots = gameObject.scene.GetRootGameObjects().Select(x => x.transform);
-		var visible = roots.SelectMany(x => x.EnumerateChildrenRecursive());
+		var visible = roots.SelectMany(x => x.EnumerateChildrenRecursive()).Concat(roots);
 		var renderers = visible.Select(x => x.GetComponent<Renderer>()).Where(x => x != null);
 		var allBounds = renderers.Select(x => x.bounds);
 

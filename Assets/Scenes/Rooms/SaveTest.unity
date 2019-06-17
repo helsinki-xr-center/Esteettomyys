@@ -329,7 +329,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   username: koira
-  password: password
+  password: pass
 --- !u!4 &407235060
 Transform:
   m_ObjectHideFlags: 0

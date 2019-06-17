@@ -38,6 +38,7 @@ public class SaveLoadManager : MonoBehaviour
 	{
 		if (!(GlobalValues.loggedIn && BackendConnector.authenticated))
 		{
+			Debug.Log("Not logged in. Cannot save.");
 			return;
 		}
 
@@ -61,6 +62,7 @@ public class SaveLoadManager : MonoBehaviour
 	{
 		if (!(GlobalValues.loggedIn && BackendConnector.authenticated))
 		{
+			Debug.Log("Not logged in. Cannot load.");
 			return;
 		}
 
