@@ -328,8 +328,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 294035b967e982f4b9e49b55f03ee10a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  username: koira
-  password: pass
+  username: kissa
+  password: password
 --- !u!4 &407235060
 Transform:
   m_ObjectHideFlags: 0
