@@ -91,7 +91,7 @@ public class PlayerPosition : MonoBehaviour
 
 	public Vector3 GetRightHandFront()
 	{
-		if (rightHand == null) return transform.position;
+		if (rightHand == null) return transform.forward;
 
 		return rightHand.forward;
 	}
@@ -105,14 +105,14 @@ public class PlayerPosition : MonoBehaviour
 	{
 		if (leftHand == null) return transform.position;
 
-		return leftHand.forward;
+		return leftHand.position;
 	}
 
 	public Vector3 GetLeftHandFront()
 	{
-		if (rightHand == null) return transform.position;
+		if (leftHand == null) return transform.forward;
 
-		return rightHand.forward;
+		return leftHand.forward;
 	}
 
 	/**
